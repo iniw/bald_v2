@@ -7,7 +7,7 @@ struct user_cmd {
     char    pad0[ 0x4 ];
     int     m_command_number;
     int     m_tick_count;
-    q_angle m_view_angles;
+    q_ang   m_view_angles;
     vec_3   m_aim_direction;
     float   m_forward_move;
     float   m_side_move;

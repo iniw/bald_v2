@@ -221,7 +221,7 @@ struct studio_bbox {
 	vec_3		m_bb_min;
 	vec_3		m_bb_max;
 	int			m_hitbox_name_index;
-	q_angle		m_offset_orientation;
+	q_ang		m_offset_orientation;
 	float		m_radius;
 	byte		pad0[ 0x10 ];
 

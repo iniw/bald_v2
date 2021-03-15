@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../other/utils/utils.h"
-#include "../other/math/q_angle.h"
+#include "../other/math/q_ang.h"
 
 struct client_class;
 
@@ -49,15 +49,15 @@ struct engine_client {
 
 	}
 
-	inline auto get_view_angles( q_angle& angle ) {
+	inline auto get_view_angles( q_ang& angle ) {
 
-		g_utils.call_v_func< void, q_angle& >( this, 18, angle );
+		g_utils.call_v_func< void, q_ang& >( this, 18, angle );
 
 	}
 
 	inline auto get_view_angles( ) {
 
-		q_angle angle_out = { };
+		q_ang angle_out = { };
 
 		get_view_angles( angle_out );
 
@@ -65,9 +65,9 @@ struct engine_client {
 
 	}
 
-	inline auto set_view_angles( q_angle& angle ) {
+	inline auto set_view_angles( q_ang& angle ) {
 
-		g_utils.call_v_func< void, q_angle& >( this, 19, angle );
+		g_utils.call_v_func< void, q_ang& >( this, 19, angle );
 
 	}
 

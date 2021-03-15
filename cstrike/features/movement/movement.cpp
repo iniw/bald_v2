@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-void movement::correct( user_cmd* cmd, q_angle& old_view_angles ) {
+void movement::correct( user_cmd* cmd, q_ang& old_view_angles ) {
 
-	if ( !g_cstrike.m_local_player->is_alive( ) )
+	if ( !g_cstrike.m_local->is_alive( ) )
 		return;
 
 	static convar* cl_forwardspeed = g_interfaces.m_convar->find_var( "cl_forwardspeed" );

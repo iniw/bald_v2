@@ -4,13 +4,13 @@ void __fastcall hooked::draw_model( studio_render_context* ecx, void* edx, void*
 
 	static auto o_draw_model = g_detour.get< decltype( &draw_model ) >( "CStudioRenderContext::DrawModel" );
 
-	if ( !g_cstrike.m_local_player || !info.m_client_entity )
+	if ( !g_cstrike.m_local || !info.m_client_entity )
 		return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
 
 	base_entity* entity = reinterpret_cast< base_entity* >( info.m_client_entity - 0x4 );
 	if ( entity
 		&& entity->is_player( )
-		&& entity->get_team( ) != g_cstrike.m_local_player->get_team( ) ) {
+		&& entity->get_team( ) != g_cstrike.m_local->get_team( ) ) {
 
 		float color[ 3 ] = { 255.f, 110.f / 255.f, 144.f / 255.f };
 		ecx->set_colour_modulation( color );

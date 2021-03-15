@@ -47,7 +47,7 @@ void cstrike::unload( ) {
 
 void cstrike::iterate_players( std::function< void( cs_player* ) > function, int flags ) {
 
-	if ( !m_local_player )
+	if ( !m_local )
 		return;
 
 	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
@@ -65,7 +65,7 @@ void cstrike::iterate_players( std::function< void( cs_player* ) > function, int
 				continue;
 
 		if ( !( flags & iterate_teammates ) )
-			if ( !player->is_enemy( m_local_player ) )
+			if ( !player->is_enemy( m_local ) )
 				continue;
 
 		function( player );

@@ -22,7 +22,7 @@ struct aimbot_data {
 		if ( ent ) {
 
 			pos = ent->get_hitbox_position( hitbox::head );
-			ang = g_math.calc_angle( g_cstrike.m_local_player->get_eye_position( ), pos ).sanitize( );
+			ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), pos ).sanitize( );
 			fov = g_math.calc_fov( g_interfaces.m_engine->get_view_angles( ), ang );
 			dmg = g_autowall.get_damage( pos );
 
@@ -55,7 +55,7 @@ struct aimbot_data {
 
 	cs_player* ent;
 	vec_3      pos;
-	q_angle    ang;
+	q_ang    ang;
 	float      fov;
 	float	   dmg;
 

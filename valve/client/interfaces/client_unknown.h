@@ -33,7 +33,7 @@ struct i_collideable {
 	virtual int						get_collision_model_index( ) = 0;
 	virtual const model*            get_collision_model( ) = 0;
 	virtual vec_3&                  get_collision_origin( ) const = 0;
-	virtual q_angle&                get_collision_angles( ) const = 0;
+	virtual q_ang&                get_collision_angles( ) const = 0;
 	virtual const matrix_3x4&       collision_to_world_transform( ) const = 0;
 	virtual int				        get_solid( ) const = 0;
 	virtual int						get_solid_flags( ) const = 0;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../other/math/vec_3.h"
-#include "../other/math/q_angle.h"
+#include "../other/math/q_ang.h"
 
 struct user_cmd;
 
@@ -12,8 +12,8 @@ struct move_data {
 	bool	  m_no_air_control : 1;
 	uintptr_t m_player_handle;
 	int		  m_impulse_command;
-	q_angle	  m_view_angles;
-	q_angle	  m_abs_view_angles;
+	q_ang	  m_view_angles;
+	q_ang	  m_abs_view_angles;
 	int		  m_buttons;
 	int		  m_old_buttons;
 	float	  m_forward_move;
@@ -100,15 +100,15 @@ struct prediction {
 
 	}
 
-	inline void get_local_view_angles( q_angle& ang_view ) {
+	inline void get_local_view_angles( q_ang& ang_view ) {
 
-		g_utils.call_v_func< void, q_angle& >( this, 12, ang_view );
+		g_utils.call_v_func< void, q_ang& >( this, 12, ang_view );
 
 	}
 
-	inline void set_local_view_angles( q_angle& ang_view ) {
+	inline void set_local_view_angles( q_ang& ang_view ) {
 
-		g_utils.call_v_func< void, q_angle& >( this, 13, ang_view );
+		g_utils.call_v_func< void, q_ang& >( this, 13, ang_view );
 
 	}
 

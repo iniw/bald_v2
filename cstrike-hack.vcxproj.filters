@@ -47,7 +47,6 @@
     <ClInclude Include="valve\client\base_player.h" />
     <ClInclude Include="valve\client\cs_player.h" />
     <ClInclude Include="valve\client\client.h" />
-    <ClInclude Include="other\math\q_angle.h" />
     <ClInclude Include="valve\shared\shared.h" />
     <ClInclude Include="valve\shared\user_cmd.h" />
     <ClInclude Include="valve\shared\in_buttons.h" />
@@ -121,5 +120,6 @@
     <ClInclude Include="valve\physics\multiplayer_physics.h" />
     <ClInclude Include="valve\client\breakable_surface.h" />
     <ClInclude Include="valve\client\base_attributable_item.h" />
+    <ClInclude Include="other\math\q_ang.h" />
   </ItemGroup>
 </Project>

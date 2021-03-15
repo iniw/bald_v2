@@ -28,7 +28,7 @@ struct cstrike {
 		if ( !player )
 			return false;
 
-		if ( player == m_local_player )
+		if ( player == m_local )
 			return false;
 
 		if ( !player->is_alive( ) )
@@ -40,7 +40,7 @@ struct cstrike {
 		if ( player->is_dormant( ) )
 			return false;
 
-		if ( !player->is_enemy( m_local_player ) )
+		if ( !player->is_enemy( m_local ) )
 			return false;
 
 		return true;
@@ -61,7 +61,7 @@ struct cstrike {
 
 	HWND m_window;
 
-	cs_player* m_local_player;
+	cs_player* m_local;
 
 };
 

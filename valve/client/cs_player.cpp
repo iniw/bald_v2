@@ -88,3 +88,25 @@ vec_3 cs_player::get_hitbox_position( hitbox hitbox ) {
 	return ( min + max ) * 0.5f;
 
 }
+
+float cs_player::dist_to_ray( const vec_3& pos, const vec_3& start, const vec_3& end ) {
+
+	vec_3 to = pos - start;
+	vec_3 direction = end - start;
+	float length = direction.normalize( );
+
+	const float range_along = direction.dot( to );
+	float range = 0.0f;
+
+	if ( range_along < 0.f )
+		range = -to.length( );
+
+	else if ( range_along > length )
+		range = -( pos - end ).length( );
+
+	else
+		range = ( pos - ( direction * range_along + start ) ).length( );
+
+	return range;
+
+}

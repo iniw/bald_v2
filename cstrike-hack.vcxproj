@@ -198,7 +198,7 @@
     <ClInclude Include="other\hash\md5.h" />
     <ClInclude Include="other\math\math.h" />
     <ClInclude Include="other\math\matrix_3x4.h" />
-    <ClInclude Include="other\math\q_angle.h" />
+    <ClInclude Include="other\math\q_ang.h" />
     <ClInclude Include="other\math\vec_3.h" />
     <ClInclude Include="other\hash\hash.h" />
     <ClInclude Include="other\memory\stack.h" />

@@ -10,6 +10,12 @@ struct vec_3 {
 
 	vec_3( const float* f ) : x( f[ 0 ] ), y( f[ 1 ] ), z( f[ 2 ] ) { }
 
+	inline void init( float x = 0.f, float y = 0.f, float z = 0.f ) {
+
+		x = x; y = y; z = z;
+
+	}
+
 	inline void init( const vec_3& v ) {
 
 		x = v.x; y = v.y; z = v.z;

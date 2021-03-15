@@ -10,7 +10,9 @@ bool __fastcall hooked::create_move( cs_player* ecx, void* edx, float input_samp
 	if ( o_create_move( ecx, edx, input_sample_time, cmd ) )
 		g_interfaces.m_prediction->set_local_view_angles( cmd->m_view_angles );
 
-	q_angle old_view_angles = cmd->m_view_angles;
+	q_ang old_view_angles = cmd->m_view_angles;
+
+	g_cstrike.m_local = ecx;
 
 	g_engine_prediction.start( cmd ); {
 
@@ -23,7 +25,7 @@ bool __fastcall hooked::create_move( cs_player* ecx, void* edx, float input_samp
 
 	cmd->m_view_angles.sanitize( );
 
-	return o_create_move( ecx, edx, input_sample_time, cmd );
+	return false;
 
 }
 

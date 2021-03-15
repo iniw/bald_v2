@@ -9,7 +9,7 @@ void legitbot::run( user_cmd* cmd ) {
 	if ( !m_data )
 		return;
 
-	if ( cmd->m_buttons & in_attack && g_cstrike.m_local_player->can_shoot( ) ) {
+	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
 		cmd->m_view_angles = m_data.ang;
 		g_interfaces.m_engine->set_view_angles( m_data.ang );

@@ -4,7 +4,7 @@
 
 struct movement {
 
-	void correct( user_cmd* cmd, q_angle& old_view_angles );
+	void correct( user_cmd* cmd, q_ang& old_view_angles );
 
 };
 

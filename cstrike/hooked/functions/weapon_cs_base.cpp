@@ -10,7 +10,7 @@ void __fastcall hooked::draw_crosshair( weapon_cs_base* ecx, void* edx ) {
 
 	int old_weapon_type = weapon_info->m_weapon_type;
 
-	if ( g_cstrike.m_local_player && !g_cstrike.m_local_player->is_scoped( ) )
+	if ( g_cstrike.m_local && !g_cstrike.m_local->is_scoped( ) )
 		weapon_info->m_weapon_type = 0xFF;
 
 	o_draw_crosshair( ecx, edx );

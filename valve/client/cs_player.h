@@ -126,4 +126,6 @@ struct cs_player : base_animating {
 
 	vec_3 get_hitbox_position( hitbox hitbox );
 
+	float dist_to_ray( const vec_3& pos, const vec_3& start, const vec_3& end );
+
 };

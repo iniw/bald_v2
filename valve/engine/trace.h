@@ -75,7 +75,7 @@ struct base_trace {
 struct cs_player;
 struct game_trace : public base_trace {
 
-	game_trace( ) : m_hit_entity( nullptr ) { }
+	game_trace( ) : m_hit_entity( nullptr ), m_hitgroup( 0 ) { }
 
 	float				m_fraction_left_solid;	
 	trace_surface		m_surface;
@@ -112,25 +112,25 @@ struct ray {
 
 	ray( const vec_3& start, const vec_3& end ) : m_start( start ), m_delta( end - start ), m_world_axis_transform( nullptr ), m_is_ray( true ) {
 
-		this->m_is_swept = this->m_delta.length_sqr( ) != 0.f;
+		m_is_swept = this->m_delta.length_sqr( ) != 0.f;
 
 	}
 
 	ray( const vec_3& start, const vec_3& end, const vec_3& mins, const vec_3& maxs ) {
 
-		this->m_delta = end - start;
+		m_delta = end - start;
 
-		this->m_world_axis_transform = nullptr;
-		this->m_is_swept = this->m_delta.length_sqr( ) != 0.f;
-			
-		this->m_extents = maxs - mins;
-		this->m_extents *= 0.5f;
-		this->m_is_ray = this->m_extents.length_sqr( ) < 1e-6;
+		m_world_axis_transform = nullptr;
+		m_is_swept = m_delta.length_sqr( ) != 0.f;
+		
+		m_extents = maxs - mins;
+		m_extents *= 0.5f;
+		m_is_ray = m_extents.length_sqr( ) < 1e-6;
 
-		this->m_start_offset = mins + maxs;
-		this->m_start_offset *= 0.5f;
-		this->m_start = start + this->m_start_offset;
-		this->m_start_offset *= -1.0f;
+		m_start_offset = mins + maxs;
+		m_start_offset *= 0.5f;
+		m_start = start + m_start_offset;
+		m_start_offset *= -1.0f;
 
 	}
 

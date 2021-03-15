@@ -4,12 +4,12 @@ float autowall::get_damage( const vec_3& point ) {
 
 	bulet_data data = { };
 
-	vec_3 position = g_cstrike.m_local_player->get_eye_position( );
+	vec_3 position = g_cstrike.m_local->get_eye_position( );
 
 	data.m_position = position;
 	data.m_direction = ( point - position ).normalized( );
 
-	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local_player->get_active_weapon( ) );
+	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
 
 	if ( !weapon )
 		return -1.0f;
@@ -36,8 +36,7 @@ bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, bulet_data& data ) 
 
 	float trace_length = 0.f;
 
-	auto local = g_cstrike.m_local_player;
-	trace_filter filter( g_cstrike.m_local_player );
+	trace_filter filter( g_cstrike.m_local );
 
 	while ( data.m_penetration_count > 0 && data.m_current_damage >= 1.f ) {
 
@@ -62,7 +61,7 @@ bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, bulet_data& data ) 
 		if ( trace_length > 3000.0f || penetration_modifier < 0.1f )
 			break;
 
-		if ( data.m_trace.m_hitgroup != generic && data.m_trace.m_hitgroup != gear && g_cstrike.m_local_player->is_enemy( data.m_trace.m_hit_entity ) ) {
+		if ( data.m_trace.m_hitgroup != generic && data.m_trace.m_hitgroup != gear && g_cstrike.m_local->is_enemy( data.m_trace.m_hit_entity ) ) {
 
 			scale_damage( data.m_trace.m_hitgroup, data.m_trace.m_hit_entity, weapon_data->m_armor_ratio, data.m_current_damage );
 			return true;
@@ -104,21 +103,7 @@ void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsi
 		const vec_3 center = ( max + min ) * 0.5f;
 		const vec_3 position = center + player->get_origin( );
 
-		vec_3 to = position - start;
-		vec_3 direction = end - start;
-		float length = direction.normalize( );
-
-		const float range_along = direction.dot( to );
-		float range = 0.0f;
-
-		if ( range_along < 0.f )
-			range = -to.length( );
-
-		else if ( range_along > length )
-			range = -( position - end ).length( );
-
-		else
-			range = ( position - ( direction * range_along + start ) ).length( );
+		const float range = player->dist_to_ray( position, start, end );
 
 		if ( range < 0.f || range > 60.f )
 			continue;
@@ -185,6 +170,8 @@ void autowall::scale_damage( int hit_group, cs_player* player, float weapon_armo
 
 bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, bulet_data& data ) {
 
+	g_console.log( "called hbp" );
+
 	static convar* ff_damage_reduction_bullets = g_interfaces.m_convar->find_var( "ff_damage_reduction_bullets" );
 	static convar* ff_damage_bullet_penetration = g_interfaces.m_convar->find_var( "ff_damage_bullet_penetration" );
 
@@ -223,7 +210,7 @@ bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_d
 		damage_lost_modifier = 0.16f;
 		penetration_modifier = 1.f;
 
-	} else if ( enter_material == 'F' && ( g_cstrike.m_local_player->get_team( ) == data.m_trace.m_hit_entity->get_team( ) && reduction_damage == 0.f ) ) {
+	} else if ( enter_material == 'F' && ( g_cstrike.m_local->get_team( ) == data.m_trace.m_hit_entity->get_team( ) && reduction_damage == 0.f ) ) {
 
 		if ( penetrate_damage == 0.f )
 			return false;

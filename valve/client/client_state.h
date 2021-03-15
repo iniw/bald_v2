@@ -39,7 +39,7 @@ struct client_state {
 	int				m_command_ack;
 	int				m_sound_sequence;
 	byte		    pad8[ 0x50 ];
-	q_angle			m_view_point;
+	q_ang			m_view_point;
 	byte		    pad9[ 0xD0 ];
 	event_info*		m_events;
 

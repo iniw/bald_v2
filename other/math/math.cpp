@@ -11,9 +11,9 @@ vec_3 math::vector_transform( vec_3& transform, matrix_3x4& matrix ) {
 
 }
 
-q_angle math::calc_angle( const vec_3& m_start, const vec_3& end ) {
+q_ang math::calc_angle( const vec_3& m_start, const vec_3& end ) {
 
-	q_angle view_point;
+	q_ang view_point;
 
 	vector_angles( end - m_start, view_point );
 
@@ -22,7 +22,7 @@ q_angle math::calc_angle( const vec_3& m_start, const vec_3& end ) {
 	return view_point;
 }
 
-float math::calc_fov( const q_angle& view_point, const q_angle& goal_angle ) {
+float math::calc_fov( const q_ang& view_point, const q_ang& goal_angle ) {
 
 	vec_3 m_start, end;
 
@@ -33,7 +33,7 @@ float math::calc_fov( const q_angle& view_point, const q_angle& goal_angle ) {
 
 }
 
-void math::vector_angles( const vec_3& vector, q_angle& angle ) {
+void math::vector_angles( const vec_3& vector, q_ang& angle ) {
 
 	float pitch, yaw;
 
@@ -62,7 +62,7 @@ void math::vector_angles( const vec_3& vector, q_angle& angle ) {
 
 }
 
-void math::angle_vectors( const q_angle& angle, vec_3* foward, vec_3* right, vec_3* up ) {
+void math::angle_vectors( const q_ang& angle, vec_3* foward, vec_3* right, vec_3* up ) {
 
 	float sp, sy, sr, cp, cy, cr;
 
