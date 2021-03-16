@@ -7,7 +7,8 @@ void __fastcall hooked::draw_model( studio_render_context* ecx, void* edx, void*
 	if ( !g_cstrike.m_local || !info.m_client_entity )
 		return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
 
-	base_entity* entity = reinterpret_cast< base_entity* >( info.m_client_entity - 0x4 );
+	base_entity* entity = info.m_client_entity->get_client_unknown( )->get_base_entity( );
+
 	if ( entity && entity->is_player( ) && g_cstrike.m_local->is_enemy( entity ) ) {
 
 		static auto material = g_interfaces.m_material_system->find_material( XOR( "debug/debugdrawflat" ), XOR( "Model textures" ) );

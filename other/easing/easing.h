@@ -10,10 +10,17 @@ struct easing {
 
 	}
 
+	inline float in_quint( float t ) {
+
+		float t2 = t * t;
+		return t * t2 * t2;
+
+	}
+
 	inline float out_quint( float t ) {
 
 		const float t2 = ( --t ) * t;
-		return 1 + t * t2 * t2;
+		return 1.f + t * t2 * t2;
 
 	}
 

@@ -9,7 +9,7 @@ int __fastcall hooked::list_leaves_in_box( void* ecx, void* edx, const vec_3& mi
 	if ( stack.return_address( ) != g_signatures.m_insert_into_tree.add( 0x5 ) )
 		return o_list_leaves_in_box( ecx, edx, mins, maxs, list, list_max );
 
-	auto info = stack.address_of_return_address( ).add( 0x14 ).get< rendereable_info* >( 1 );
+	auto info = stack.address_of_return_address( ).add( 0x14 ).to< rendereable_info* >( );
 	if ( !info )
 		return o_list_leaves_in_box( ecx, edx, mins, maxs, list, list_max );
 

@@ -12,7 +12,6 @@ bool __fastcall hooked::create_move( cs_player* ecx, void* edx, float input_samp
 
 	q_ang old_view_angles = cmd->m_view_angles;
 
-	g_cstrike.m_local = ecx;
 	g_cstrike.m_cmd = cmd;
 
 	g_movement.bhop( cmd );
@@ -92,6 +91,6 @@ bool __cdecl hooked::glow_effect_spectators( base_player* this_player, base_play
 
 	alpha = 0.3f;
 
-	return false;
+	return true;
 
 }

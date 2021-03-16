@@ -4,9 +4,9 @@ bool hooked::setup( ) {
 
 	g_console.log( XOR( "hooking functions..." ) );
 
-	g_detour.setup( XOR( "C_BasePlayer::CreateMove" ), g_signatures.m_create_move, &create_move );
-
 	g_detour.setup( XOR( "CHLClient::FrameStageNotify" ), g_utils.get_v_func( g_interfaces.m_client, 37 ), &frame_stage_notify );
+
+	g_detour.setup( XOR( "C_BasePlayer::CreateMove" ), g_signatures.m_create_move, &create_move );
 	
 	g_detour.setup( XOR( "CEngineVGui::Paint" ), g_signatures.m_paint, &paint );
 

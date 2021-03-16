@@ -5,6 +5,6 @@
 struct draw_model_info {
 
 	char _pad0[ 0x18 ];
-	size_t m_client_entity;
+	i_client_renderable* m_client_entity;
 
 };
