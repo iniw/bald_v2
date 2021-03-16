@@ -4,23 +4,11 @@
 
 struct address {
 
-	address( ) : m_address{ } {
+	address( ) : m_address{ } { }
 
+	address( size_t address ) : m_address{ address } { }
 
-
-	}
-
-	address( size_t address ) : m_address{ address } {
-
-
-
-	}
-
-	address( void* address ) : m_address{ reinterpret_cast< size_t >( address ) } {
-
-
-
-	}
+	address( void* address ) : m_address{ reinterpret_cast< size_t >( address ) } { }
 
 	inline operator size_t( ) {
 

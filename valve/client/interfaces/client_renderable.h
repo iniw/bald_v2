@@ -56,3 +56,13 @@ struct i_client_renderable {
 	virtual uint8_t                         override_shadow_alpha_modulation( uint8_t alpha ) = 0;
 
 };
+
+struct rendereable_info {
+
+	i_client_renderable* m_rendereable;
+	unsigned char        pad0[ 0x12 ];
+	uint16_t             m_flags;
+	uint16_t             m_flags_2;
+	unsigned char        pad1[ 0x34 ];
+
+};

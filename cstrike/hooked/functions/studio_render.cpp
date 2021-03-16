@@ -8,17 +8,25 @@ void __fastcall hooked::draw_model( studio_render_context* ecx, void* edx, void*
 		return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
 
 	base_entity* entity = reinterpret_cast< base_entity* >( info.m_client_entity - 0x4 );
-	if ( entity
-		&& entity->is_player( )
-		&& entity->get_team( ) != g_cstrike.m_local->get_team( ) ) {
+	if ( entity && entity->is_player( ) && g_cstrike.m_local->is_enemy( entity ) ) {
 
-		float color[ 3 ] = { 255.f, 110.f / 255.f, 144.f / 255.f };
-		ecx->set_colour_modulation( color );
+		static auto material = g_interfaces.m_material_system->find_material( XOR( "debug/debugdrawflat" ), XOR( "Model textures" ) );
 
-		ecx->set_alpha_modulation( 0.8f );
+		ecx->set_color( color( 109, 114, 195 ) );
 
-		return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
+		ecx->set_material( material, material_var_ignorez, true );
 
+		o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
+
+		ecx->set_color( color( 221, 115, 115 ) );
+
+		ecx->set_material( material, material_var_ignorez, false );
+
+		o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
+
+		ecx->set_material( nullptr );
+
+		return;
 	}
 
 	return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );

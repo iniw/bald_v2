@@ -15,7 +15,7 @@ struct aimbot_data {
 
 			m_pos = m_ent->get_hitbox_position( hitbox_head );
 			m_ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), m_pos ).sanitize( );
-			m_fov = g_math.calc_fov( g_interfaces.m_engine->get_view_angles( ), m_ang );
+			m_fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, m_ang );
 			m_dmg = g_autowall.get_damage( m_pos );
 
 		} else {
@@ -39,17 +39,11 @@ struct aimbot_data {
 
 	}
 
-	bool operator!( ) {
-
-		return m_ent == nullptr;
-
-	}
-
 	cs_player* m_ent;
-	vec_3      m_pos;
-	q_ang      m_ang;
-	float      m_fov;
-	float	   m_dmg;
+	vec_3 m_pos;
+	q_ang m_ang;
+	float m_fov;
+	float m_dmg;
 
 };
 
@@ -57,7 +51,7 @@ struct legitbot {
 
 	void run( user_cmd* cmd );
 
-	aimbot_data get_data( user_cmd* cmd );
+	std::unique_ptr< aimbot_data > get_data( user_cmd* cmd );
 
 	void finalize_angle( );
 
@@ -65,7 +59,7 @@ struct legitbot {
 
 	void paint( );
 
-	aimbot_data m_data;
+	std::unique_ptr< aimbot_data > m_data;
 
 };
 

@@ -119,7 +119,7 @@ void visuals::calculate_alpha( ) {
 
 	float delta_time = g_interfaces.m_globals->m_curtime - m_player.pointer->get_simulation_time( );
 
-	float opacity = m_player.is_dormant ? g_easing.out_quint( 0.8f - std::clamp( delta_time, 0.f, 0.8f ) ) : 0.8f;
+	float opacity = m_player.is_dormant ? g_easing.out_quint( 1.f - std::clamp( delta_time, 0.f, 0.8f ) ) : 0.8f;
 
 	m_alpha[ m_player.idx ] = static_cast< int >( 255 * opacity );
 

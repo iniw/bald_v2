@@ -63,6 +63,8 @@ struct cstrike {
 
 	cs_player* m_local;
 
+	user_cmd*  m_cmd;
+
 };
 
 inline cstrike g_cstrike;

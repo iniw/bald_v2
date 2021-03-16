@@ -4,11 +4,7 @@
 
 struct stack : address {
 
-	stack( void* address_of_return_address ) : address( g_utils.get_ebp( address_of_return_address ) ) {
-
-
-
-	}
+	stack( void* address_of_return_address ) : address( g_utils.get_ebp( address_of_return_address ) ) { }
 
 	inline stack& next( ) {
 

@@ -8,12 +8,16 @@ bool interfaces::setup( ) {
 	if ( !m_client )
 		return false;
 
-	m_surface = get< surface* >( VGUIMATSURFACE_DLL, XOR( "VGUI_Surface" ) );
-	if ( !m_surface )
-		return false;
-
 	m_entity_list = get< client_entity_list* >( CLIENT_DLL, XOR( "VClientEntityList" ) );
 	if ( !m_entity_list )
+		return false;
+
+	m_game_movement = get< game_movement* >( CLIENT_DLL, XOR( "GameMovement" ) );
+	if ( !m_game_movement )
+		return false;
+
+	m_prediction = get< prediction* >( CLIENT_DLL, XOR( "VClientPrediction" ) );
+	if ( !m_prediction )
 		return false;
 
 	m_debug_overlay = get< debug_overlay* >( ENGINE_DLL, XOR( "VDebugOverlay" ) );
@@ -24,14 +28,6 @@ bool interfaces::setup( ) {
 	if ( !m_engine )
 		return false;
 
-	m_localize = get< localize* >( LOCALIZE_DLL, XOR( "Localize_" ) );
-	if ( !m_localize )
-		return false;
-
-	m_mdl_cache = get< mdl_cache* >( DATACACHE_DLL, XOR( "MDLCache" ) );
-	if ( !m_mdl_cache )
-		return false;
-
 	m_model_info = get< model_info* >( ENGINE_DLL, XOR( "VModelInfoClient" ) );
 	if ( !m_model_info )
 		return false;
@@ -40,16 +36,24 @@ bool interfaces::setup( ) {
 	if ( !m_trace )
 		return false;
 
+	m_surface = get< surface* >( VGUIMATSURFACE_DLL, XOR( "VGUI_Surface" ) );
+	if ( !m_surface )
+		return false;
+
+	m_material_system = get< material_system* >( MATERIALSYSTEM_DLL, XOR( "VMaterialSystem" ) );
+	if ( !m_material_system )
+		return false;
+
+	m_localize = get< localize* >( LOCALIZE_DLL, XOR( "Localize_" ) );
+	if ( !m_localize )
+		return false;
+
+	m_mdl_cache = get< mdl_cache* >( DATACACHE_DLL, XOR( "MDLCache" ) );
+	if ( !m_mdl_cache )
+		return false;
+
 	m_convar = get< con_var* >( VSTDLIB_DLL, XOR( "VEngineCvar" ) );
 	if ( !m_convar )
-		return false;
-
-	m_game_movement = get< game_movement* >( CLIENT_DLL, XOR( "GameMovement" ) );
-	if ( !m_game_movement )
-		return false;
-
-	m_prediction = get< prediction* >( CLIENT_DLL, XOR( "VClientPrediction" ) );
-	if ( !m_prediction )
 		return false;
 
 	m_physics_props = get< physics_surface_props* >( VPHYSICS_DLL, XOR( "VPhysicsSurfaceProps" ) );

@@ -14,6 +14,7 @@
 #define STUDIORENDER_DLL        XOR( "studiorender.dll" )
 #define GAMEOVERLAYRENDERER_DLL XOR( "gameoverlayrenderer.dll" )
 #define SERVER_DLL				XOR( "server.dll" )
+#define MATERIALSYSTEM_DLL		XOR( "materialsystem.dll" )
 
 struct signatures {
 
@@ -25,7 +26,6 @@ struct signatures {
 	// functions
 
 	address m_create_move                        = g_pattern.find( CLIENT_DLL, XOR( "E8 ? ? ? ? FF 15 ? ? ? ? 84 C0 74 29" ) ).absolute( );
-	address m_paint                              = g_pattern.find( CLIENT_DLL, XOR( "55 8B EC 83 EC 40 53 8B D9 8B 0D ? ? ? ? 89 5D F8" ) );
 	address m_get_view_model_fov                 = g_pattern.find( CLIENT_DLL, XOR( "55 8B EC 8B 0D ? ? ? ? 83 EC 08 57" ) );
 	address m_draw_crosshair                     = g_pattern.find( CLIENT_DLL, XOR( "55 8B EC 83 E4 F0 83 EC 78 56 8B F1 8B 0D ? ? ? ?" ) );
 	address m_update                             = g_pattern.find( CLIENT_DLL, XOR( "E8 ? ? ? ? E9 ? ? ? ? 83 BE ? ? ? ? ?" ) ).absolute( );
@@ -64,8 +64,11 @@ struct signatures {
 	address m_prediction_entity					 = g_pattern.find( CLIENT_DLL, XOR( "89 35 ? ? ? ? F3 0F 10 48 20" ) );
 	address m_glow_effect_spectator				 = g_pattern.find( CLIENT_DLL, XOR( "55 8B EC 83 EC 14 53 8B 5D 0C 56 57 85 DB 74" ) );
 	address m_move_helper					     = g_pattern.find( CLIENT_DLL, XOR( "8B 0D ? ? ? ? 8B 46 08 68" ) );
-	
-	address m_client_state = g_pattern.find( ENGINE_DLL, XOR( "A1 ? ? ? ? 8B 88 ? ? ? ? 85 C9 75 07" ) );
+	address m_insert_into_tree					 = g_pattern.find( CLIENT_DLL, XOR( "56 52 FF 50 18" ) );
+
+	address m_client_state       = g_pattern.find( ENGINE_DLL, XOR( "A1 ? ? ? ? 8B 80 ? ? ? ? C3" ) );
+	address m_paint              = g_pattern.find( ENGINE_DLL, XOR( "55 8B EC 83 EC 40 53 8B D9 8B 0D ? ? ? ? 89 5D F8" ) );
+	address m_list_leaves_in_box = g_pattern.find( ENGINE_DLL, XOR( "55 8B EC 83 EC 18 8B 4D 0C" ) );
 
 	address m_start_drawing  = g_pattern.find( VGUIMATSURFACE_DLL, XOR( "55 8B EC 83 E4 C0 83 EC 38" ) );
 	address m_finish_drawing = g_pattern.find( VGUIMATSURFACE_DLL, XOR( "8B 0D ? ? ? ? 56 C6 05 ? ? ? ? ?" ) );

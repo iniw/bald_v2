@@ -28,10 +28,10 @@ struct utils {
 
 	}
 
-	template< typename t = address, typename ... args_t > constexpr inline t call_v_func( address pointer, size_t index, args_t... args_list ) {
+	template< typename t, typename ... args_t > constexpr inline t call_v_func( address pointer, size_t idx, args_t... args_list ) {
 
 		using fn = t( __thiscall* )( void*, decltype( args_list )... );
-		return pointer.to< fn* >( )[ index ]( pointer, args_list... );
+		return pointer.to< fn* >( )[ idx ]( pointer, args_list... );
 
 	}
 

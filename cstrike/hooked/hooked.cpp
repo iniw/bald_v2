@@ -34,6 +34,8 @@ bool hooked::setup( ) {
 
 	g_detour.setup( XOR( "C_CSPlayer::GlowEffectSpectator" ), g_signatures.m_glow_effect_spectator, &glow_effect_spectators );
 
+	g_detour.setup( XOR( "CEngineBSPTree::ListLeavesInBox" ), g_signatures.m_list_leaves_in_box, &list_leaves_in_box );
+
 	g_console.log( XOR( "hooked functions" ) );
 
 	return true;

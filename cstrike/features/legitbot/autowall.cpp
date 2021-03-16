@@ -2,9 +2,7 @@
 
 float autowall::get_damage( const vec_3& point ) {
 
-	vec_3 pos = g_cstrike.m_local->get_eye_position( );
-
-	autowall_data data( pos, point );
+	awall_data data( g_cstrike.m_local->get_eye_position( ), point );
 
 	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
 	if ( !weapon )
@@ -17,11 +15,11 @@ float autowall::get_damage( const vec_3& point ) {
 
 }
 
-autowall_data* autowall::get_data( const vec_3& point ) {
+awall_data* autowall::get_data( const vec_3& point ) {
 
 	vec_3 pos = g_cstrike.m_local->get_eye_position( );
 
-	autowall_data data( pos, point );
+	static awall_data data( pos, point );
 
 	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
 	if ( !weapon )
@@ -34,7 +32,7 @@ autowall_data* autowall::get_data( const vec_3& point ) {
 
 }
 
-bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, autowall_data& data ) {
+bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, awall_data& data ) {
 
 	cs_weapon_info* weapon_data = weapon->get_cs_wpn_data( );
 	if ( !weapon_data )
@@ -73,7 +71,7 @@ bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, autowall_data& data
 		if ( trace_length > 3000.f || penetration_modifier < 0.1f )
 			break;
 
-		if ( data.m_trace.m_hitgroup != hitgroup_generic && data.m_trace.m_hitgroup != hitgroup_gear && g_cstrike.m_local->is_enemy( data.m_trace.m_hit_entity ) ) {
+		if ( data.m_trace.m_hitgroup > hitgroup_generic && data.m_trace.m_hitgroup < hitgroup_gear && g_cstrike.m_local->is_enemy( data.m_trace.m_hit_entity ) ) {
 
 			scale_damage( data.m_trace.m_hitgroup, data.m_trace.m_hit_entity, weapon_data->m_armor_ratio, data.m_dmg );
 			return true;
@@ -93,7 +91,7 @@ void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsi
 	trace trace;
 	float smallest_fraction = ray_trace->m_fraction;
 
-	ray ray( start, end );
+	const ray trace_ray( start, end );
 
 	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
 
@@ -109,7 +107,7 @@ void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsi
 		if ( range < 0.f || range > 60.f )
 			continue;
 
-		g_interfaces.m_trace->clip_ray_to_entity( ray, mask, player, &trace );
+		g_interfaces.m_trace->clip_ray_to_entity( trace_ray, mask, player, &trace );
 
 		if ( trace.m_fraction < smallest_fraction ) {
 
@@ -117,6 +115,7 @@ void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsi
 			smallest_fraction = trace.m_fraction;
 
 		}
+
 	}
 
 }
@@ -169,7 +168,7 @@ void autowall::scale_damage( int hitgroup, cs_player* player, float weapon_armor
 
 }
 
-bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, autowall_data& data ) {
+bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, awall_data& data ) {
 
 	static convar* ff_damage_reduction_bullets = g_interfaces.m_convar->find_var( XOR( "ff_damage_reduction_bullets" ) );
 	static convar* ff_damage_bullet_penetration = g_interfaces.m_convar->find_var( XOR( "ff_damage_bullet_penetration" ) );

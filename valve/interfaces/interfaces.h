@@ -16,6 +16,7 @@
 #include "../data_cache/mdl_cache.h"
 #include "../client/client_state.h"
 #include "../physics/physics_surface_props.h"
+#include "../material_system/material_system.h"
 
 #include "../../other/console/console.h"
 
@@ -39,6 +40,7 @@ struct interfaces {
 	prediction*			   m_prediction;
 	client_state*		   m_client_state;
 	physics_surface_props* m_physics_props;
+	material_system*       m_material_system;
 
 private:
 

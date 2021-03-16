@@ -7,6 +7,7 @@
 #include "detour/detour.h"
 #include "engine/engine.h"
 #include "interfaces/interfaces.h"
+#include "material_system/material_system.h"
 #include "mathlib/mathlib.h"
 #include "netvars/netvars.h"
 #include "shared/shared.h"

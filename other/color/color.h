@@ -2,10 +2,10 @@
 
 struct color {
 
-	color( ) : r{ 0 }, g{ 0 }, b{ 0 }, a{ 255 } { };
+	color( ) : r( 0 ), g( 0 ), b( 0 ), a( 0 ) { }
 
-	color( int r, int g, int b, int a = 255 ) : r{ r }, g{ g }, b{ b }, a{ a } { };
+	color( unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255 ) : r( r ), g( g ), b( b ), a( a ) { }
 
-	int r, g, b, a;
+	unsigned char r, g, b, a;
 
 };

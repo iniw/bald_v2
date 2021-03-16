@@ -239,7 +239,7 @@ struct base_player : base_combat_character {
 
 	}
 
-	inline auto is_enemy( base_player* player ) {
+	inline auto is_enemy( base_entity* player ) {
 
 		int this_team = get_team( );
 		int player_team = player->get_team( );

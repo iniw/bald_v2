@@ -27,6 +27,7 @@ private:
 	static void __fastcall   cam_to_third_person( client_input* ecx, void* edx );
 	static void __fastcall   reload_schemes( void* ecx, void* edx );
 	static void __fastcall   draw_model( studio_render_context* ecx, void* edx, void* results, const draw_model_info& info, void* bone_to_world, float* flex_weights, float* flex_delayed_rates, const vec_3& origin, int flags );
+	static int __fastcall	 list_leaves_in_box( void* ecx, void* edx, const vec_3& mins, const vec_3& maxs, unsigned short* list, int list_max );
 	static bool __cdecl      glow_effect_spectators( base_player* this_player, base_player* local_player, glow_styles& glow_style, vec_3& color, float& alpha_start, float& alpha, float& time_start, float& time_target, bool& animate );
 
 };
