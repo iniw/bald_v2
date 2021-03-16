@@ -16,13 +16,13 @@ struct stack : address {
 
 	}
 
-	template< typename t = address > inline t local( std::size_t offset ) {
+	template< typename t = address > inline t local( size_t offset ) {
 
 		return ( t )( m_address - offset );
 
 	}
 
-	template< typename t = address > inline t argument( std::size_t offset ) {
+	template< typename t = address > inline t argument( size_t offset ) {
 
 		return ( t )( m_address + offset );
 
@@ -33,7 +33,7 @@ struct stack : address {
 		if ( !m_address )
 			return address( );
 
-		return *reinterpret_cast< std::size_t* >( m_address + sizeof( std::size_t ) );
+		return *reinterpret_cast< size_t* >( m_address + sizeof( size_t ) );
 
 	}
 
@@ -42,7 +42,7 @@ struct stack : address {
 		if ( !m_address )
 			return address( );
 
-		return m_address + sizeof( std::size_t );
+		return m_address + sizeof( size_t );
 
 	}
 

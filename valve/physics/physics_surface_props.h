@@ -81,9 +81,9 @@ struct surface_data {
 
 struct physics_surface_props {
 
-	inline auto get_surface_data( int surface_data_index ) {
+	inline auto get_surface_data( int idx ) {
 
-		return g_utils.call_v_func< surface_data* >( this, 5, surface_data_index );
+		return g_utils.call_v_func< surface_data* >( this, 5, idx );
 
 	}
 };

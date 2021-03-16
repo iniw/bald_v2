@@ -8,9 +8,9 @@ struct base_animating : base_player {
 
 	inline auto& get_sequence( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAnimating->m_nSequence" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAnimating->m_nSequence" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 

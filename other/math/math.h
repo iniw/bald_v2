@@ -25,13 +25,13 @@ struct math {
 
 	__forceinline float rad_to_deg( const float rad ) const {
 
-		return rad * ( 180.0f / PI );
+		return rad * ( 180.f / PI );
 
 	}
 
 	__forceinline float deg_to_rad( const float deg ) const {
 
-		return deg * ( PI / 180.0f );
+		return deg * ( PI / 180.f );
 
 	}
 

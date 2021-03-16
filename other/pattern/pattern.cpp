@@ -5,9 +5,9 @@
 
 address pattern::find( std::string_view module_name, std::string_view pattern ) {
 
-	static auto pattern_to_byte = [ ]( const char* pattern ) -> std::vector< std::size_t > {
+	static auto pattern_to_byte = [ ]( const char* pattern ) -> std::vector< size_t > {
 
-		std::vector< std::size_t > bytes;
+		std::vector< size_t > bytes;
 
 		auto m_start = const_cast< char* >( pattern );
 		auto end = const_cast< char* >( pattern ) + std::strlen( pattern );

@@ -193,14 +193,14 @@ void md5::final( unsigned char digest[ md5_digest_length ], md5_context* context
 unsigned int md5::pseudo_random( unsigned int seed ) {
 
 	md5_context ctx;
-	unsigned char digest[ md5_digest_length ]; // The MD5 Hash
+	unsigned char digest[ md5_digest_length ];
 	memset( &ctx, 0, sizeof( ctx ) );
 
 	init( &ctx );
 	update( &ctx, ( unsigned char* )&seed, sizeof( seed ) );
 	final( digest, &ctx );
 
-	return *( unsigned int* )( digest + 6 );	// use 4 middle bytes for random value
+	return *( unsigned int* )( digest + 6 );
 
 }
 

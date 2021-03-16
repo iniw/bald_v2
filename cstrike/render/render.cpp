@@ -2,9 +2,9 @@
 
 bool render::setup( ) {
 
-	create_font( m_fonts.primary, "Verdana", 12, 500, fontflag_dropshadow | fontflag_antialias );
+	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
 
-	create_font( m_fonts.secondary, "Small Fonts", 9, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "Small Fonts" ), 9, 500, fontflag_outline );
 
 	return true;
 

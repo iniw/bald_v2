@@ -2,7 +2,7 @@
 
 #include "dt_recv.h"
 
-enum class class_index {
+enum class class_id {
 
 	ai_base_npc = 0,
 	ak47,
@@ -291,7 +291,7 @@ enum class class_index {
 
 };
 
-using create_client_class = void* ( __cdecl* )( int index, int serial );
+using create_client_class = void* ( __cdecl* )( int idx, int serial );
 using create_event = void* ( __cdecl* )( );
 
 struct client_class {
@@ -301,6 +301,6 @@ struct client_class {
 	char*               m_network_name;
 	recv_table*         m_recv_table;
 	client_class*       m_next;
-	class_index         m_class_id;
+	class_id         m_class_id;
 
 };

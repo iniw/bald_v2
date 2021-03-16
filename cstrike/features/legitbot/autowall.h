@@ -2,15 +2,21 @@
 
 #include "../../cstrike.h"
 
-struct bulet_data {
+struct autowall_data {
 
-	bulet_data( ) : m_current_damage( 0.f ), m_penetration_count( 0 ) { }
+	autowall_data( ) : m_dmg( 0.f ), m_pen_count( 0 ) { }
 
-	vec_3 m_position;
-	vec_3 m_direction;
+	autowall_data( const vec_3& pos, const vec_3& point ) : m_dmg( 0.f ), m_pen_count( 0 ), m_pos( pos ) {
+
+		m_dir = ( point - m_pos ).normalized( );
+
+	}
+
+	vec_3 m_pos;
+	vec_3 m_dir;
 	trace m_trace;
-	float m_current_damage;
-	int	  m_penetration_count;
+	float m_dmg;
+	int	  m_pen_count;
 
 };
 
@@ -18,15 +24,17 @@ struct autowall {
 
 	float get_damage( const vec_3& point );
 
+	autowall_data* get_data( const vec_3& point );
+
 private:
 
-	bool simulate_fire_bullet( weapon_cs_base* weapon, bulet_data& data );
+	bool simulate_fire_bullet( weapon_cs_base* weapon, autowall_data& data );
 
-	void clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, base_trace_filter* filter, trace* ray_trace );
+	void clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, trace_filter* filter, trace* ray_trace );
 
-	void scale_damage( int hit_group, cs_player* player, float weapon_armor_ratio, float& damage );
+	void scale_damage( int hitgroup, cs_player* player, float weapon_armor_ratio, float& damage );
 
-	bool handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, bulet_data& data );
+	bool handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, autowall_data& data );
 
 	bool trace_to_exit( trace& enter_trace, trace& exit_trace, vec_3 position, vec_3 direction );
 

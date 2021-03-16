@@ -12,11 +12,11 @@ struct netvars {
 
 	bool setup( );
 
-	void store( std::string_view name, recv_table* table, std::size_t offset = 0 );
+	void store( std::string_view name, recv_table* table, size_t offset = 0 );
 
 	size_t find_in_datamap( data_map* map, const size_t hash );
 
-	std::unordered_map< std::size_t, std::size_t > m_offsets;
+	std::unordered_map< size_t, size_t > m_offsets;
 
 private:
 

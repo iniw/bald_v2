@@ -27,6 +27,12 @@ struct q_ang {
 
 	}
 
+	inline void init( float pitch = 0.f, float yaw = 0.f, float roll = 0.f ) {
+
+		this->pitch = pitch; this->yaw = yaw; this->roll = roll;
+
+	}
+
 	inline float length( ) const {
 
 		return std::sqrtf( std::powf( pitch, 2 ) + std::powf( yaw, 2 ) + std::powf( roll, 2 ) );

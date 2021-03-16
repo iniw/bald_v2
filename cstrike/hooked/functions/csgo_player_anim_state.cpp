@@ -90,7 +90,7 @@ void __fastcall hooked::modify_eye_position( csgo_player_anim_state* ecx, void* 
 	if ( !ecx->m_landing || ecx->m_anim_duck_amount == 0.f || !player->get_ground_entity( ) )
 		return;
 
-	int head_bone = player->lookup_bone( "head_0" );
+	int head_bone = player->lookup_bone( XOR( "head_0" ) );
 	if ( !head_bone )
 		return;
 
@@ -309,7 +309,7 @@ void __fastcall hooked::set_up_velocity( csgo_player_anim_state* ecx, void* edx 
 
 void __fastcall hooked::set_up_movement( csgo_player_anim_state* ecx, void* edx ) {
 
-	static auto o_set_up_movement = g_detour.get< decltype( &set_up_movement ) >( "CCSGOPlayerAnimState::SetUpMovement" );
+	static auto o_set_up_movement = g_detour.get< decltype( &set_up_movement ) >( XOR( "CCSGOPlayerAnimState::SetUpMovement" ) );
 
 	// to do
 

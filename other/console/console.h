@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <string>
 
+#include "../xor/xor.h"
+
 struct console {
 
 	bool setup( std::string_view name );

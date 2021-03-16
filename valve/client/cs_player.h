@@ -2,13 +2,13 @@
 
 #include "base_animating.h"
 
-enum class glow_styles {
+enum glow_styles {
 
-	default_glow = 0,
-	rimglow_3d,
-	edge_hightlight,
-	edge_hightlight_pulse,
-	count,
+	glow_style_default = 0,
+	glow_style_rim_3d,
+	glow_style_edge_hightlight,
+	glow_style_edge_hightlight_pulse,
+	glow_style_count,
 
 };
 
@@ -34,81 +34,81 @@ struct cs_player : base_animating {
 
 	inline auto& is_scoped( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_bIsScoped" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bIsScoped" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& is_player_ghost( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_bIsPlayerGhost" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bIsPlayerGhost" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_third_person_recoil( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_flThirdpersonRecoil" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flThirdpersonRecoil" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_duck_amount( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_flDuckAmount" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flDuckAmount" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_playback_rate( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_flPlaybackRate" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flPlaybackRate" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_cycle( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_flCycle" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flCycle" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_lower_body_yaw_target( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_flLowerBodyYawTarget" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flLowerBodyYawTarget" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& has_heavy_armor( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_bHasHeavyArmor" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bHasHeavyArmor" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_armor( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_ArmorValue" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_ArmorValue" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& has_helmet( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_CSPlayer->m_bHasHelmet" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bHasHelmet" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
@@ -124,8 +124,8 @@ struct cs_player : base_animating {
 
 	bool can_shoot( );
 
-	vec_3 get_hitbox_position( hitbox hitbox );
+	vec_3 get_hitbox_position( int hitbox );
 
-	float dist_to_ray( const vec_3& pos, const vec_3& start, const vec_3& end );
+	float dist_to_ray( const vec_3& start, const vec_3& end );
 
 };

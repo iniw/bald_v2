@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #define md5_digest_length 16  
-#define md5_bit_length ( md5_digest_length * sizeof(unsigned char) )
+#define md5_bit_length ( md5_digest_length * sizeof( unsigned char ) )
 
 typedef struct {
 

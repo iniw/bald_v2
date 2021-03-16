@@ -5,33 +5,25 @@
 
 struct aimbot_data {
 
-	aimbot_data( ) {
-
-		ent = nullptr;
-		pos = { 0.f, 0.f, 0.f };
-		ang = { 0.f, 0.f, 0.f };
-		fov = 0.f;
-		dmg = -1.f;
-
-	};
+	aimbot_data( ) : m_ent( nullptr ), m_fov ( 0.f ), m_dmg( -1.f ) { };
 
 	aimbot_data( cs_player* player ) {
 
-		ent = player;
+		m_ent = player;
 
-		if ( ent ) {
+		if ( m_ent ) {
 
-			pos = ent->get_hitbox_position( hitbox::head );
-			ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), pos ).sanitize( );
-			fov = g_math.calc_fov( g_interfaces.m_engine->get_view_angles( ), ang );
-			dmg = g_autowall.get_damage( pos );
+			m_pos = m_ent->get_hitbox_position( hitbox_head );
+			m_ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), m_pos ).sanitize( );
+			m_fov = g_math.calc_fov( g_interfaces.m_engine->get_view_angles( ), m_ang );
+			m_dmg = g_autowall.get_damage( m_pos );
 
 		} else {
 
-			pos = { 0.f, 0.f, 0.f };
-			ang = { 0.f, 0.f, 0.f };
-			fov = 0.f;
-			dmg = -1.f;
+			m_pos.init( );
+			m_ang.init( );
+			m_fov = 0.f;
+			m_dmg = -1.f;
 
 		}
 
@@ -39,25 +31,25 @@ struct aimbot_data {
 
 	void clear( ) {
 
-		ent = nullptr;
-		pos = { 0.f, 0.f, 0.f };
-		ang = { 0.f, 0.f, 0.f };
-		fov = 0.f;
-		dmg = -1.f;
+		m_ent = nullptr;
+		m_pos = { 0.f, 0.f, 0.f };
+		m_ang = { 0.f, 0.f, 0.f };
+		m_fov = 0.f;
+		m_dmg = -1.f;
 
 	}
 
 	bool operator!( ) {
 
-		return ent == nullptr;
+		return m_ent == nullptr;
 
 	}
 
-	cs_player* ent;
-	vec_3      pos;
-	q_ang    ang;
-	float      fov;
-	float	   dmg;
+	cs_player* m_ent;
+	vec_3      m_pos;
+	q_ang      m_ang;
+	float      m_fov;
+	float	   m_dmg;
 
 };
 

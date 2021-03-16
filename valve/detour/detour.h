@@ -28,7 +28,7 @@ private:
 
 	};
 
-	std::unordered_map< std::size_t, m_info > m_detours;
+	std::unordered_map< size_t, m_info > m_detours;
 
 };
 

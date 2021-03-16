@@ -121,5 +121,7 @@
     <ClInclude Include="valve\client\breakable_surface.h" />
     <ClInclude Include="valve\client\base_attributable_item.h" />
     <ClInclude Include="other\math\q_ang.h" />
+    <ClInclude Include="other\xor\xor.h" />
+    <ClInclude Include="valve\tier1\interface.h" />
   </ItemGroup>
 </Project>

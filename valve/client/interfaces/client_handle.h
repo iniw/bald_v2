@@ -135,27 +135,27 @@ protected:
 };
 
 template< class t >
-struct handle : public base_handle {
+struct client_handle : public base_handle {
 
-	handle( ) { };
-	handle( int entry, int serial_number ) {
+	client_handle( ) { };
+	client_handle( int entry, int serial_number ) {
 
 		init( entry, serial_number );
 
 	}
 
-	handle( const base_handle& handle ) : base_handle( handle ) { };
+	client_handle( const base_handle& handle ) : base_handle( handle ) { };
 
-	handle( t* val ) {
+	client_handle( t* val ) {
 
 		term( );
 		set( obj );
 
 	}
 
-	static handle< t > from_index( int index ) {
+	static client_handle< t > from_index( int index ) {
 
-		handle< t > ret;
+		client_handle< t > ret;
 		ret.idx = index;
 		return ret;
 

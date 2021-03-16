@@ -12,9 +12,9 @@ bool netvars::setup( ) {
 	if ( !list )
 		return false;
 
-	g_console.log( "dumping netvars..." );
+	g_console.log( XOR( "dumping netvars..." ) );
 
-	m_file.open( "netvars.txt", std::ios::out | std::ios::trunc );
+	m_file.open( XOR( "netvars.txt" ), std::ios::out | std::ios::trunc );
 
 	while ( list != nullptr ) {
 
@@ -26,13 +26,13 @@ bool netvars::setup( ) {
 
 	m_file.close( );
 
-	g_console.log( "dumped netvars" );
+	g_console.log( XOR( "dumped netvars" ) );
 
 	return true;
 
 }
 
-void netvars::store( std::string_view name, recv_table* table, std::size_t offset ) {
+void netvars::store( std::string_view name, recv_table* table, size_t offset ) {
 
 	for ( auto i = 0; i < table->m_props; ++i ) {
 
@@ -45,13 +45,13 @@ void netvars::store( std::string_view name, recv_table* table, std::size_t offse
 		auto variable = prop->m_var_name;
 
 		std::string netvar = std::string( name.data( ) ) + "->" + variable;
-		std::size_t hash = g_hash.get( netvar.c_str( ) );
+		size_t hash = g_hash.get( netvar.c_str( ) );
 
 		if ( !m_offsets[ hash ] ) {
 
 			m_offsets[ hash ] = prop->m_offset + offset;
 
-			m_file << netvar << " = 0x" << std::hex << m_offsets[ hash ] << std::endl;
+			m_file << netvar << XOR( " = 0x" ) << std::hex << m_offsets[ hash ] << std::endl;
 
 		}
 

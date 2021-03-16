@@ -20,7 +20,7 @@ struct input {
 
 	void think( UINT message, WPARAM w_param, LPARAM l_param );
 
-	inline bool is_key_toggled( std::size_t code ) {
+	inline bool is_key_toggled( size_t code ) {
 
 		if ( m_key_states[ code ].m_state != toggled )
 			return false;
@@ -29,7 +29,7 @@ struct input {
 
 	}
 
-	inline bool is_key_toggled( std::size_t code, bool& item ) {
+	inline bool is_key_toggled( size_t code, bool& item ) {
 
 		if ( is_key_toggled( code ) )
 			item = !item;
@@ -38,7 +38,7 @@ struct input {
 
 	}
 
-	inline bool is_key_down( std::size_t code ) {
+	inline bool is_key_down( size_t code ) {
 
 		return m_key_states[ code ].m_state == down;
 

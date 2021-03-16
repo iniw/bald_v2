@@ -2,73 +2,81 @@
 
 #include "../other/math/math.h"
 
-#pragma region macros
+#pragma region definitions
 
-#define MAXSTUDIOBONECTRLS			4
-#define MAXSTUDIOPOSEPARAM			24
-#define MAXSTUDIOSKINS				32	
-#define MAXSTUDIOFLEXCTRL			96	
-#define MAXSTUDIOBONES				256	
-#define MAXSTUDIOANIMBLOCKS			256
-#define MAXSTUDIOFLEXDESC			1024
+enum max_studio_defs {
 
-#define BONE_USED_MASK				0x0007FF00
-#define BONE_USED_BY_ANYTHING		0x0007FF00
-#define BONE_USED_BY_HITBOX			0x00000100
-#define BONE_USED_BY_ATTACHMENT		0x00000200
-#define BONE_USED_BY_VERTEX_MASK	0x0003FC00
-#define BONE_USED_BY_VERTEX_LOD0	0x00000400
-#define BONE_USED_BY_VERTEX_LOD1	0x00000800
-#define BONE_USED_BY_VERTEX_LOD2	0x00001000
-#define BONE_USED_BY_VERTEX_LOD3	0x00002000
-#define BONE_USED_BY_VERTEX_LOD4	0x00004000
-#define BONE_USED_BY_VERTEX_LOD5	0x00008000
-#define BONE_USED_BY_VERTEX_LOD6	0x00010000
-#define BONE_USED_BY_VERTEX_LOD7	0x00020000
-#define BONE_USED_BY_BONE_MERGE		0x00040000
-#define BONE_ALWAYS_SETUP			0x00080000
+	MAXSTUDIOBONECTRLS	= 4,
+	MAXSTUDIOPOSEPARAM	= 24,
+	MAXSTUDIOSKINS		= 32,	
+	MAXSTUDIOFLEXCTRL	= 96,	
+	MAXSTUDIOBONES		= 256,	
+	MAXSTUDIOANIMBLOCKS	= 256,
+	MAXSTUDIOFLEXDESC	= 1024
 
-#pragma endregion
+};
 
-enum class hitbox {
+enum setup_bones_masks {
 
-	invalid = -1,
-	head,
-	neck,
-	pelvis,
-	stomach,
-	thorax,
-	chest,
-	upper_chest,
-	right_thigh,
-	left_thigh,
-	right_calf,
-	left_calf,
-	right_foot,
-	left_foot,
-	right_hand,
-	left_hand,
-	right_upper_arm,
-	right_forearm,
-	left_upper_arm,
-	left_forearm,
-	max
+	BONE_USED_MASK				= 0x0007FF00,
+	BONE_USED_BY_ANYTHING		= 0x0007FF00,
+	BONE_USED_BY_HITBOX			= 0x00000100,
+	BONE_USED_BY_ATTACHMENT		= 0x00000200,
+	BONE_USED_BY_VERTEX_MASK	= 0x0003FC00,
+	BONE_USED_BY_VERTEX_LOD0	= 0x00000400,
+	BONE_USED_BY_VERTEX_LOD1	= 0x00000800,
+	BONE_USED_BY_VERTEX_LOD2	= 0x00001000,
+	BONE_USED_BY_VERTEX_LOD3	= 0x00002000,
+	BONE_USED_BY_VERTEX_LOD4	= 0x00004000,
+	BONE_USED_BY_VERTEX_LOD5	= 0x00008000,
+	BONE_USED_BY_VERTEX_LOD6	= 0x00010000,
+	BONE_USED_BY_VERTEX_LOD7	= 0x00020000,
+	BONE_USED_BY_BONE_MERGE		= 0x00040000,
+	BONE_ALWAYS_SETUP			= 0x00080000
+
+};
+
+enum hitbox {
+
+	hitbox_invalid = -1,
+	hitbox_head,
+	hitbox_neck,
+	hitbox_pelvis,
+	hitbox_stomach,
+	hitbox_thorax,
+	hitbox_chest,
+	hitbox_upper_chest,
+	hitbox_right_thigh,
+	hitbox_left_thigh,
+	hitbox_right_calf,
+	hitbox_left_calf,
+	hitbox_right_foot,
+	hitbox_left_foot,
+	hitbox_right_hand,
+	hitbox_left_hand,
+	hitbox_right_upper_arm,
+	hitbox_right_forearm,
+	hitbox_left_upper_arm,
+	hitbox_left_forearm,
+	hitbox_max
 
 };
 
 enum hitgroup {
 
-	generic = 0,
-	head,
-	chest,
-	stomach,
-	leftarm,
-	rightarm,
-	leftleg,
-	rightleg,
-	gear = 10
-
+	hitgroup_generic = 0,
+	hitgroup_head,
+	hitgroup_chest,
+	hitgroup_stomach,
+	hitgroup_leftarm,
+	hitgroup_rightarm,
+	hitgroup_leftleg,
+	hitgroup_rightleg,
+	hitgroup_gear = 10
+	
 };
+
+#pragma endregion
 
 struct model;
 struct studio_hdr;
@@ -616,6 +624,7 @@ struct studio_hdr {
 	uint8_t m_directional_light_dot;
 	uint8_t m_root_lod;
 	uint8_t m_allowed_root_lo_ds;
+
 	byte pad0[ 0x5 ];
 
 	int	m_flex_controller_ui;

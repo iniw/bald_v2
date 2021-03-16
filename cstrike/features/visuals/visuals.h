@@ -32,7 +32,7 @@ private:
 
 		cs_player* pointer;
 		
-		int index;
+		int idx;
 
 		bool is_dormant;
 

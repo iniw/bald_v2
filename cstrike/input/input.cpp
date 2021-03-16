@@ -21,7 +21,7 @@ void input::unload( ) {
 
 void input::think( UINT message, WPARAM w_param, LPARAM l_param ) {
 
-	std::size_t key;
+	size_t key;
 	key_state state;
 
 	switch ( message ) {

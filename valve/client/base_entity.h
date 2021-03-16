@@ -34,33 +34,49 @@ struct base_entity : public i_client_entity {
 
 	inline auto& get_origin( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseEntity->m_vecOrigin" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_vecOrigin" ) ) ];
 
-		return *reinterpret_cast< vec_3* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< vec_3* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_collision_group( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseEntity->m_CollisionGroup" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_CollisionGroup" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_simulation_time( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseEntity->m_flSimulationTime" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_flSimulationTime" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto& get_mins( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_vecMins" ) ) ];
+
+		return *reinterpret_cast< vec_3* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto& get_maxs( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_vecMaxs" ) ) ];
+
+		return *reinterpret_cast< vec_3* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_team( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseEntity->m_iTeamNum" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_iTeamNum" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
@@ -74,19 +90,19 @@ struct base_entity : public i_client_entity {
 
 	inline auto& get_abs_velocity( ) {
 
-		auto offset = g_signatures.m_abs_velocity.add( 0x4 ).to< std::size_t >( );
+		auto offset = g_signatures.m_abs_velocity.add( 0x4 ).to< size_t >( );
 
 		calc_absolute_velocity( );
 
-		return *reinterpret_cast< vec_3* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< vec_3* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto get_anim_overlay( int i ) {
 
-		auto offset = g_signatures.m_anim_overlay.add( 0x2 ).to< std::size_t >( );
+		auto offset = g_signatures.m_anim_overlay.add( 0x2 ).to< size_t >( );
 
-		return reinterpret_cast< animation_layer* >( i * 0x38 + *reinterpret_cast< std::size_t* >( reinterpret_cast< std::size_t >( this ) + offset ) );
+		return reinterpret_cast< animation_layer* >( i * 0x38 + *reinterpret_cast< size_t* >( reinterpret_cast< size_t >( this ) + offset ) );
 
 	}
 

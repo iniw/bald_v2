@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xor/xor.h"
 #include "color/color.h"
 #include "console/console.h"
 #include "easing/easing.h"

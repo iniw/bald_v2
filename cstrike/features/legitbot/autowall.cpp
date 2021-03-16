@@ -2,68 +2,80 @@
 
 float autowall::get_damage( const vec_3& point ) {
 
-	bulet_data data = { };
+	vec_3 pos = g_cstrike.m_local->get_eye_position( );
 
-	vec_3 position = g_cstrike.m_local->get_eye_position( );
-
-	data.m_position = position;
-	data.m_direction = ( point - position ).normalized( );
+	autowall_data data( pos, point );
 
 	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
-
 	if ( !weapon )
-		return -1.0f;
+		return -1.f;
 
 	if ( !simulate_fire_bullet( weapon, data ) )
-		return -1.0f;
+		return -1.f;
 
-	return data.m_current_damage;
+	return data.m_dmg;
 
 }
 
-bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, bulet_data& data ) {
+autowall_data* autowall::get_data( const vec_3& point ) {
+
+	vec_3 pos = g_cstrike.m_local->get_eye_position( );
+
+	autowall_data data( pos, point );
+
+	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
+	if ( !weapon )
+		return nullptr;
+
+	if ( !simulate_fire_bullet( weapon, data ) )
+		return nullptr;
+
+	return &data;
+
+}
+
+bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, autowall_data& data ) {
 
 	cs_weapon_info* weapon_data = weapon->get_cs_wpn_data( );
-
 	if ( !weapon_data )
 		return false;
 
 	float max_range = weapon_data->m_range;
 
-	data.m_penetration_count = 4;
+	data.m_pen_count = 4;
 
-	data.m_current_damage = static_cast< float >( weapon_data->m_damage );
+	data.m_dmg = static_cast< float >( weapon_data->m_damage );
 
 	float trace_length = 0.f;
 
 	trace_filter filter( g_cstrike.m_local );
 
-	while ( data.m_penetration_count > 0 && data.m_current_damage >= 1.f ) {
+	while ( data.m_pen_count > 0 && data.m_dmg >= 1.f ) {
 
 		max_range -= trace_length;
 
-		const vec_3 pos_end = data.m_position + data.m_direction * max_range;
+		const vec_3 pos_end = data.m_pos + data.m_dir * max_range;
 
-		ray ray( data.m_position, pos_end );
+		ray ray( data.m_pos, pos_end );
 		g_interfaces.m_trace->trace_ray( ray, MASK_SHOT_HULL | CONTENTS_HITBOX, &filter, &data.m_trace );
 
-		clip_trace_to_players( data.m_position, pos_end + data.m_direction * 40.f, MASK_SHOT_HULL | CONTENTS_HITBOX, &filter, &data.m_trace );
+		clip_trace_to_players( data.m_pos, pos_end + data.m_dir * 40.f, MASK_SHOT_HULL | CONTENTS_HITBOX, &filter, &data.m_trace );
+
+		if ( data.m_trace.m_fraction == 1.f )
+			break;
+
+		trace_length += data.m_trace.m_fraction * max_range;
+		data.m_dmg *= std::powf( weapon_data->m_range_modifier, trace_length / 500.f );
 
 		surface_data* surface_data = g_interfaces.m_physics_props->get_surface_data( data.m_trace.m_surface.m_surface_props );
 		const float penetration_modifier = surface_data->m_game.m_penetration_modifier;
 
-		if ( data.m_trace.m_fraction == 1.0f )
+		if ( trace_length > 3000.f || penetration_modifier < 0.1f )
 			break;
 
-		trace_length += data.m_trace.m_fraction * max_range;
-		data.m_current_damage *= std::powf( weapon_data->m_range_modifier, trace_length / 500.f );
+		if ( data.m_trace.m_hitgroup != hitgroup_generic && data.m_trace.m_hitgroup != hitgroup_gear && g_cstrike.m_local->is_enemy( data.m_trace.m_hit_entity ) ) {
 
-		if ( trace_length > 3000.0f || penetration_modifier < 0.1f )
-			break;
-
-		if ( data.m_trace.m_hitgroup != generic && data.m_trace.m_hitgroup != gear && g_cstrike.m_local->is_enemy( data.m_trace.m_hit_entity ) ) {
-
-			scale_damage( data.m_trace.m_hitgroup, data.m_trace.m_hit_entity, weapon_data->m_armor_ratio, data.m_current_damage );
+			scale_damage( data.m_trace.m_hitgroup, data.m_trace.m_hit_entity, weapon_data->m_armor_ratio, data.m_dmg );
 			return true;
 
 		}
@@ -76,39 +88,28 @@ bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, bulet_data& data ) 
 
 }
 
-void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, base_trace_filter* filter, trace* ray_trace ) {
+void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, trace_filter* filter, trace* ray_trace ) {
 
-	trace trace = { };
+	trace trace;
 	float smallest_fraction = ray_trace->m_fraction;
 
-	const ray ray( start, end );
+	ray ray( start, end );
 
 	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
 
 		cs_player* player = g_interfaces.m_entity_list->get< cs_player* >( i );
-
 		if ( !player || !player->is_alive( ) || player->is_dormant( ) )
 			continue;
 
 		if ( filter && !filter->should_hit_entity( player, mask ) )
 			continue;
 
-		const i_collideable* collideable = player->get_collideable( );
-		if ( collideable == nullptr )
-			continue;
-
-		const vec_3 min = collideable->obb_mins( );
-		const vec_3 max = collideable->obb_maxs( );
-
-		const vec_3 center = ( max + min ) * 0.5f;
-		const vec_3 position = center + player->get_origin( );
-
-		const float range = player->dist_to_ray( position, start, end );
+		const float range = player->dist_to_ray( start, end );
 
 		if ( range < 0.f || range > 60.f )
 			continue;
 
-		g_interfaces.m_trace->clip_ray_to_entity( ray, mask | CONTENTS_HITBOX, player, &trace );
+		g_interfaces.m_trace->clip_ray_to_entity( ray, mask, player, &trace );
 
 		if ( trace.m_fraction < smallest_fraction ) {
 
@@ -120,31 +121,31 @@ void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsi
 
 }
 
-void autowall::scale_damage( int hit_group, cs_player* player, float weapon_armor_ratio, float& damage ) {
+void autowall::scale_damage( int hitgroup, cs_player* player, float weapon_armor_ratio, float& damage ) {
 
 	const bool has_heavy_armor = player->has_heavy_armor( );
 	const int armor = player->get_armor( );
 
-	switch ( hit_group ) {
+	switch ( hitgroup ) {
 
-	case head:
-		damage *= has_heavy_armor ? 2.0f : 4.0f;
+	case hitgroup_head:
+		damage *= has_heavy_armor ? 2.f : 4.f;
 		break;
 
-	case stomach:
+	case hitgroup_stomach:
 		damage *= 1.25f;
 		break;
 
-	case leftleg:
-	case rightleg:
+	case hitgroup_leftleg:
+	case hitgroup_rightleg:
 		damage *= 0.75f;
 		break;
 
 	}
 
-	if ( armor > 0 && ( ( hit_group == head && player->has_helmet( ) ) || ( hit_group >= generic && hit_group <= rightarm ) ) ) {
+	if ( armor > 0 && ( ( hitgroup == hitgroup_head && player->has_helmet( ) ) || ( hitgroup >= hitgroup_generic && hitgroup <= hitgroup_rightarm ) ) ) {
 
-		float modifier = 1.0f, armor_bonus_ratio = 0.5f, armor_ratio = weapon_armor_ratio * 0.5f;
+		float modifier = 1.f, armor_bonus_ratio = 0.5f, armor_ratio = weapon_armor_ratio * 0.5f;
 
 		if ( has_heavy_armor ) {
 
@@ -168,12 +169,10 @@ void autowall::scale_damage( int hit_group, cs_player* player, float weapon_armo
 
 }
 
-bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, bulet_data& data ) {
+bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_data* result_surface_data, autowall_data& data ) {
 
-	g_console.log( "called hbp" );
-
-	static convar* ff_damage_reduction_bullets = g_interfaces.m_convar->find_var( "ff_damage_reduction_bullets" );
-	static convar* ff_damage_bullet_penetration = g_interfaces.m_convar->find_var( "ff_damage_bullet_penetration" );
+	static convar* ff_damage_reduction_bullets = g_interfaces.m_convar->find_var( XOR( "ff_damage_reduction_bullets" ) );
+	static convar* ff_damage_bullet_penetration = g_interfaces.m_convar->find_var( XOR( "ff_damage_bullet_penetration" ) );
 
 	const float reduction_damage = ff_damage_reduction_bullets->get_float( );
 	const float penetrate_damage = ff_damage_bullet_penetration->get_float( );
@@ -184,11 +183,11 @@ bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_d
 	const bool is_solid_surf = ( ( data.m_trace.m_contents >> 3 ) & CONTENTS_SOLID );
 	const bool is_light_surf = ( ( data.m_trace.m_surface.m_flags >> 7 ) & SURF_LIGHT );
 
-	trace exit_trace = { };
+	trace exit_trace;
 
-	if ( data.m_penetration_count <= 0 || ( !data.m_penetration_count && !is_light_surf && !is_solid_surf && enter_material != 'G' && enter_material != 'Y' ) ||
+	if ( data.m_pen_count <= 0 || ( !data.m_pen_count && !is_light_surf && !is_solid_surf && enter_material != 'G' && enter_material != 'Y' ) ||
 		 ( weapon_info->m_penetration <= 0.f ) ||
-		 ( !trace_to_exit( data.m_trace, exit_trace, data.m_trace.m_end, data.m_direction ) && !( g_interfaces.m_trace->get_point_contents( data.m_trace.m_end, MASK_SHOT_HULL, nullptr ) & MASK_SHOT_HULL ) ) )
+		 ( !trace_to_exit( data.m_trace, exit_trace, data.m_trace.m_end, data.m_dir ) && !( g_interfaces.m_trace->get_point_contents( data.m_trace.m_end, MASK_SHOT_HULL, nullptr ) & MASK_SHOT_HULL ) ) )
 		return false;
 
 	const surface_data* exit_surface_data = g_interfaces.m_physics_props->get_surface_data( exit_trace.m_surface.m_surface_props );
@@ -237,33 +236,34 @@ bool autowall::handle_bullet_penetration( cs_weapon_info* weapon_info, surface_d
 
 	const float trace_distance = ( exit_trace.m_end - data.m_trace.m_end ).length_sqr( );
 
-	const float modifier = ( std::max )( 0.0f, 1.0f / penetration_modifier );
+	const float modifier = ( std::max )( 0.f, 1.f / penetration_modifier );
 
-	const float lost_damage = ( data.m_current_damage * damage_lost_modifier + ( std::max )( 0.f, 3.75f / weapon_info->m_penetration ) * ( modifier * 3.0f ) ) + ( ( modifier * trace_distance ) / 24.0f );
+	const float lost_damage = ( data.m_dmg * damage_lost_modifier + ( std::max )( 0.f, 3.75f / weapon_info->m_penetration ) * ( modifier * 3.f ) ) + ( ( modifier * trace_distance ) / 24.f );
 
-	if ( lost_damage > data.m_current_damage )
+	if ( lost_damage > data.m_dmg )
 		return false;
 
-	if ( lost_damage > 0.0f )
-		data.m_current_damage -= lost_damage;
+	if ( lost_damage > 0.f )
+		data.m_dmg -= lost_damage;
 
-	if ( data.m_current_damage < 1.0f )
+	if ( data.m_dmg < 1.f )
 		return false;
 
-	data.m_position = exit_trace.m_end;
-	--data.m_penetration_count;
+	data.m_pos = exit_trace.m_end;
+	--data.m_pen_count;
+
 	return true;
 
 }
 
 bool autowall::trace_to_exit( trace& enter_trace, trace& exit_trace, vec_3 position, vec_3 direction ) {
 
-	float distance = 0.0f;
+	float distance = 0.f;
 	int start_contents = 0;
 
-	while ( distance <= 90.0f ) {
+	while ( distance <= 90.f ) {
 
-		distance += 4.0f;
+		distance += 4.f;
 
 		vec_3 start = position + direction * distance;
 
@@ -274,7 +274,7 @@ bool autowall::trace_to_exit( trace& enter_trace, trace& exit_trace, vec_3 posit
 
 		if ( !( current_contents & MASK_SHOT_HULL ) || ( current_contents & CONTENTS_HITBOX && current_contents != start_contents ) ) {
 
-			const vec_3 end = start - ( direction * 4.0f );
+			const vec_3 end = start - ( direction * 4.f );
 
 			ray ray_world( start, end );
 			g_interfaces.m_trace->trace_ray( ray_world, MASK_SHOT_HULL | CONTENTS_HITBOX, nullptr, &exit_trace );
@@ -302,9 +302,9 @@ bool autowall::trace_to_exit( trace& enter_trace, trace& exit_trace, vec_3 posit
 				if ( is_breakable_entity( enter_trace.m_hit_entity ) && is_breakable_entity( exit_trace.m_hit_entity ) )
 					return true;
 
-				if ( enter_trace.m_surface.m_flags & SURF_NODRAW || ( !( exit_trace.m_surface.m_flags & SURF_NODRAW ) && exit_trace.m_plane.m_normal.dot( direction ) <= 1.0f ) ) {
+				if ( enter_trace.m_surface.m_flags & SURF_NODRAW || ( !( exit_trace.m_surface.m_flags & SURF_NODRAW ) && exit_trace.m_plane.m_normal.dot( direction ) <= 1.f ) ) {
 
-					const float multiplier = exit_trace.m_fraction * 4.0f;
+					const float multiplier = exit_trace.m_fraction * 4.f;
 					start -= direction * multiplier;
 					return true;
 
@@ -349,9 +349,9 @@ bool autowall::is_breakable_entity( base_player* entity ) {
 
 	if ( entity->get_take_damage( ) != 2 ) {
 
-		const class_index player_class = entity->get_client_class( )->m_class_id;
+		const class_id class_id = entity->get_client_class( )->m_class_id;
 
-		if ( player_class != class_index::func_brush )
+		if ( class_id != class_id::func_brush )
 			return false;
 
 	}
@@ -374,16 +374,12 @@ bool autowall::is_breakable_entity( base_player* entity ) {
 
 		size_t class_name = g_hash.get( entity->get_class_name( ) );
 
-		if ( class_name == g_hash.const_hash( "func_breakable" ) || class_name == g_hash.const_hash( "func_breakable_surf" ) ) {
+		if ( class_name == g_hash.const_hash( XOR( "func_breakable_surf" ) ) ) {
 
-			if ( class_name == g_hash.const_hash( "func_breakable_surf" ) ) {
+			breakable_surface* surface = reinterpret_cast< breakable_surface* >( entity );
 
-				breakable_surface* surface = reinterpret_cast< breakable_surface* >( entity );
-
-				if ( surface->is_broken( ) )
-					return false;
-
-			}
+			if ( surface->is_broken( ) )
+				return false;
 
 		} else if ( entity->physics_solid_mask_for_entity( ) & CONTENTS_PLAYERCLIP ) {
 
@@ -395,7 +391,7 @@ bool autowall::is_breakable_entity( base_player* entity ) {
 	breakable_with_prop_data* breakable_interface = dynamic_cast< breakable_with_prop_data* >( entity );
 	if ( breakable_interface ) {
 
-		if ( breakable_interface->get_dmg_mod_bullet( ) <= 0.0f )
+		if ( breakable_interface->get_dmg_mod_bullet( ) <= 0.f )
 			return false;
 
 	}

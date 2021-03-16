@@ -91,33 +91,33 @@ struct weapon_cs_base : public base_attributable_item {
 
 	inline auto& is_burst_mode( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_WeaponCSBase->m_bBurstMode" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_WeaponCSBase->m_bBurstMode" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_burst_shots_remaining( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_WeaponCSBaseGun->m_iBurstShotsRemaining" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_WeaponCSBaseGun->m_iBurstShotsRemaining" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_ammo( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseCombatWeapon->m_iClip1" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseCombatWeapon->m_iClip1" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_next_primary_attack( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseCombatWeapon->m_flNextPrimaryAttack" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseCombatWeapon->m_flNextPrimaryAttack" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 

@@ -7,9 +7,9 @@ bool console::setup( std::string_view name ) {
 	if ( !AllocConsole( ) )
 		return false;
 
-	freopen_s( reinterpret_cast< _iobuf** >( stdin ), "CONIN$", "r", stdin );
-	freopen_s( reinterpret_cast< _iobuf** >( stdout ), "CONOUT$", "w", stdout );
-	freopen_s( reinterpret_cast< _iobuf** >( stderr ), "CONOUT$", "w", stderr );
+	freopen_s( reinterpret_cast< _iobuf** >( stdin ), XOR( "CONIN$" ), XOR( "r" ), stdin );
+	freopen_s( reinterpret_cast< _iobuf** >( stdout ), XOR( "CONOUT$" ), XOR( "w" ), stdout );
+	freopen_s( reinterpret_cast< _iobuf** >( stderr ), XOR( "CONOUT$" ), XOR( "w" ), stderr );
 
 	m_handle = GetStdHandle( STD_OUTPUT_HANDLE );
 
@@ -42,7 +42,7 @@ void console::log( std::string_view format, ... ) {
 	SetConsoleTextAttribute( m_handle, 7 );
 
 	std::printf( m_buffer );
-	std::printf( "\n" );
+	std::printf( XOR( "\n" ) );
 
 	va_end( arguments );
 

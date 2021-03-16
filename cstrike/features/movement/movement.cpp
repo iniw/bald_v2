@@ -2,20 +2,59 @@
 
 #include <algorithm>
 
+void movement::bhop( user_cmd* cmd ) {
+
+	static convar* sv_autobunnyhopping = g_interfaces.m_convar->find_var( XOR( "sv_autobunnyhopping" ) );
+	if ( sv_autobunnyhopping->get_bool( ) )
+		return;
+
+	const int move_type = g_cstrike.m_local->get_move_type( );
+
+	if ( move_type == move_type_ladder || move_type == move_type_noclip || move_type == move_type_observer )
+		return;
+
+	static bool last_jumped = false, should_fake = false;
+
+	if ( !last_jumped && should_fake ) {
+
+		should_fake = false;
+		cmd->m_buttons |= in_jump;
+
+	} else if ( cmd->m_buttons & in_jump ) {
+
+		if ( g_cstrike.m_local->get_flags( ) & fl_onground || g_cstrike.m_local->get_flags( ) & fl_partialground ) {
+
+			last_jumped = should_fake = true;
+
+		} else {
+
+			cmd->m_buttons &= ~in_jump;
+			last_jumped = false;
+
+		}
+
+	} else {
+
+		last_jumped = should_fake = false;
+
+	}
+
+}
+
 void movement::correct( user_cmd* cmd, q_ang& old_view_angles ) {
 
 	if ( !g_cstrike.m_local->is_alive( ) )
 		return;
 
-	static convar* cl_forwardspeed = g_interfaces.m_convar->find_var( "cl_forwardspeed" );
+	static convar* cl_forwardspeed = g_interfaces.m_convar->find_var( XOR( "cl_forwardspeed" ) );
 	if ( !cl_forwardspeed )
 		return;
 
-	static convar* cl_sidespeed = g_interfaces.m_convar->find_var( "cl_sidespeed" );
+	static convar* cl_sidespeed = g_interfaces.m_convar->find_var( XOR( "cl_sidespeed" ) );
 	if ( !cl_sidespeed )
 		return;
 
-	static convar* cl_upspeed = g_interfaces.m_convar->find_var( "cl_upspeed" );
+	static convar* cl_upspeed = g_interfaces.m_convar->find_var( XOR( "cl_upspeed" ) );
 	if ( !cl_upspeed )
 		return;
 

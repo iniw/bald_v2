@@ -7,9 +7,9 @@ struct breakable_surface : public base_entity, public breakable_with_prop_data {
 
 	inline auto& is_broken( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BreakableSurface->m_bIsBroken" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BreakableSurface->m_bIsBroken" ) ) ];
 
-		return *reinterpret_cast< bool* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 

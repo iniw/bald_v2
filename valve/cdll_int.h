@@ -22,7 +22,7 @@ enum class frame_stage {
 using player_info = struct {
 
 	byte pad0[ 0x8 ];
-	int m_xuid_low;
+	int  m_xuid_low;
 	byte pad1[ 0x4 ];
 	char m_name[ 256 ];
 	byte pad2[ 0x13C ];
@@ -43,7 +43,7 @@ struct engine_client {
 
 	}
 
-	inline auto get_local_player( ) {
+	inline auto get_local_index( ) {
 
 		return g_utils.call_v_func< int >( this, 12 );
 
@@ -71,6 +71,13 @@ struct engine_client {
 
 	}
 
+
+	inline auto in_game( ) {
+
+		return g_utils.call_v_func< bool >( this, 26 );
+
+	}
+
 	inline auto playing_demo( ) {
 
 		return g_utils.call_v_func< bool >( this, 82 );
@@ -80,12 +87,6 @@ struct engine_client {
 	inline auto recording_demo( ) {
 
 		return g_utils.call_v_func< bool >( this, 83 );
-
-	}
-
-	inline auto in_game( ) {
-
-		return g_utils.call_v_func< bool >( this, 26 );
 
 	}
 

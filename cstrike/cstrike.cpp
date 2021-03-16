@@ -7,9 +7,9 @@ DWORD WINAPI cstrike::setup( void* parameter ) {
 
 	HMODULE handle = static_cast< HMODULE >( parameter );
 
-	g_console.setup( "cstrike-hack" );
+	g_console.setup( XOR( "cstrike-hack" ) );
 
-	while ( !( g_cstrike.m_window = FindWindowA( "Valve001", nullptr ) ) )
+	while ( !( g_cstrike.m_window = FindWindowA( XOR( "Valve001" ), nullptr ) ) )
 		g_utils.sleep( 100 );
 
 	if ( !g_interfaces.setup( ) || !g_netvars.setup( ) || !g_input.setup( ) || !g_render.setup( ) || !g_hooked.setup( ) ) {
@@ -23,7 +23,7 @@ DWORD WINAPI cstrike::setup( void* parameter ) {
 	while ( !g_input.is_key_down( VK_DELETE  ) )
 		g_utils.sleep( 100 );
 
-	g_console.log( "unloading" );
+	g_console.log( XOR( "unloading" ) );
 
 	unload( );
 

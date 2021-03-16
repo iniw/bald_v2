@@ -12,7 +12,7 @@ struct vec_3 {
 
 	inline void init( float x = 0.f, float y = 0.f, float z = 0.f ) {
 
-		x = x; y = y; z = z;
+		this->x = x; this->y = y; this->z = z;
 
 	}
 
@@ -202,9 +202,11 @@ struct vec_3 {
 	inline float normalize( ) {
 
 		const float length = this->length( );
-		const float radius = 1.0f / ( length + std::numeric_limits<float>::epsilon( ) );
+		const float radius = 1.f / ( length + std::numeric_limits<float>::epsilon( ) );
 
-		*this *= radius;
+		x *= radius;
+		y *= radius;
+		z *= radius;
 
 		return length;
 

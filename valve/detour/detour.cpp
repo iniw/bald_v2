@@ -6,7 +6,7 @@
 
 bool detour::setup( std::string_view name, void* function, void* custom_function ) {
 
-	g_console.log( "%s -> 0x%x", name.data( ), function );
+	g_console.log( XOR( "%s -> 0x%x" ) , name.data( ), function );
 
 	if ( !function || !custom_function )
 		return false;

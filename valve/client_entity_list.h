@@ -8,7 +8,7 @@ struct client_entity_list {
 
 	}
 
-	inline auto get_client_entity_from_handle( std::size_t entity ) {
+	inline auto get_client_entity_from_handle( size_t entity ) {
 
 		return g_utils.call_v_func< void* >( this, 4, entity );
 
@@ -20,7 +20,7 @@ struct client_entity_list {
 
 	}
 
-	template< class t > inline t get( std::size_t entity ) {
+	template< class t > inline t get( size_t entity ) {
 
 		return ( t )get_client_entity_from_handle( entity );
 

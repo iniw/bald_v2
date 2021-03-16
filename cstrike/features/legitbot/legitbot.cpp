@@ -11,8 +11,8 @@ void legitbot::run( user_cmd* cmd ) {
 
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
-		cmd->m_view_angles = m_data.ang;
-		g_interfaces.m_engine->set_view_angles( m_data.ang );
+		cmd->m_view_angles = m_data.m_ang;
+		g_interfaces.m_engine->set_view_angles( m_data.m_ang );
 
 	}
 
@@ -32,10 +32,10 @@ aimbot_data legitbot::get_data( user_cmd* cmd ) {
 
 		aimbot_data data( player );
 
-		if ( data.fov < best_fov ) {
+		if ( data.m_fov < best_fov && data.m_dmg > 0.f ) {
 
-			best_fov = data.fov;
-			best_player = data.ent;
+			best_fov = data.m_fov;
+			best_player = data.m_ent;
 
 		}
 
@@ -64,13 +64,13 @@ void legitbot::paint( ) {
 
 	g_interfaces.m_engine->get_screen_size( w, h );
 
-	if ( g_interfaces.m_debug_overlay->screen_position( m_data.pos, screen_head_pos ) == -1 )
+	if ( g_interfaces.m_debug_overlay->screen_position( m_data.m_pos, screen_head_pos ) == -1 )
 		return;
 
 	g_render.draw_line( w / 2, h / 2, screen_head_pos.x, screen_head_pos.y, color( 255, 255, 255 ) );
 
 	char buffer[ 25 ];
-	sprintf_s( buffer, "dmg = %.2f", m_data.dmg );
+	sprintf_s( buffer, XOR( "dmg = %.2f" ), m_data.m_dmg );
 
 	g_render.draw_text( g_render.m_fonts.primary, w / 2, h / 2 - 5, buffer, color( 255, 255, 255 ), x_centre | y_centre );
 

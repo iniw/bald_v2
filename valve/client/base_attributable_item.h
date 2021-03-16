@@ -2,7 +2,7 @@
 
 #include "base_entity.h"
 
-enum class definition_index {
+enum class def_idx {
 
 	none = 0,
 	deagle = 1,
@@ -102,73 +102,73 @@ struct base_attributable_item : base_entity {
 
 	inline auto& get_item_definition_index( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_iItemDefinitionIndex" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_iItemDefinitionIndex" ) ) ];
 
-		return *reinterpret_cast< short* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< short* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_item_id_high( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_iItemIDHigh" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_iItemIDHigh" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_item_id_low( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_iItemIDLow" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_iItemIDLow" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_entity_quality( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_iEntityQuality" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_iEntityQuality" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_custom_name( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_szCustomName" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_szCustomName" ) ) ];
 
-		return *reinterpret_cast< char* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< char* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_fallback_paint_kit( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_nFallbackPaintKit" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_nFallbackPaintKit" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_fallback_seed( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_nFallbackSeed" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_nFallbackSeed" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_fallback_wear( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_flFallbackWear" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_flFallbackWear" ) ) ];
 
-		return *reinterpret_cast< float* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
 	inline auto& get_fallback_stat_trak( ) {
 
-		static auto offset = g_netvars.m_offsets[ g_hash.get( "DT_BaseAttributableItem->m_nFallbackStatTrak" ) ];
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAttributableItem->m_nFallbackStatTrak" ) ) ];
 
-		return *reinterpret_cast< int* >( reinterpret_cast< std::size_t >( this ) + offset );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 

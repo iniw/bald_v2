@@ -11,17 +11,17 @@ void cs_player::post_think( ) {
 
 	g_interfaces.m_mdl_cache->begin_lock( );
 
-	if ( this->is_alive( ) ) {
+	if ( is_alive( ) ) {
 
-		this->update_collision_bounds( );
+		update_collision_bounds( );
 
-		if ( this->get_flags( ) & 1 )
-			*this->get_fall_velocity( ) = 0.f;
+		if ( get_flags( ) & 1 )
+			*get_fall_velocity( ) = 0.f;
 
-		if ( this->get_sequence( ) == -1 )
-			this->set_sequence( 0 );
+		if ( get_sequence( ) == -1 )
+			set_sequence( 0 );
 
-		this->studio_frame_advance( );
+		studio_frame_advance( );
 
 		post_think_vphysics( this );
 
@@ -35,19 +35,19 @@ void cs_player::post_think( ) {
 
 bool cs_player::can_shoot( ) {
 
-	const float server_time = g_cstrike.ticks_to_time( this->get_tickbase( ) );
+	const float server_time = g_cstrike.ticks_to_time( get_tickbase( ) );
 
-	if ( this->get_next_attack( ) > server_time )
+	if ( get_next_attack( ) > server_time )
 		return false;
 
-	const auto weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( this->get_active_weapon( ) );
+	const auto weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( get_active_weapon( ) );
 
 	if ( !weapon )
 		return false;
 
-	const auto def_index = static_cast< definition_index >( weapon->get_item_definition_index( ) );
+	const auto idx = static_cast< def_idx >( weapon->get_item_definition_index( ) );
 
-	if ( ( def_index == definition_index::famas || def_index == definition_index::glock ) && weapon->is_burst_mode( ) && weapon->get_burst_shots_remaining( ) > 0 )
+	if ( ( idx == def_idx::famas || idx == def_idx::glock ) && weapon->is_burst_mode( ) && weapon->get_burst_shots_remaining( ) > 0 )
 		return true;
 
 	if ( weapon->get_ammo( ) <= 0 )
@@ -60,11 +60,11 @@ bool cs_player::can_shoot( ) {
 
 }
 
-vec_3 cs_player::get_hitbox_position( hitbox hitbox ) {
+vec_3 cs_player::get_hitbox_position( int hitbox ) {
 
-	std::array< matrix_3x4, MAXSTUDIOBONES > out_bones = { };
+	std::array< matrix_3x4, MAXSTUDIOBONES > out_bones;
 
-	auto model = this->get_model( );
+	auto model = get_model( );
 
 	if ( !model )
 		return vec_3( );
@@ -74,12 +74,12 @@ vec_3 cs_player::get_hitbox_position( hitbox hitbox ) {
 	if ( !studio_model )
 		return vec_3( );
 
-	auto studio_hitbox = studio_model->get_hitbox( static_cast< int >( hitbox ), 0 );
+	auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
 
 	if ( !studio_hitbox )
 		return vec_3( );
 
-	if ( !this->setup_bones( out_bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
+	if ( !setup_bones( out_bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
 		return vec_3( );
 
 	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, out_bones[ studio_hitbox->m_bone ] );
@@ -89,21 +89,26 @@ vec_3 cs_player::get_hitbox_position( hitbox hitbox ) {
 
 }
 
-float cs_player::dist_to_ray( const vec_3& pos, const vec_3& start, const vec_3& end ) {
+float cs_player::dist_to_ray( const vec_3& start, const vec_3& end ) {
+
+	const i_collideable* collideable = get_collideable( );
+	if ( !collideable )
+		return -1.f;
+
+	const vec_3 center = ( collideable->obb_mins( ) + collideable->obb_maxs( ) ) * 0.5f;
+	const vec_3 pos = center + get_origin( );	
 
 	vec_3 to = pos - start;
 	vec_3 direction = end - start;
 	float length = direction.normalize( );
 
 	const float range_along = direction.dot( to );
-	float range = 0.0f;
+	float range = 0.f;
 
 	if ( range_along < 0.f )
 		range = -to.length( );
-
 	else if ( range_along > length )
 		range = -( pos - end ).length( );
-
 	else
 		range = ( pos - ( direction * range_along + start ) ).length( );
 

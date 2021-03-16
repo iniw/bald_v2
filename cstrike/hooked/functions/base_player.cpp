@@ -2,7 +2,7 @@
 
 bool __fastcall hooked::create_move( cs_player* ecx, void* edx, float input_sample_time, user_cmd* cmd ) {
 
-	static auto o_create_move = g_detour.get< decltype( &create_move ) >( "C_BasePlayer::CreateMove" );
+	static auto o_create_move = g_detour.get< decltype( &create_move ) >( XOR( "C_BasePlayer::CreateMove" ) );
 
 	if ( cmd->m_command_number == 0 )
 		return o_create_move( ecx, edx, input_sample_time, cmd );
@@ -13,6 +13,8 @@ bool __fastcall hooked::create_move( cs_player* ecx, void* edx, float input_samp
 	q_ang old_view_angles = cmd->m_view_angles;
 
 	g_cstrike.m_local = ecx;
+
+	g_movement.bhop( cmd );
 
 	g_engine_prediction.start( cmd ); {
 
@@ -34,7 +36,7 @@ bool __cdecl hooked::glow_effect_spectators( base_player* this_player, base_play
 	if ( !this_player->is_enemy( local_player ) )
 		return false;
 
-	glow_style = glow_styles::default_glow;
+	glow_style = glow_style_default;
 
 	color.x = 1.f;
 	color.y = 1.f;

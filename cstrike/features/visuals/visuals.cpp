@@ -37,15 +37,15 @@ void visuals::draw_box( ) {
 
 	g_render.draw_outlined_rect( m_box.x - 1, m_box.y - 1, 
 		m_box.width + 2, m_box.height + 2, 
-		color( 0, 0, 0, m_alpha[ m_player.index ] ) );
+		color( 0, 0, 0, m_alpha[ m_player.idx ] ) );
 
 	g_render.draw_outlined_rect( m_box.x + 1, m_box.y + 1, 
 		m_box.width - 2, m_box.height - 2, 
-		color( 0, 0, 0, m_alpha[ m_player.index ] ) );
+		color( 0, 0, 0, m_alpha[ m_player.idx ] ) );
 
 	g_render.draw_outlined_rect( m_box.x, m_box.y,
 		m_box.width, m_box.height, 
-		color( 255, 255, 255, m_alpha[ m_player.index ] ) );
+		color( 255, 255, 255, m_alpha[ m_player.idx ] ) );
 
 }
 
@@ -56,12 +56,12 @@ void visuals::draw_health( ) {
 
 	g_render.draw_filled_rect( m_box.x - 2, m_box.y - 1, 
 		4, m_box.height + 2, 
-		color( 0, 0, 0, m_alpha[ m_player.index ] ), 
+		color( 0, 0, 0, m_alpha[ m_player.idx ] ), 
 		x_right );
 
 	g_render.draw_filled_rect( m_box.x - 3, m_box.y, 
 		2, health * m_box.height / 100, 
-		color( 255 - scaler, scaler, 0, m_alpha[ m_player.index ] ),
+		color( 255 - scaler, scaler, 0, m_alpha[ m_player.idx ] ),
 		x_right );
 
 	if ( health == 100 )
@@ -70,7 +70,7 @@ void visuals::draw_health( ) {
 	g_render.draw_text( g_render.m_fonts.secondary, 
 		m_box.x - 5, m_box.y + health * m_box.height / 100, 
 		std::to_wstring( health ), 
-		color( 255, 255, 255, m_alpha[ m_player.index ] ), 
+		color( 255, 255, 255, m_alpha[ m_player.idx ] ), 
 		x_centre | y_centre );
 
 }
@@ -78,18 +78,18 @@ void visuals::draw_health( ) {
 void visuals::draw_name( ) {
 
 	player_info info;
-	if ( !g_interfaces.m_engine->get_player_info( m_player.index + 1, &info ) )
+	if ( !g_interfaces.m_engine->get_player_info( m_player.idx + 1, &info ) )
 		return;
 
 	std::string name = info.m_name;
 
 	if ( !info.m_xuid_low )
-		name.append( " - bot" );
+		name.append( XOR( " - bot" ) );
 
 	g_render.draw_text( g_render.m_fonts.primary,
 		m_box.x + m_box.width / 2, m_box.y - 1, 
 		name, 
-		color( 255, 255, 255, m_alpha[ m_player.index ] ), 
+		color( 255, 255, 255, m_alpha[ m_player.idx ] ), 
 		x_centre | y_bottom );
 
 }
@@ -110,7 +110,7 @@ void visuals::draw_weapon( ) {
 	g_render.draw_text( g_render.m_fonts.secondary,
 		m_box.x + m_box.width / 2, m_box.y + m_box.height + 1,
 		weapon_name,
-		color( 255, 255, 255, m_alpha[ m_player.index ] ),
+		color( 255, 255, 255, m_alpha[ m_player.idx ] ),
 		x_centre );
 
 }
@@ -121,7 +121,7 @@ void visuals::calculate_alpha( ) {
 
 	float opacity = m_player.is_dormant ? g_easing.out_quint( 0.8f - std::clamp( delta_time, 0.f, 0.8f ) ) : 0.8f;
 
-	m_alpha[ m_player.index ] = static_cast< int >( 255 * opacity );
+	m_alpha[ m_player.idx ] = static_cast< int >( 255 * opacity );
 
 }
 
