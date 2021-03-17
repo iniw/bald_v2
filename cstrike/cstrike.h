@@ -12,6 +12,7 @@ enum iterate_player_flags {
 	valid_dead      = 1 << 0,
 	valid_dormant   = 1 << 1,
 	valid_teammates = 1 << 2,
+	valid_immune	= 1 << 2,
 
 };
 
@@ -53,6 +54,10 @@ struct cstrike {
 
 		if ( !( flags & valid_teammates ) )
 			if ( !player->is_enemy( m_local ) )
+				return false;
+
+		if ( !( flags & valid_immune ) )
+			if ( player->is_immune( ) )
 				return false;
 
 		return true;

@@ -25,15 +25,15 @@ struct i_client_unknown;
 struct i_collideable {
 
 	virtual i_handle_entity*        get_entity_handle( ) = 0;
-	virtual const vec_3&            obb_mins( ) const = 0;
-	virtual const vec_3&            obb_maxs( ) const = 0;
+	virtual vec_3&					obb_mins( ) const = 0;
+	virtual vec_3&					obb_maxs( ) const = 0;
 	virtual void					world_space_trigger_bounds( vec_3* world_mins, vec_3* world_maxs ) const = 0;
 	virtual bool					test_collision( const ray& ray, unsigned int contents_mask, void* tr ) = 0;
 	virtual bool					test_hitboxes( const ray& ray, unsigned int contents_mask, void* tr ) = 0;
 	virtual int						get_collision_model_index( ) = 0;
 	virtual const model*            get_collision_model( ) = 0;
 	virtual vec_3&                  get_collision_origin( ) const = 0;
-	virtual q_ang&                get_collision_angles( ) const = 0;
+	virtual q_ang&                  get_collision_angles( ) const = 0;
 	virtual const matrix_3x4&       collision_to_world_transform( ) const = 0;
 	virtual int				        get_solid( ) const = 0;
 	virtual int						get_solid_flags( ) const = 0;

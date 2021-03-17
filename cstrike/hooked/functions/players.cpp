@@ -20,7 +20,7 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 
 		g_legitbot.run( cmd );
 
-		//g_backtracking.think( cmd );
+		g_backtracking.run( cmd );
 
 	}
 	g_engine_prediction.end( cmd );
@@ -46,6 +46,6 @@ bool __cdecl hooks::glow_effect_spectators( base_player* this_player, base_playe
 
 	alpha = 0.3f;
 
-	return true;
+	return false;
 
 }

@@ -1,6 +1,7 @@
 #include "backtracking.h"
 
 #include "../../render/render.h"
+#include "legitbot.h"
 
 void backtracking::update( ) {
 
@@ -32,41 +33,38 @@ void backtracking::update( ) {
 
 }
 
-void backtracking::think( user_cmd* cmd ) {
+void backtracking::run( user_cmd* cmd ) {
 
-	const q_ang view_angles = cmd->m_view_angles;
-
-	cs_player* player = g_cstrike.get_nearest_player( search_crosshair );
-	if ( !player )
+	if ( g_legitbot.m_ative )
 		return;
 
-	m_player = {
-
-		player,
-		player->get_index( ) - 1
-
-	};
-
-	const auto player_records = m_records[ m_player.idx ];
-	if ( player_records.empty( ) )
-		return;
-
-    lag_record best_record;
+	lag_record best_record;
 	float best_fov = FLT_MAX;
 
-	for ( const auto& record : player_records ) {
+	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
 
-		if ( !validate_sim_time( record.m_sim_time ) )
+		cs_player* player = g_interfaces.m_entity_list->get< cs_player* >( i );
+
+		if ( !g_cstrike.validate_player( player ) )
 			continue;
 
-		const q_ang angle = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), record.m_head_pos ).sanitize( );
+		auto& player_records = g_backtracking.m_records[ player->get_index( ) - 1 ];
+		if ( player_records.empty( ) )
+			continue;
 
-		const float fov = g_math.calc_fov( view_angles, angle );
+		for ( auto& record : player_records ) {
 
-		if ( fov < best_fov ) {
+			if ( !g_backtracking.validate_sim_time( record.m_sim_time ) )
+				continue;
 
-			best_fov = fov;
-			best_record = record;
+			const q_ang angle = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), record.m_head_pos ).sanitize( );
+			const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, angle );
+
+			if ( fov < best_fov ) {
+
+				best_record = record;
+
+			}
 
 		}
 
@@ -106,7 +104,7 @@ void backtracking::apply( lag_record& record, cs_player* player ) {
 
 void backtracking::restore( lag_record& record, cs_player* player ) {
 
-	m_backup.restore( player );
+	m_backup.apply( player );
 
 }
 

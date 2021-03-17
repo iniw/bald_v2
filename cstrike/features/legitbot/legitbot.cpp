@@ -4,15 +4,19 @@
 
 void legitbot::run( user_cmd* cmd ) {
 
+	m_ative = false;
+
 	m_data = get_data( cmd );
 	if ( !m_data )
 		return;
 
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
+		m_ative = true;
+
 		cmd->m_view_angles = m_data->m_ang;
 
-		if ( m_data->m_record )
+		if ( m_data->m_record.m_sim_time )
 			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent, true );
 
 		g_interfaces.m_engine->set_view_angles( m_data->m_ang );
@@ -66,7 +70,7 @@ std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
 
 	delete temp_data;
 
-	return best_data ? std::make_unique< aimbot_data >( best_data ) : nullptr;
+	return best_data.m_ent ? std::make_unique< aimbot_data >( best_data ) : nullptr;
 
 }
 
@@ -86,7 +90,7 @@ void legitbot::paint( ) {
 
 	if ( !m_data )
 		return;
-	/*
+	
 	vec_3 screen_head_pos;
 	int w, h;
 
@@ -104,6 +108,5 @@ void legitbot::paint( ) {
 		g_render.format_text( XOR( "dmg = %.2f" ), m_data->m_dmg ), 
 		color( 255, 255, 255 ), 
 		x_centre | y_centre );
-		*/
 
 }

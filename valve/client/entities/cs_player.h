@@ -12,6 +12,8 @@ enum glow_styles {
 
 };
 
+struct lag_record;
+
 struct cs_player : base_animating {
 
 	inline auto think( ) {
@@ -88,6 +90,15 @@ struct cs_player : base_animating {
 
 	}
 
+	inline auto& is_immune( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bGunGameImmunity" ) ) ];
+
+		return *reinterpret_cast< bool* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+
 	inline auto& has_heavy_armor( ) {
 
 		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_bHasHeavyArmor" ) ) ];
@@ -132,9 +143,7 @@ struct cs_player : base_animating {
 
 	bool can_shoot( );
 
-	vec_3 get_hitbox_position( int hitbox );
-
-	vec_3 get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTUDIOBONES > matrix );
+	vec_3 get_hitbox_position( int hitbox, lag_record* record = nullptr);
 
 	bool fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime );
 

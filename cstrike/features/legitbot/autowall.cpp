@@ -11,13 +11,12 @@ float autowall::get_damage( const vec_3& point, lag_record* record, cs_player* p
 	if ( record && player )
 		g_backtracking.apply( *record, player );
 
-	if ( !simulate_fire_bullet( weapon, data ) )
-		return -1.f;
+	bool result = simulate_fire_bullet( weapon, data );
 
 	if ( record && player )
 		g_backtracking.restore( *record, player );
 
-	return data.m_dmg;
+	return result ? data.m_dmg : -1.f;
 
 }
 

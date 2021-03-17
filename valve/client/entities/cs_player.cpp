@@ -2,6 +2,7 @@
 
 #include <array>
 #include "../../../cstrike/cstrike.h"
+#include "../../../cstrike/features/legitbot/backtracking.h"
 
 void cs_player::post_think( ) {
 
@@ -60,13 +61,13 @@ bool cs_player::can_shoot( ) {
 
 }
 
-vec_3 cs_player::get_hitbox_position( int hitbox ) {
+vec_3 cs_player::get_hitbox_position( int hitbox, lag_record* record ) {
 
 	const auto model = get_model( );
 	if ( !model )
 		return vec_3( );
 
-	const auto studio_model = g_interfaces.m_model_info->get_studio_model( model );
+	const auto studio_model = record ? record->m_studio_model : g_interfaces.m_model_info->get_studio_model( model );
 	if ( !studio_model )
 		return vec_3( );
 
@@ -75,32 +76,13 @@ vec_3 cs_player::get_hitbox_position( int hitbox ) {
 		return vec_3( );
 
 	std::array< matrix_3x4, MAXSTUDIOBONES > bones;
-	if ( !setup_bones( bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
-		return vec_3( );
 
-	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, bones[ studio_hitbox->m_bone ] );
-	vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, bones[ studio_hitbox->m_bone ] );
+	if ( !record ) 
+		if ( !setup_bones( bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
+			return vec_3( );
 
-	return ( min + max ) * 0.5f;
-
-}
-
-vec_3 cs_player::get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTUDIOBONES > matrix ) {
-
-	const auto player_model = get_model( );
-	if ( !player_model )
-		return vec_3( );
-
-	const auto studio_model = g_interfaces.m_model_info->get_studio_model( player_model );
-	if ( !studio_model )
-		return vec_3( );
-
-	const auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
-	if ( !studio_hitbox )
-		return vec_3( );
-
-	const vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, matrix[ studio_hitbox->m_bone ] );
-	const vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, matrix[ studio_hitbox->m_bone ] );
+	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, record ? record->m_matrix[ studio_hitbox->m_bone ] : bones[ studio_hitbox->m_bone ] );
+	vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, record ? record->m_matrix[ studio_hitbox->m_bone ] : bones[ studio_hitbox->m_bone ] );
 
 	return ( min + max ) * 0.5f;
 
@@ -108,13 +90,17 @@ vec_3 cs_player::get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTU
 
 bool cs_player::fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime ) {
 
-	const auto backup_origin = get_abs_origin( );
+	const auto backup_abs_origin = get_abs_origin( );
 
 	set_abs_origin( get_origin( ) );
 
+	invalidate_bone_cache( );
+
+	last_bone_setup_frame( ) = 0;
+
 	const auto result = setup_bones( matrix, MAXSTUDIOBONES, bone_mask, curtime );
 
-	set_abs_origin( backup_origin );
+	set_abs_origin( backup_abs_origin );
 
 	return result;
 
