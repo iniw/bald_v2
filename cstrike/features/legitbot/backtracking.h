@@ -5,11 +5,11 @@
 
 #include "../../cstrike.h"
 
-struct record {
+struct lag_record {
 
-	record( ) : m_sim_time( 0.f ) { }
+	lag_record( ) : m_sim_time( 0.f ) { }
 
-	record( cs_player* player ) { 
+	lag_record( cs_player* player ) { 
 	
 		m_sim_time = player->get_sim_time( );
 
@@ -23,6 +23,18 @@ struct record {
 		
 	}
 
+
+	inline void init( cs_player* player ) {
+
+		std::memcpy( m_matrix.data( ), player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
+
+		m_origin = player->get_origin( );
+		m_abs_origin = player->get_abs_origin( );
+		m_mins = player->get_mins( );
+		m_maxs = player->get_maxs( );
+
+	}
+
 	inline void apply( cs_player* player ) {
 
 		player->get_origin( ) = m_origin;
@@ -34,17 +46,6 @@ struct record {
 
 	}
 
-	inline void init( cs_player* player ) {
-
-		std::memcpy( m_matrix.data( ), player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
-
-		m_origin = player->get_origin( );
-		m_abs_origin = player->get_abs_origin( );
-		m_mins = player->get_collideable( )->obb_mins( );
-		m_maxs = player->get_collideable( )->obb_maxs( );
-
-	}
-
 	inline void restore( cs_player* player ) {
 
 		player->set_collision_bounds( m_mins, m_maxs );
@@ -53,6 +54,12 @@ struct record {
 
 		std::memcpy( player->get_bone_cache( ).base( ), m_matrix.data( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
 
+
+	}
+
+	inline operator bool( ) {
+
+		return m_sim_time;
 
 	}
 
@@ -74,28 +81,13 @@ struct backtracking {
 
 	void paint( );
 
-	void apply_tick_count( user_cmd* cmd, record& record, cs_player* player, const bool should_draw_matrix = false );
+	void apply_tick_count( user_cmd* cmd, lag_record& record, cs_player* player, const bool should_draw_matrix = false );
 
-	inline void apply( record& record, cs_player* player );
+	inline void apply( lag_record& record, cs_player* player );
 
-	inline void restore( record& record, cs_player* player );
+	inline void restore( lag_record& record, cs_player* player );
 
 	bool setup( );
-
-	std::array< std::deque< record >, 64 > m_records;
-
-private:
-
-	void draw_matrix( matrix_3x4* matrix, cs_player* player );
-
-	inline float get_lerp( ) {
-
-		const auto ratio = std::clamp( m_convars.cl_interp_ratio->get_float( ), m_convars.sv_client_min_interp_ratio->get_float( ), m_convars.sv_client_max_interp_ratio->get_float( ) );
-
-		return ( std::max )( m_convars.cl_interp->get_float( ), ( ratio / ( ( m_convars.sv_maxupdaterate ) ? m_convars.sv_maxupdaterate->get_float( ) : m_convars.cl_updaterate->get_float( ) ) ) );
-
-	}
-
 
 	bool validate_sim_time( float sim_time ) {
 
@@ -122,6 +114,21 @@ private:
 
 	}
 
+	std::array< std::deque< lag_record >, 64 > m_records;
+
+private:
+
+	void draw_matrix( matrix_3x4* matrix, cs_player* player );
+
+	inline float get_lerp( ) {
+
+		const auto ratio = std::clamp( m_convars.cl_interp_ratio->get_float( ), m_convars.sv_client_min_interp_ratio->get_float( ), m_convars.sv_client_max_interp_ratio->get_float( ) );
+
+		return ( std::max )( m_convars.cl_interp->get_float( ), ( ratio / ( ( m_convars.sv_maxupdaterate ) ? m_convars.sv_maxupdaterate->get_float( ) : m_convars.cl_updaterate->get_float( ) ) ) );
+
+	}
+
+
 	struct {
 
 		convar* cl_updaterate;
@@ -147,7 +154,7 @@ private:
 
 	} m_player;
 
-	record m_backup;
+	lag_record m_backup;
 
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../cstrike.h"
+#include "backtracking.h"
 
 struct awall_data {
 
@@ -22,7 +23,7 @@ struct awall_data {
 
 struct autowall {
 
-	float get_damage( const vec_3& point );
+	float get_damage( const vec_3& point,lag_record* record = nullptr, cs_player* player = nullptr );
 
 	awall_data* get_data( const vec_3& point );
 

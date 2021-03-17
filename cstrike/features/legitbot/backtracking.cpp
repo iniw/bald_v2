@@ -23,7 +23,7 @@ void backtracking::update( ) {
 			continue;
 
 		if ( validate_sim_time( player->get_sim_time( ) ) )
-			player_records.emplace_front( record( player ) );
+			player_records.emplace_front( lag_record( player ) );
 
 		while ( player_records.size( ) > g_cstrike.time_to_ticks( 0.2f ) )
 			player_records.pop_back( );
@@ -51,7 +51,7 @@ void backtracking::think( user_cmd* cmd ) {
 	if ( player_records.empty( ) )
 		return;
 
-    record best_record;
+    lag_record best_record;
 	float best_fov = FLT_MAX;
 
 	for ( const auto& record : player_records ) {
@@ -83,7 +83,7 @@ void backtracking::think( user_cmd* cmd ) {
 
 }
 
-void backtracking::apply_tick_count( user_cmd* cmd, record& record, cs_player* player, const bool should_draw_matrix ) {
+void backtracking::apply_tick_count( user_cmd* cmd, lag_record& record, cs_player* player, const bool should_draw_matrix ) {
 
 	apply( record, player );
 
@@ -96,7 +96,7 @@ void backtracking::apply_tick_count( user_cmd* cmd, record& record, cs_player* p
 
 }
 
-void backtracking::apply( record& record, cs_player* player ) {
+void backtracking::apply( lag_record& record, cs_player* player ) {
 
 	m_backup.init( player );
 
@@ -104,7 +104,7 @@ void backtracking::apply( record& record, cs_player* player ) {
 
 }
 
-void backtracking::restore( record& record, cs_player* player ) {
+void backtracking::restore( lag_record& record, cs_player* player ) {
 
 	m_backup.restore( player );
 
@@ -112,24 +112,23 @@ void backtracking::restore( record& record, cs_player* player ) {
 
 void backtracking::paint( ) {
 
-	if ( !m_player.ptr )
-		return;
-
-	const auto player_records = m_records[ m_player.idx ];
-	if ( player_records.empty( ) )
-		return;
-
 	vec_3 screen_pos;
 
-	for ( const auto& record : player_records ) {
+	for ( const auto& player_records : m_records ) {
 
-		if ( g_interfaces.m_debug_overlay->screen_position( record.m_head_pos, screen_pos ) == -1 )
+		if ( !player_records.size( ) )
 			continue;
 
-		g_render.draw_filled_rect( screen_pos.x, screen_pos.y,
-			2, 2,
-			color( 255, 255, 255 ),
-			x_centre | y_centre );
+		for ( const auto& record : player_records ) {
+
+			if ( g_interfaces.m_debug_overlay->screen_position( record.m_head_pos, screen_pos ) == -1 )
+				continue;
+
+			g_render.draw_filled_rect( screen_pos.x, screen_pos.y,
+				2, 2,
+				color( 255, 255, 255 ),
+				x_centre | y_centre );
+		}
 
 	}
 

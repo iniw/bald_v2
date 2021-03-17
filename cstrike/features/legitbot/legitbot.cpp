@@ -11,6 +11,10 @@ void legitbot::run( user_cmd* cmd ) {
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
 		cmd->m_view_angles = m_data->m_ang;
+
+		if ( m_data->m_record )
+			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent, true );
+
 		g_interfaces.m_engine->set_view_angles( m_data->m_ang );
 
 	}
@@ -19,8 +23,10 @@ void legitbot::run( user_cmd* cmd ) {
 
 std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
 
-	cs_player* best_player = nullptr;
-	float best_fov = FLT_MAX;
+	aimbot_data best_data;
+	best_data.m_fov = FLT_MAX;
+
+	aimbot_data* temp_data = new aimbot_data; // no allocation on the stack around here.
 
 	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
 
@@ -29,18 +35,38 @@ std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
 		if ( !g_cstrike.validate_player( player ) )
 			continue;
 
-		aimbot_data data( player );
+		temp_data->init( player );
 
-		if ( data.m_fov < best_fov && data.m_dmg > 0.f ) {
+		if ( temp_data->m_fov < best_data.m_fov && temp_data->m_dmg > 0.f ) {
 
-			best_fov = data.m_fov;
-			best_player = data.m_ent;
+			best_data = *temp_data;
+
+		}
+
+		auto& player_records = g_backtracking.m_records[ player->get_index( ) - 1 ];
+		if ( player_records.empty( ) )
+			continue;
+
+		for ( auto& record : player_records ) {
+
+			if ( !g_backtracking.validate_sim_time( record.m_sim_time ) )
+				continue;
+
+			temp_data->init( player, &record );
+
+			if ( temp_data->m_fov < best_data.m_fov && temp_data->m_dmg > 0.f ) {
+
+				best_data = *temp_data;
+
+			}
 
 		}
 
 	}
 
-	return best_player ? std::make_unique< aimbot_data >( best_player ) : nullptr;
+	delete temp_data;
+
+	return best_data ? std::make_unique< aimbot_data >( best_data ) : nullptr;
 
 }
 

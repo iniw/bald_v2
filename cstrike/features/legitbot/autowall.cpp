@@ -1,6 +1,6 @@
 #include "autowall.h"
 
-float autowall::get_damage( const vec_3& point ) {
+float autowall::get_damage( const vec_3& point, lag_record* record, cs_player* player ) {
 
 	awall_data data( g_cstrike.m_local->get_eye_position( ), point );
 
@@ -8,8 +8,14 @@ float autowall::get_damage( const vec_3& point ) {
 	if ( !weapon )
 		return -1.f;
 
+	if ( record && player )
+		g_backtracking.apply( *record, player );
+
 	if ( !simulate_fire_bullet( weapon, data ) )
 		return -1.f;
+
+	if ( record && player )
+		g_backtracking.restore( *record, player );
 
 	return data.m_dmg;
 

@@ -18,9 +18,9 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 		
 	g_engine_prediction.start( cmd ); {
 
-		//g_legitbot.run( cmd );
+		g_legitbot.run( cmd );
 
-		g_backtracking.think( cmd );
+		//g_backtracking.think( cmd );
 
 	}
 	g_engine_prediction.end( cmd );
