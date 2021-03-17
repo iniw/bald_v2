@@ -108,21 +108,13 @@ vec_3 cs_player::get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTU
 
 bool cs_player::fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime ) {
 
-	const auto backup5 = get_abs_origin( );
-
-	invalidate_bone_cache( );
+	const auto backup_origin = get_abs_origin( );
 
 	set_abs_origin( get_origin( ) );
 
-	get_effects( ) |= ef_nointerp;
-	
-	last_bone_setup_frame( ) = 0;
-
 	const auto result = setup_bones( matrix, MAXSTUDIOBONES, bone_mask, curtime );
 
-	set_abs_origin( backup5 );
-
-	get_effects( ) &= ~ef_nointerp;
+	set_abs_origin( backup_origin );
 
 	return result;
 
