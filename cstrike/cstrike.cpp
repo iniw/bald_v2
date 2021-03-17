@@ -13,7 +13,7 @@ DWORD WINAPI cstrike::setup( void* parameter ) {
 		g_utils.sleep( 100 );
 
 	if ( !g_pe.setup( ) || !g_signatures.setup( ) || !g_interfaces.setup( )  ||
-		!g_backtracking.setup( ) || !g_engine_prediction.setup( ) ||
+		!g_backtracking.setup( ) || !g_engine_prediction.setup( ) || !g_legitbot.setup( ) ||
 		!g_netvars.setup( ) || !g_input.setup( ) || !g_render.setup( ) || !g_hooks.setup( ) ) {
 
 		FreeLibraryAndExitThread( handle, EXIT_FAILURE );

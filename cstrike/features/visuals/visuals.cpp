@@ -31,7 +31,7 @@ void visuals::paint( ) {
 
 		draw_weapon( );
 
-		}, { valid_dormant } );
+		}, { valid_dormant | valid_immune } );
 
 }
 

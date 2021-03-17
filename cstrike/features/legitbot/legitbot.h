@@ -35,15 +35,21 @@ struct legitbot {
 
 	std::unique_ptr< aimbot_data > get_data( user_cmd* cmd );
 
-	void finalize_angle( );
-
-	void apply_angle( );
+	void finalize( );
 
 	void paint( );
+
+	bool setup( );
 
 	bool m_ative;
 
 	std::unique_ptr< aimbot_data > m_data;
+
+	struct {
+
+		convar* weapon_recoil_scale;
+
+	} m_convars;
 
 };
 

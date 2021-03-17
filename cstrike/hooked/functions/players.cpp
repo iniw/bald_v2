@@ -44,7 +44,7 @@ bool __cdecl hooks::glow_effect_spectators( base_player* this_player, base_playe
 	color.y = 1.f;
 	color.z = 1.f;
 
-	alpha = 0.3f;
+	alpha = 0.4f;
 
 	return false;
 

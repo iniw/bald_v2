@@ -10,6 +10,8 @@ void legitbot::run( user_cmd* cmd ) {
 	if ( !m_data )
 		return;
 
+	finalize( );
+
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
 		m_ative = true;
@@ -17,9 +19,9 @@ void legitbot::run( user_cmd* cmd ) {
 		cmd->m_view_angles = m_data->m_ang;
 
 		if ( m_data->m_record.m_sim_time )
-			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent, true );
+			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent );
 
-		g_interfaces.m_engine->set_view_angles( m_data->m_ang );
+		//g_interfaces.m_engine->set_view_angles( m_data->m_ang );
 
 	}
 
@@ -74,15 +76,10 @@ std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
 
 }
 
-void legitbot::finalize_angle( ) {
+void legitbot::finalize( ) {
 
-
-
-}
-
-void legitbot::apply_angle( ) {
-
-
+	m_data->m_ang -= g_cstrike.m_local->get_punch( ) * m_convars.weapon_recoil_scale->get_float( );
+	m_data->m_ang.sanitize( );
 
 }
 
@@ -108,5 +105,14 @@ void legitbot::paint( ) {
 		g_render.format_text( XOR( "dmg = %.2f" ), m_data->m_dmg ), 
 		color( 255, 255, 255 ), 
 		x_centre | y_centre );
+
+}
+
+bool legitbot::setup( ) {
+
+	if ( m_convars.weapon_recoil_scale = g_interfaces.m_convar->find_var( XOR( "weapon_recoil_scale" ) ); !m_convars.weapon_recoil_scale )
+		return false;
+
+	return true;
 
 }

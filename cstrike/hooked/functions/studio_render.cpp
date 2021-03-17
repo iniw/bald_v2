@@ -4,7 +4,7 @@ void __fastcall hooks::draw_model( studio_render_context* ecx, void* edx, void* 
 
 	static auto o_draw_model = g_detour.get< decltype( &draw_model ) >( XOR( "CStudioRenderContext::DrawModel" ) );
 
-	//if ( !g_cstrike.m_local || !info.m_rendereable )
+	if ( !g_cstrike.m_local || !info.m_rendereable )
 		return o_draw_model( ecx, edx, results, info, bone_to_world, flex_weights, flex_delayed_rates, origin, flags );
 
 	base_entity* entity = info.m_rendereable->get_client_unknown( )->get_base_entity( );

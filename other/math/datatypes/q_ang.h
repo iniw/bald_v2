@@ -9,6 +9,70 @@ struct q_ang {
 
 	q_ang( const float* arr ) : pitch( arr[ 0 ] ), yaw( arr[ 1 ] ), roll( arr[ 2 ] ) { }
 
+	inline q_ang operator+=( const q_ang& a ) {
+
+		pitch += a.pitch; yaw += a.yaw; roll += a.roll;
+
+		return *this;
+
+	}
+
+	inline q_ang operator-=( const q_ang& a ) {
+
+		pitch -= a.pitch; yaw -= a.yaw; roll -= a.roll;
+
+		return *this;
+
+	}
+
+	inline q_ang operator*=( const q_ang& a ) {
+
+		pitch *= a.pitch; yaw *= a.yaw; roll *= a.roll;
+
+		return *this;
+
+	}
+
+	inline q_ang operator/=( const q_ang& a ) {
+
+		pitch /= a.pitch; yaw /= a.yaw; roll /= a.roll;
+
+		return *this;
+
+	}
+
+	inline q_ang operator+=( const float& fl ) {
+
+		pitch += fl; yaw += fl; roll += fl;
+
+		return *this;
+
+	}
+
+	inline q_ang operator-=( const float& fl ) {
+
+		pitch -= fl; yaw -= fl; roll -= fl;
+
+		return *this;
+
+	}
+
+	inline q_ang operator*=( const float& fl ) {
+
+		pitch *= fl; yaw *= fl; roll *= fl;
+
+		return *this;
+
+	}
+
+	inline q_ang operator/=( const float& fl ) {
+
+		pitch /= fl; yaw /= fl; roll /= fl;
+
+		return *this;
+
+	}
+
 	inline q_ang operator+( const q_ang& a ) const {
 
 		return q_ang( pitch + a.pitch, yaw + a.yaw, roll + a.roll );
@@ -21,9 +85,39 @@ struct q_ang {
 
 	}
 
-	inline q_ang operator*( const float& a ) const {
+	inline q_ang operator*( const q_ang& a ) const {
 
-		return q_ang( pitch * a, yaw * a, roll * a );
+		return q_ang( pitch * a.pitch, yaw * a.yaw, roll * a.roll );
+
+	}
+
+	inline q_ang operator/( const q_ang& a ) const {
+
+		return q_ang( pitch / a.pitch, yaw / a.yaw, roll / a.roll );
+
+	}
+
+	inline q_ang operator+( const float& fl ) const {
+
+		return q_ang( pitch + fl, yaw + fl, roll + fl );
+
+	}
+
+	inline q_ang operator-( const float& fl ) const {
+
+		return q_ang( pitch - fl, yaw - fl, roll - fl );
+
+	}
+
+	inline q_ang operator*( const float& fl ) const {
+
+		return q_ang( pitch * fl, yaw * fl, roll * fl );
+
+	}
+
+	inline q_ang operator/( const float& fl ) const {
+
+		return q_ang( pitch * fl, yaw * fl, roll * fl );
 
 	}
 

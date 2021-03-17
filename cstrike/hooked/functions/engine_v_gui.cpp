@@ -10,7 +10,7 @@ void __fastcall hooks::paint( void* ecx, void* edx, paint_mode mode ) {
 
 		g_visuals.paint( );
 
-		g_legitbot.paint( );
+		//g_legitbot.paint( );
 
 		g_backtracking.paint( );
 

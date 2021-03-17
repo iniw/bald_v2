@@ -111,6 +111,14 @@ struct base_player : base_combat_character {
 
 	}
 
+	inline auto& get_punch( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_aimPunchAngle" ) ) ];
+
+		return *reinterpret_cast< q_ang* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
 	inline auto get_buttons( ) {
 
 		static auto offset = g_netvars.find_in_datamap( this->get_prediction_desc_map( ), g_hash.get( XOR( "m_nButtons" ) ) );
