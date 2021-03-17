@@ -78,7 +78,7 @@ struct utl_memory {
 
 		if ( memory != nullptr ) {
 
-			std::byte* data = new std::byte[ allocation_count * sizeof( t ) ];
+			char* data = new char[ allocation_count * sizeof( t ) ];
 			memcpy( data, memory, allocation_count * sizeof( t ) );
 			memory = reinterpret_cast< t* >( data );
 

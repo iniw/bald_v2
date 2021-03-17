@@ -28,9 +28,9 @@ struct plane {
 
 	vec_3 m_normal;
 	float m_distance;
-	byte  m_type;
-	byte  m_sign_bits;
-	byte  pad[ 0x2 ];
+	char  m_type;
+	char  m_sign_bits;
+	char  pad[ 0x2 ];
 
 };
 

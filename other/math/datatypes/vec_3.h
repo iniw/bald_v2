@@ -4,6 +4,8 @@
 #include <cfloat>
 #include <limits>
 
+#include "vec_2.h"
+
 struct vec_3 {
 
 	vec_3( float x = 0.f, float y = 0.f, float z = 0.f ) : x{ x }, y{ y }, z{ z } { }
@@ -24,81 +26,65 @@ struct vec_3 {
 
 	inline vec_3& operator+=( const vec_3& v ) {
 
-		x += v.x;
-		y += v.y;
-		z += v.z;
-
+		x += v.x; y += v.y; z += v.z; 
+		
 		return *this;
 
 	}
 
 	inline vec_3& operator-=( const vec_3& v ) {
 
-		x -= v.x;
-		y -= v.y;
-		z -= v.z;
-
+		x -= v.x; y -= v.y; z -= v.z; 
+		
 		return *this;
 
 	}
 
 	inline vec_3& operator*=( const vec_3& v ) {
 
-		x *= v.x;
-		y *= v.y;
-		z *= v.z;
-
+		x *= v.x; y *= v.y; z *= v.z; 
+		
 		return *this;
 
 	}
 
 	inline vec_3& operator/=( const vec_3& v ) {
 
-		x /= v.x;
-		y /= v.y;
-		z /= v.z;
-
+		x /= v.x; y /= v.y; z /= v.z; 
+		
 		return *this;
 
 	}
 
-	inline vec_3& operator+=( float fl ) {
+	inline vec_3& operator+=( const float& fl ) {
 
-		x += fl;
-		y += fl;
-		z += fl;
-
+		x += fl; y += fl; z += fl; 
+		
 		return *this;
 
 	}
 
-	inline vec_3& operator-=( float fl ) {
+	inline vec_3& operator-=( const float& fl ) {
 
-		x -= fl;
-		y -= fl;
-		z -= fl;
-
+		x -= fl; y -= fl; z -= fl; 
+		
 		return *this;
 
 	}
 
 
-	inline vec_3& operator*=( float fl ) {
+	inline vec_3& operator*=( const float& fl ) {
 
-		x *= fl;
-		y *= fl;
-		z *= fl;
-
+		x *= fl; y *= fl; z *= fl; 
+		
 		return *this;
 
 	}
 
-	inline vec_3& operator/=( float fl ) {
+	inline vec_3& operator/=( const float& fl ) {
 
-		x /= fl;
-		y /= fl;
-		z /= fl;
-
+		x /= fl; y /= fl; z /= fl; 
+		
 		return *this;
 
 	}
@@ -127,69 +113,51 @@ struct vec_3 {
 
 	}
 
-	inline vec_3 operator+( float fl ) {
+	inline vec_3 operator+( const float& fl )  const {
 
-		return {
-
-			x += fl,
-			y += fl,
-			z += fl
-
-		};
+		return vec_3( x + fl, y + fl, z + fl );
 
 	}
 
-	inline vec_3 operator-( float fl ) {
+	inline vec_3 operator-( const float& fl ) const {
 
-		return {
-
-			x -= fl,
-			y -= fl,
-			z -= fl
-
-		};
+		return vec_3( x - fl, y - fl, z - fl );
 
 	}
 
-	inline vec_3 operator*( float fl ) {
+	inline vec_3 operator*( const float& fl ) const {
 
-		return {
-
-			x *= fl,
-			y *= fl,
-			z *= fl
-
-		};
+		return vec_3( x * fl, y * fl, z * fl );
 
 	}
 
-	inline vec_3 operator/( float fl ) {
+	inline vec_3 operator/( const float& fl ) const {
 
-		return {
-
-			x /= fl,
-			y /= fl,
-			z /= fl
-		
-		};
+		return vec_3( x / fl, y / fl, z / fl );
 
 	}
 
-	inline float dot( const vec_3& dot ) {
+	inline float dot( const vec_3& dot ) const {
 
 		return ( x * dot.x + y * dot.y + z * dot.z );
 
 	}
 
-	inline float length( ) {
+	inline float length( ) const {
 
 		return std::sqrtf( length_sqr( ) );
 
 	}
 
-	inline float length_sqr( ) {
+	inline float length_sqr( ) const {
 
 		return dot( *this );
+
+	}
+
+	inline vec_2 to_2d( ) const {
+
+		return vec_2( x, y );
 
 	}
 
@@ -212,7 +180,7 @@ struct vec_3 {
 
 	}
 
-	inline float vector_normalize( vec_3& v ) {
+	inline float vector_normalize( vec_3& v )  const {
 
 		float length = v.length( );
 		float radius = 1.f / ( length + FLT_EPSILON );
@@ -223,7 +191,7 @@ struct vec_3 {
 
 	}
 
-	inline vec_3 normalized( ) {
+	inline vec_3 normalized( ) const {
 
 		vec_3 v = *this;
 		vector_normalize( v );

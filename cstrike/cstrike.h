@@ -9,9 +9,16 @@
 
 enum iterate_player_flags {
 
-	iterate_dead = 1,
-	iterate_dormant = 1 << 1,
-	iterate_teammates = 1 << 2,
+	valid_dead      = 1 << 0,
+	valid_dormant   = 1 << 1,
+	valid_teammates = 1 << 2,
+
+};
+
+enum search_type {
+
+	search_crosshair = 0,  // nearest eye to the crosshair
+	search_distance        // nearest origin to local origin
 
 };
 
@@ -23,7 +30,9 @@ struct cstrike {
 
 	void iterate_players( std::function< void( cs_player* ) > function, int flags = { } );
 
-	inline bool validate_player( cs_player* player ) {
+	cs_player* get_nearest_player( search_type type, int flags = { } );
+
+	inline bool validate_player( cs_player* player, int flags = { } ) {
 
 		if ( !player )
 			return false;
@@ -31,17 +40,20 @@ struct cstrike {
 		if ( player == m_local )
 			return false;
 
-		if ( !player->is_alive( ) )
-			return false;
-
 		if ( !player->is_player( ) )
 			return false;
 
-		if ( player->is_dormant( ) )
-			return false;
+		if ( !( flags & valid_dead ) )
+			if ( !player->is_alive( ) )
+				return false;
 
-		if ( !player->is_enemy( m_local ) )
-			return false;
+		if ( !( flags & valid_dormant ) )
+			if ( player->is_dormant( ) )
+				return false;
+
+		if ( !( flags & valid_teammates ) )
+			if ( !player->is_enemy( m_local ) )
+				return false;
 
 		return true;
 

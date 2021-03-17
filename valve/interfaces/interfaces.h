@@ -15,6 +15,7 @@
 #include "../tier1/interface.h"
 #include "../data_cache/mdl_cache.h"
 #include "../client/client_state.h"
+#include "../client/net_graph_panel.h"
 #include "../physics/physics_surface_props.h"
 #include "../material_system/material_system.h"
 
@@ -41,20 +42,19 @@ struct interfaces {
 	client_state*		   m_client_state;
 	physics_surface_props* m_physics_props;
 	material_system*       m_material_system;
+	net_graph_panel*	   m_net_graph_panel;
 
 private:
 
-	template< class t > inline t get( std::string_view module_name, std::string_view interface_name ) {
+	template< class t > inline t get( address module_base, std::string_view interface_name ) {
 
-		HMODULE module = GetModuleHandleA( module_name.data( ) );
-		if ( !module )
-			return t( );
+		static const auto fn_hash = g_hash.const_hash( XOR( "CreateInterface" ) );
 
-		auto create_interface = GetProcAddress( module, XOR( "CreateInterface" ) );
+		auto create_interface = g_pe.export_fn( module_base, fn_hash );
 		if ( !create_interface )
 			return t( );
 
-		auto create_interface_fn = address( create_interface ).add( 0x4 ).absolute( );
+		auto create_interface_fn = create_interface.add( 0x4 ).absolute( );
 		if ( !create_interface_fn )
 			return t( );
 
@@ -64,13 +64,14 @@ private:
 
 			std::string name = interface_node->m_name;
 
-			if ( !name.compare( 0u, interface_name.length( ), interface_name ) && std::atoi( interface_node->m_name + interface_name.length( ) ) > 0 ) {
+			if ( !name.compare( 0u, interface_name.length( ), interface_name )
+				&& std::atoi( interface_node->m_name + interface_name.length( ) ) > 0 ) {	
 
 				auto interface_address = interface_node->m_create_fn( );
 				if ( !interface_address )
 					return t( );
 
-				g_console.log( XOR( "%s -> 0x%x"), interface_node->m_name, interface_address );
+				g_console.log( "%s -> 0x%x", interface_node->m_name, interface_address );
 
 				return ( t )interface_address;
 
@@ -82,6 +83,32 @@ private:
 
 		return t( );
 
+	}
+
+	inline void dump( ) {
+
+		const auto fn_hash = g_hash.const_hash( XOR( "CreateInterface" ) );
+
+		for ( const auto& module : g_pe.m_loaded_modules )	{
+
+			auto create_interface = g_pe.export_fn( module.second, fn_hash );
+			if ( !create_interface )
+				continue;
+
+			auto create_interface_fn = create_interface.add( 0x4 ).absolute( );
+			if ( !create_interface_fn )
+				continue;
+
+			auto interface_node = create_interface_fn.add( 0x6 ).get< interface_reg* >( 2 );
+
+			while ( interface_node != nullptr ) {
+
+				g_console.log( "%s -> %s", module.first.data( ), interface_node->m_name );
+
+				interface_node = interface_node->m_next;
+			}
+
+		}
 	}
 
 };

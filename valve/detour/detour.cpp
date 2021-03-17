@@ -6,8 +6,6 @@
 
 bool detour::setup( std::string_view name, void* function, void* custom_function ) {
 
-	g_console.log( XOR( "%s -> 0x%x" ) , name.data( ), function );
-
 	if ( !function || !custom_function )
 		return false;
 
@@ -16,7 +14,15 @@ bool detour::setup( std::string_view name, void* function, void* custom_function
 
 	auto hook = g_signatures.m_hook.as< bool( __cdecl* )( void*, void*, void*, int ) >( );
 	
-	return hook( info.m_function, custom_function, &info.m_original, 0 );
+	bool result = hook( info.m_function, custom_function, &info.m_original, 0 );
+
+	if ( !result )
+		return false;
+
+	g_console.log( XOR( "hooked %s -> 0x%x" ), name.data( ), function );
+
+	return true;
+
 }
 
 void detour::unload( ) {

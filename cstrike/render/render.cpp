@@ -4,7 +4,9 @@ bool render::setup( ) {
 
 	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
 
-	create_font( m_fonts.secondary, XOR( "Small Fonts" ), 9, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "04b03" ), 8, 500, fontflag_outline );
+
+	g_interfaces.m_surface->get_screen_size( m_screen.w, m_screen.h );
 
 	return true;
 
@@ -55,6 +57,26 @@ void render::draw_text( h_font& font, int x, int y, std::wstring_view text, cons
 void render::draw_text( h_font& font, int x, int y, std::string_view text, const color& color, int flags ) {
 
 	draw_text( font, x, y, std::wstring( text.begin( ), text.end( ) ), color, flags );
+
+}
+
+std::string_view render::format_text( std::string_view format, ... ) {
+
+	if ( std::strlen( format.data( ) ) >= sizeof( m_buffer ) )
+		return std::string_view( );
+
+	va_list arguments;
+
+	va_start( arguments, format );
+
+	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
+	vsprintf_s( m_buffer, format.data( ), arguments );
+
+	std::string_view text = m_buffer;
+
+	va_end( arguments );
+
+	return text;
 
 }
 

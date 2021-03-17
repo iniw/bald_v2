@@ -2,7 +2,7 @@
 
 #include "mathlib_base.h"
 
-#include "../../other/math/vec_3.h"
+#include "../../other/math/datatypes/vec_3.h"
 
 #include <algorithm>
 

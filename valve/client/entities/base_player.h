@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_combat_character.h"
-#include "../shared/user_cmd.h"
+#include "../../shared/user_cmd.h"
 
 enum move_types {
 

@@ -4,7 +4,7 @@
 
 struct draw_model_info {
 
-	char _pad0[ 0x18 ];
-	i_client_renderable* m_client_entity;
+	char pad0[ 0x18 ];
+	i_client_renderable* m_rendereable;
 
 };

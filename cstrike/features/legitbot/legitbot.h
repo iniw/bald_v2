@@ -2,6 +2,7 @@
 
 #include "../../cstrike.h"
 #include "autowall.h"
+#include "backtracking.h"
 
 struct aimbot_data {
 

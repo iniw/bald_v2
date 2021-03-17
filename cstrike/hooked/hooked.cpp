@@ -1,14 +1,23 @@
 #include "hooked.h"
 
-bool hooked::setup( ) {
+bool hooks::setup( ) {
 
 	g_console.log( XOR( "hooking functions..." ) );
 
+
+	g_detour.setup( XOR( "CHLClient::LevelInitPreEntity" ), g_utils.get_v_func( g_interfaces.m_client, 5 ), &level_init_pre_entity );
+
 	g_detour.setup( XOR( "CHLClient::FrameStageNotify" ), g_utils.get_v_func( g_interfaces.m_client, 37 ), &frame_stage_notify );
 
-	g_detour.setup( XOR( "C_BasePlayer::CreateMove" ), g_signatures.m_create_move, &create_move );
+	g_detour.setup( XOR( "CHLClient::LevelShutdown" ), g_signatures.m_level_shutdown, &level_shutdown );
+
+	g_detour.setup( XOR( "C_CSPlayer::CreateMove" ), g_signatures.m_create_move, &create_move );
+
+	g_detour.setup( XOR( "C_BasePlayer::GlowEffectSpectator" ), g_signatures.m_glow_effect_spectator, &glow_effect_spectators );
 	
 	g_detour.setup( XOR( "CEngineVGui::Paint" ), g_signatures.m_paint, &paint );
+
+	g_detour.setup( XOR( "CEngineClient::IsHLTV" ), g_utils.get_v_func( g_interfaces.m_engine, 193 ), &is_hltv );
 
 	g_detour.setup( XOR( "ClientModeShared::GetViewModelFOV" ), g_signatures.m_get_view_model_fov, &get_view_model_fov );
 
@@ -32,8 +41,6 @@ bool hooked::setup( ) {
 
 	g_detour.setup( XOR( "CStudioRenderContext::DrawModel" ), g_signatures.m_draw_model, &draw_model );
 
-	g_detour.setup( XOR( "C_CSPlayer::GlowEffectSpectator" ), g_signatures.m_glow_effect_spectator, &glow_effect_spectators );
-
 	g_detour.setup( XOR( "CEngineBSPTree::ListLeavesInBox" ), g_signatures.m_list_leaves_in_box, &list_leaves_in_box );
 
 	g_console.log( XOR( "hooked functions" ) );
@@ -42,7 +49,7 @@ bool hooked::setup( ) {
 
 }
 
-void hooked::unload( ) {
+void hooks::unload( ) {
 
 	g_detour.unload( );
 

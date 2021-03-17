@@ -6,6 +6,8 @@
 
 void visuals::paint( ) {
 
+	draw_watermark( );
+
 	g_cstrike.iterate_players( [ this ]( cs_player* player ) -> void {
 
 		m_player = {
@@ -29,7 +31,19 @@ void visuals::paint( ) {
 
 		draw_weapon( );
 
-		}, { iterate_dormant } );
+		}, { valid_dormant } );
+
+}
+
+void visuals::draw_watermark( ) {
+
+	const int fps = static_cast< int >( 1.f / g_interfaces.m_net_graph_panel->m_frame_rate );
+
+	g_render.draw_text( g_render.m_fonts.secondary,
+		g_render.m_screen.w - 5, 5,
+		g_render.format_text( XOR( "bald_v2 | local: 0x%x | fps: %d" ), g_cstrike.m_local, fps ),
+		color( 255, 255, 255 ),
+		x_right );
 
 }
 
@@ -51,7 +65,7 @@ void visuals::draw_box( ) {
 
 void visuals::draw_health( ) {
 
-	int health = m_player.pointer->get_health( ), 
+	int health = m_player.ptr->get_health( ), 
 		scaler = static_cast< int >( 2.55 * health );
 
 	g_render.draw_filled_rect( m_box.x - 2, m_box.y - 1, 
@@ -69,7 +83,7 @@ void visuals::draw_health( ) {
 
 	g_render.draw_text( g_render.m_fonts.secondary, 
 		m_box.x - 5, m_box.y + health * m_box.height / 100, 
-		std::to_wstring( health ), 
+		g_render.format_text( XOR( "%d" ), health ),
 		color( 255, 255, 255, m_alpha[ m_player.idx ] ), 
 		x_centre | y_centre );
 
@@ -84,7 +98,9 @@ void visuals::draw_name( ) {
 	std::string name = info.m_name;
 
 	if ( !info.m_xuid_low )
-		name.append( XOR( " - bot" ) );
+		name.append( XOR( " [BOT]" ) );
+
+	std::transform( name.begin( ), name.end( ), name.begin( ), std::tolower );
 
 	g_render.draw_text( g_render.m_fonts.primary,
 		m_box.x + m_box.width / 2, m_box.y - 1, 
@@ -96,7 +112,7 @@ void visuals::draw_name( ) {
 
 void visuals::draw_weapon( ) {
 
-	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( m_player.pointer->get_active_weapon( ) );
+	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( m_player.ptr->get_active_weapon( ) );
 	if ( !weapon )
 		return;
 
@@ -108,7 +124,7 @@ void visuals::draw_weapon( ) {
 	std::transform( weapon_name.begin( ), weapon_name.end( ), weapon_name.begin( ), std::toupper );
 
 	g_render.draw_text( g_render.m_fonts.secondary,
-		m_box.x + m_box.width / 2, m_box.y + m_box.height + 1,
+		m_box.x + m_box.width / 2, m_box.y + m_box.height + 2,
 		weapon_name,
 		color( 255, 255, 255, m_alpha[ m_player.idx ] ),
 		x_centre );
@@ -117,40 +133,55 @@ void visuals::draw_weapon( ) {
 
 void visuals::calculate_alpha( ) {
 
-	float delta_time = g_interfaces.m_globals->m_curtime - m_player.pointer->get_simulation_time( );
+	float delta_time = g_interfaces.m_globals->m_curtime - m_player.ptr->get_sim_time( );
 
 	float opacity = m_player.is_dormant ? g_easing.in_quint( 1.f - std::clamp( delta_time, 0.f, 1.f ) ) : 1.f;
 
-	opacity *= 0.7f;
-
-	m_alpha[ m_player.idx ] = static_cast< int >( 255 * opacity );
+	m_alpha[ m_player.idx ] = static_cast< int >( 255 * ( opacity * 0.8f ) );
 
 }
 
 bool visuals::calculate_box( ) {
 
-	vec_3 mins, maxs;
-	m_player.pointer->get_render_bounds( mins, maxs );
+	vec_3 mins = m_player.ptr->get_mins( ), maxs = m_player.ptr->get_maxs( );
 
-	vec_3 origin = m_player.pointer->get_origin( ), screen_origin;
-	origin.z -= 5.f;
+	std::array< vec_3, 8 > world_points = {
 
-	vec_3 top = m_player.pointer->get_origin( ), screen_top;
-	top.z += maxs.z;
+		vec_3( mins.x, mins.y, mins.z ),
+		vec_3( mins.x, maxs.y, mins.z ),
+		vec_3( maxs.x, maxs.y, mins.z ),
+		vec_3( maxs.x, mins.y, mins.z ),
+		vec_3( maxs.x, maxs.y, maxs.z ),
+		vec_3( mins.x, maxs.y, maxs.z ),
+		vec_3( mins.x, mins.y, maxs.z ),
+		vec_3( maxs.x, mins.y, maxs.z )
 
-	if ( g_interfaces.m_debug_overlay->screen_position( origin, screen_origin ) == -1
-		|| g_interfaces.m_debug_overlay->screen_position( top, screen_top ) == -1 )
-		return false;
+	};
 
-	float height = screen_origin.y - screen_top.y;
-	float width = height / 2;
+	float left = FLT_MAX, top = FLT_MAX, right = FLT_MIN, bottom = FLT_MIN;
+
+	matrix_3x4& transformed_matrix = m_player.ptr->get_coordinated_frame( );
+
+	std::array< vec_3, 8 > screen_points;
+
+	for ( int i = 0; i < 8; i++ ) {
+
+		if ( g_interfaces.m_debug_overlay->screen_position( g_math.vector_transform( world_points[ i ], transformed_matrix ), screen_points[ i ] ) == -1 )
+			return false;
+
+		left   = ( std::min )( left, screen_points[ i ].x );
+		top    = ( std::min )( top, screen_points[ i ].y );
+		right  = ( std::max )( right, screen_points[ i ].x );
+		bottom = ( std::max )( bottom, screen_points[ i ].y );
+
+	}
 
 	m_box = {
 
-		static_cast< int >( screen_origin.x - width / 2 ),
-		static_cast< int >( screen_top.y ),
-		static_cast< int >( width ),
-		static_cast< int >( height )
+		static_cast< int >( left ),
+		static_cast< int >( top ),
+		static_cast< int >( right - left ),
+		static_cast< int >( bottom - top )
 
 	};
 

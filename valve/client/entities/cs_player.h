@@ -120,11 +120,23 @@ struct cs_player : base_animating {
 
 	}
 
+	inline auto set_collision_bounds( const vec_3& mins, const vec_3& maxs ) {
+
+		static auto function = g_signatures.m_set_collision_bounds.as< void( __thiscall* )( i_collideable*, const vec_3&, const vec_3& ) >( );
+
+		return function( this->get_collideable( ), mins, maxs );
+
+	}
+
 	void post_think( );
 
 	bool can_shoot( );
 
 	vec_3 get_hitbox_position( int hitbox );
+
+	vec_3 get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTUDIOBONES > matrix );
+
+	bool fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime );
 
 	float dist_to_ray( const vec_3& start, const vec_3& end );
 

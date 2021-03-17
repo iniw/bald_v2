@@ -60,7 +60,7 @@ void legitbot::paint( ) {
 
 	if ( !m_data )
 		return;
-
+	/*
 	vec_3 screen_head_pos;
 	int w, h;
 
@@ -69,11 +69,15 @@ void legitbot::paint( ) {
 	if ( g_interfaces.m_debug_overlay->screen_position( m_data->m_pos, screen_head_pos ) == -1 )
 		return;
 
-	g_render.draw_line( w / 2, h / 2, screen_head_pos.x, screen_head_pos.y, color( 255, 255, 255 ) );
+	g_render.draw_line( w / 2, h / 2, 
+		screen_head_pos.x, screen_head_pos.y, 
+		color( 255, 255, 255 ) );
 
-	char buffer[ 25 ];
-	sprintf_s( buffer, XOR( "dmg = %.2f" ), m_data->m_dmg );
-
-	g_render.draw_text( g_render.m_fonts.primary, w / 2, h / 2 - 5, buffer, color( 255, 255, 255 ), x_centre | y_centre );
+	g_render.draw_text( g_render.m_fonts.primary, 
+		w / 2, h / 2 - 5, 
+		g_render.format_text( XOR( "dmg = %.2f" ), m_data->m_dmg ), 
+		color( 255, 255, 255 ), 
+		x_centre | y_centre );
+		*/
 
 }

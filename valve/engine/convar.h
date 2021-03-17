@@ -58,13 +58,13 @@ struct convar {
 
 	}
 
-	byte							    pad0[ 0x4 ];
+	char							    pad0[ 0x4 ];
 	convar*                             m_next;
 	bool								m_registered;
 	const char*                         m_name;
 	const char*                         m_help_string;
 	int									m_flags;
-	byte							    pad1[ 0x4 ];
+	char							    pad1[ 0x4 ];
 	convar*                             m_parent;
 	const char*                         m_default_value;
 	char*                               m_string;

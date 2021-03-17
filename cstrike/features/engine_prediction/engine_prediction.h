@@ -4,18 +4,15 @@
 
 struct engine_prediction {
 
-	engine_prediction( ) {
-
-		m_prediction_random_seed = g_signatures.m_prediction_random_seed.add( 0x2 ).get< int* >( );
-		m_prediction_entity      = g_signatures.m_prediction_entity.add( 0x2 ).get< base_player* >( );
-
-	}
-
 	void start( user_cmd* cmd );
+
 	void end( user_cmd* cmd );
+
 	void update( );
 
 	int get_tickbase( user_cmd* cmd );
+
+	bool setup( );
 
 private:
 

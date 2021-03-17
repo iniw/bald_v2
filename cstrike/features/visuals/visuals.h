@@ -10,6 +10,8 @@ struct visuals {
 
 private:
 
+	void draw_watermark( );
+
 	void draw_box( );
 
 	void draw_health( );
@@ -30,7 +32,7 @@ private:
 
 	struct {
 
-		cs_player* pointer;
+		cs_player* ptr;
 		
 		int idx;
 

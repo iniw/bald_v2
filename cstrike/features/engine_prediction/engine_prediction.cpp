@@ -122,3 +122,12 @@ int engine_prediction::get_tickbase( user_cmd* cmd ) {
 	return tick;
 
 }
+
+bool engine_prediction::setup( ) {
+
+	m_prediction_entity = g_signatures.m_prediction_entity.add( 0x2 ).get< base_player* >( );
+	m_prediction_random_seed = g_signatures.m_prediction_random_seed.add( 0x2 ).get< int* >( );
+
+	return m_prediction_entity && m_prediction_random_seed;
+
+}

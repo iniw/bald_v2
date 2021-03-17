@@ -1,6 +1,6 @@
 #include "../hooked.h"
 
-void __vectorcall hooked::update( csgo_player_anim_state* ecx, void* unk0, float z, float y, float x, void* unk1 ) {
+void __vectorcall hooks::update( csgo_player_anim_state* ecx, void* unk0, float z, float y, float x, void* unk1 ) {
 
 	cs_player* player = ecx->m_player;
 	if ( !player || ( !player->is_alive( ) && !player->is_player_ghost( ) ) || !ecx->cache_sequences( ) )
@@ -76,12 +76,12 @@ void __vectorcall hooked::update( csgo_player_anim_state* ecx, void* unk0, float
 	ecx->m_last_update_frame = g_interfaces.m_globals->m_framecount;
 
 	// compare to server hitboxes - only compare to some players to not tank fps
-	//if ( player != g_cstrike.m_local_player )
+	//if ( player == g_cstrike.m_local )
 	//	player->draw_server_hitboxes( );
 
 }
 
-void __fastcall hooked::modify_eye_position( csgo_player_anim_state* ecx, void* edx, vec_3& input_eye_pos ) {
+void __fastcall hooks::modify_eye_position( csgo_player_anim_state* ecx, void* edx, vec_3& input_eye_pos ) {
 
 	cs_player* player = ecx->m_player;
 	if ( !player )
@@ -107,13 +107,13 @@ void __fastcall hooked::modify_eye_position( csgo_player_anim_state* ecx, void* 
 
 }
 
-void __fastcall hooked::do_procedural_foot_plant( csgo_player_anim_state* ecx, void* edx, void* bone_to_world, void* left_foot_chain, void* right_foot_chain, void* pos ) {
+void __fastcall hooks::do_procedural_foot_plant( csgo_player_anim_state* ecx, void* edx, void* bone_to_world, void* left_foot_chain, void* right_foot_chain, void* pos ) {
 
 	return;
 
 }
 
-void __fastcall hooked::set_up_velocity( csgo_player_anim_state* ecx, void* edx ) {
+void __fastcall hooks::set_up_velocity( csgo_player_anim_state* ecx, void* edx ) {
 
 	g_interfaces.m_mdl_cache->begin_lock( );
 
@@ -307,7 +307,7 @@ void __fastcall hooked::set_up_velocity( csgo_player_anim_state* ecx, void* edx 
 
 }
 
-void __fastcall hooked::set_up_movement( csgo_player_anim_state* ecx, void* edx ) {
+void __fastcall hooks::set_up_movement( csgo_player_anim_state* ecx, void* edx ) {
 
 	static auto o_set_up_movement = g_detour.get< decltype( &set_up_movement ) >( XOR( "CCSGOPlayerAnimState::SetUpMovement" ) );
 

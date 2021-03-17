@@ -1,15 +1,13 @@
 #pragma once
 
-#include "vec_3.h"
-#include "matrix_3x4.h"
-#include "q_ang.h"
+#include "datatypes/datatypes.h"
 
-#define HPI			1.570796327f
-#define QPI			0.785398163f
-#define PI			3.141592654f
-#define PI2			6.283185307f
-#define GPI			1.6180339887498f
-#define RADPI		57.295779513082f
+#define HPI	  1.570796327f
+#define QPI	  0.785398163f
+#define PI	  3.141592654f
+#define PI2	  6.283185307f
+#define GPI	  1.6180339887498f
+#define RADPI 57.295779513082f
 
 struct math {
 

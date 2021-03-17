@@ -3,11 +3,11 @@
 struct animstate_pose_param_cache {
 
 	bool m_initialized; // 0
-	char _pad0[ 0x3 ]; // 1
+	byte pad0[ 0x3 ]; // 1
 	int m_index; // 4
 	const char* m_name; // 8
 
-	inline bool init( cs_player* player, const char* pose_param_name ) {
+	inline bool init( base_animating* player, const char* pose_param_name ) {
 
 		g_interfaces.m_mdl_cache->begin_lock( );
 
@@ -23,7 +23,7 @@ struct animstate_pose_param_cache {
 
 	}
 
-	inline void set_value( cs_player* player, float value ) {
+	inline void set_value( base_animating* player, float value ) {
 
 		if ( !m_initialized )
 			init( player, m_name );
@@ -138,14 +138,14 @@ struct csgo_player_anim_state {
 
 	}
 
-	char _pad0[ 0x4 ]; // 0
+	char pad0[ 0x4 ]; // 0
 	bool m_first_run_since_init; // 4
-	char _pad1[ 0x5b ]; // 5
+	char pad1[ 0x5b ]; // 5
 	cs_player* m_player; // 96
 	weapon_cs_base* m_weapon; // 100
 	weapon_cs_base* m_weapon_last; // 104
 	float m_last_update_time; // 108
-	int m_last_update_frame; // 112
+	int   m_last_update_frame; // 112
 	float m_last_update_increment; // 116
 	float m_eye_yaw; // 120
 	float m_eye_pitch; // 124
@@ -173,26 +173,26 @@ struct csgo_player_anim_state {
 	float m_speed_as_portion_of_crouch_top_speed; // 252
 	float m_duration_moving; // 256
 	float m_duration_still; // 260
-	bool m_on_ground; // 264
-	bool m_landing; // 265
-	char _pad2[ 0x12 ]; // 266
+	bool  m_on_ground; // 264
+	bool  m_landing; // 265
+	char  pad2[ 0x12 ]; // 266
 	float m_walk_to_run_transition; // 284
-	char _pad3[ 0x4 ]; // 288
+	char  pad3[ 0x4 ]; // 288
 	float m_in_air_smooth_value; // 292
-	bool m_on_ladder; // 296
-	char _pad4[ 0x3 ]; // 297
+	bool  m_on_ladder; // 296
+	char  pad4[ 0x3 ]; // 297
 	float m_ladder_weight; // 300
-	char _pad5[ 0x2c ]; // 304
+	char  pad5[ 0x2c ]; // 304
 	vec_3 m_velocity_last; // 348
-	char _pad6[ 0x45 ]; // 360
-	bool m_player_is_accelerating; // 429
-	char _pad7[ 0x2 ]; // 430
+	char  pad6[ 0x45 ]; // 360
+	bool  m_player_is_accelerating; // 429
+	char  pad7[ 0x2 ]; // 430
 	animstate_pose_param_cache m_pose_param_mappings[ 20 ]; // 432
 	float m_duration_move_weight_is_too_high; // 672
 	float m_static_approach_speed; // 676
-	int m_previous_move_state; // 680
+	int   m_previous_move_state; // 680
 	float m_stutter_step; // 684
-	char _pad8[ 0x80 ]; // 688
+	char  pad8[ 0x80 ]; // 688
 	float m_aim_yaw_min; // 816
 	float m_aim_yaw_max; // 820
 	float m_aim_pitch_min; // 824

@@ -1,6 +1,6 @@
 #include "../hooked.h"
 
-void __fastcall hooked::draw_crosshair( weapon_cs_base* ecx, void* edx ) {
+void __fastcall hooks::draw_crosshair( weapon_cs_base* ecx, void* edx ) {
 
 	static auto o_draw_crosshair = g_detour.get< decltype( &draw_crosshair ) >( XOR( "C_WeaponCSBase::DrawCrosshair" ) );
 

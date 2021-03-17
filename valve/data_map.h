@@ -50,25 +50,25 @@ struct data_map;
 
 struct type_description {
 
-	field_types			field_type;
-	const char*         field_name;
-	int					field_offset[ TD_OFFSET_COUNT ];
-	unsigned short		field_size;
-	short				flags;
-	std::byte			pad0[ 0xC ];
-	data_map*           type_description;
-	std::byte			pad1[ 0x18 ];
+	field_types		field_type;
+	const char*     field_name;
+	int				field_offset[ TD_OFFSET_COUNT ];
+	unsigned short	field_size;
+	short			flags;
+	char			pad0[ 0xC ];
+	data_map*       type_description;
+	char			pad1[ 0x18 ];
 
 };
 
 struct data_map {
 
-	type_description*   data_desc;
-	int					data_fields;
-	const char*         data_class_name;
-	data_map*           base_map;
-	bool				chains_validated;
-	bool				packed_offsets_computed;
-	int					packed_size;
+	type_description* data_desc;
+	int				  data_fields;
+	const char*       data_class_name;
+	data_map*         base_map;
+	bool			  chains_validated;
+	bool			  packed_offsets_computed;
+	int				  packed_size;
 
 };

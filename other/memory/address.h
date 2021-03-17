@@ -4,11 +4,11 @@
 
 struct address {
 
-	address( ) : m_address{ } { }
+	address( ) : m_address( 0 ) { }
 
-	address( size_t address ) : m_address{ address } { }
+	address( size_t address ) : m_address( address ) { }
 
-	address( void* address ) : m_address{ reinterpret_cast< size_t >( address ) } { }
+	address( void* address ) : m_address( reinterpret_cast< size_t >( address ) ) { }
 
 	inline operator size_t( ) {
 
@@ -23,49 +23,49 @@ struct address {
 	}
 
 
-	inline bool operator==( address address ) {
+	inline bool operator==( address address ) const {
 
 		return as< size_t >( ) == address.as< size_t >( );
 
 	}
 
-	inline bool operator!=( address address ) {
+	inline bool operator!=( address address ) const {
 
 		return as< size_t >( ) != address.as< size_t >( );
 
 	}
 
-	template< typename t = address > inline t to( ) {
+	template< typename t = address > inline t to( ) const {
 
 		return *( t* )m_address;
 
 	}
 
-	template< typename t = address > inline t as( ) {
+	template< typename t = address > inline t as( ) const {
 
 		return m_address ? ( t )m_address : t( );
 
 	}
 
-	template< typename t = address > inline t at( size_t offset ) {
+	template< typename t = address > inline t at( size_t offset ) const {
 
 		return m_address ? *( t* )( m_address + offset ) : t( );
 
 	}
 
-	template< typename t = address > inline t add( size_t offset ) {
+	template< typename t = address > inline t add( size_t offset ) const {
 
 		return m_address ? ( t )( m_address + offset ) : t( );
 
 	}
 
-	template< typename t = address > inline t sub( size_t offset ) {
+	template< typename t = address > inline t sub( size_t offset ) const {
 
 		return m_address ? ( t )( m_address - offset ) : t( );
 
 	}
 
-	template< typename t = address > inline t get( size_t dereferences = 1 ) {
+	template< typename t = address > inline t get( size_t dereferences = 1 ) const {
 
 		if ( !m_address )
 			return t( );

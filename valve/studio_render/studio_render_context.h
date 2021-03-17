@@ -2,7 +2,7 @@
 
 struct studio_render_context {
 
-	byte      pad0[ 0x240 ];
+	char      pad0[ 0x240 ];
 	float     m_color_mod[ 3 ];
 	float     m_alpha_mod;
 	material* m_forced_material[ 4 ];

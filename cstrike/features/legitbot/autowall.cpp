@@ -371,9 +371,11 @@ bool autowall::is_breakable_entity( base_player* entity ) {
 
 	} else {
 
+		static const auto name_hash = g_hash.const_hash( XOR( "func_breakable_surf" ) );
+
 		size_t class_name = g_hash.get( entity->get_class_name( ) );
 
-		if ( class_name == g_hash.const_hash( XOR( "func_breakable_surf" ) ) ) {
+		if ( class_name == name_hash ) {
 
 			breakable_surface* surface = reinterpret_cast< breakable_surface* >( entity );
 

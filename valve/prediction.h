@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../other/math/vec_3.h"
-#include "../other/math/q_ang.h"
+#include "../other/math/datatypes/vec_3.h"
+#include "../other/math/datatypes/q_ang.h"
 
 struct user_cmd;
 
@@ -86,12 +86,12 @@ struct game_movement {
 
 struct prediction {
 
-	byte	  pad0[ 0x4 ];
+	char	  pad0[ 0x4 ];
 	uintptr_t m_last_ground;
 	bool	  m_in_prediction;
 	bool	  m_old_cl_predict_value;
 	bool	  m_engine_paused;
-	byte	  pad2[ 0xD ];
+	char	  pad2[ 0xD ];
 	bool	  m_is_first_time_predicted;
 
 	inline void update( int start_frame, bool valid_frame, int incoming_acknowledged, int outgoing_command ) {

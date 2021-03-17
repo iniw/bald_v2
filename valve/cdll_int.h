@@ -1,31 +1,31 @@
 #pragma once
 
 #include "../other/utils/utils.h"
-#include "../other/math/q_ang.h"
+#include "../other/math/datatypes/q_ang.h"
+#include "net_channel.h"
 
 struct client_class;
 
-enum class frame_stage {
+enum frame_stage {
 
-	undefined = -1,
-	m_start,
-	net_update_start,
-	net_update_postdataupdate_start,
-	net_update_postdataupdate_end,
-	net_update_end,
-	render_start,
-	render_end,
-	net_full_frame_update_on_remove
+	stage_undefined = -1,
+	stage_frame_start,
+	stage_net_update_start,
+	stage_net_update_postdataupdate_start,
+	stage_net_update_postdataupdate_end,
+	stage_net_update_end,
+	stage_render_start,
+	stage_render_end
 
 };
 
 using player_info = struct {
 
-	byte pad0[ 0x8 ];
+	char pad0[ 0x8 ];
 	int  m_xuid_low;
-	byte pad1[ 0x4 ];
+	char pad1[ 0x4 ];
 	char m_name[ 256 ];
-	byte pad2[ 0x13C ];
+	char pad2[ 0x13C ];
 
 };
 
@@ -75,6 +75,12 @@ struct engine_client {
 	inline auto in_game( ) {
 
 		return g_utils.call_v_func< bool >( this, 26 );
+
+	}
+
+	inline auto get_net_channel_info( ) {
+
+		return g_utils.call_v_func< net_channel_info* >( this, 78 );
 
 	}
 

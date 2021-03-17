@@ -14,26 +14,26 @@ struct net_channel_info {
 
 struct net_channel {
 
-	byte pad0[ 0x14 ];
+	char pad0[ 0x14 ];
 	bool m_processing_messages;
 	bool m_should_delete;
 	bool m_stop_processing;
-	byte pad1[ 0x1 ];
+	char pad1[ 0x1 ];
 	int	 m_out_sequence_nr;
 	int	 m_in_sequence_nr;
 	int	 m_out_sequence_nr_ack;
 	int	 m_out_reliable_state;
 	int	 m_in_reliable_state;
 	int	 m_choked_packets;
-	byte pad2[ 0x414 ];
+	char pad2[ 0x414 ];
 
-	int	send_datagram( bf_write* datagram ) {
+	inline int	send_datagram( bf_write* datagram ) {
 
 		return g_utils.call_v_func<int>( this, 46, datagram );
 
 	}
 
-	bool transmit( bool only_reliable = false ) {
+	inline bool transmit( bool only_reliable = false ) {
 
 		return g_utils.call_v_func<bool>( this, 49, only_reliable );
 

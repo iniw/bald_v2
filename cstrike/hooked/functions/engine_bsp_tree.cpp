@@ -1,6 +1,6 @@
 #include "../hooked.h"
 
-int __fastcall hooked::list_leaves_in_box( void* ecx, void* edx, const vec_3& mins, const vec_3& maxs, unsigned short* list, int list_max ) {
+int __fastcall hooks::list_leaves_in_box( void* ecx, void* edx, const vec_3& mins, const vec_3& maxs, unsigned short* list, int list_max ) {
 
 	static auto o_list_leaves_in_box = g_detour.get< decltype( &list_leaves_in_box ) >( XOR( "CEngineBSPTree::ListLeavesInBox" ) );
 

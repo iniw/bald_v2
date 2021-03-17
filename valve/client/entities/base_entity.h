@@ -1,8 +1,29 @@
 #pragma once
 
 #include "interfaces/client_entity.h"
-#include "../netvars/netvars.h"
-#include "../../other/hash/hash.h"
+#include "../../netvars/netvars.h"
+#include "../../../other/hash/hash.h"
+
+enum effects_flags {
+
+	ef_bonemerge                  = 0x001,		
+	ef_brightlight                = 0x002,		
+	ef_dimlight                   = 0x004,		
+	ef_nointerp                   = 0x008,		
+	ef_noshadow                   = 0x010,		
+	ef_nodraw                     = 0x020,			
+	ef_noreceiveshadow            = 0x040,	
+	ef_bonemerge_fastcull         = 0x080,												
+	ef_item_blink                 = 0x100,				
+	ef_parent_animates            = 0x200,			
+	ef_marked_for_fast_reflection = 0x400,
+	ef_noshadowdepth              = 0x800,			
+	ef_shadowdepth_nocache        = 0x1000,	
+	ef_noflashlight               = 0x2000,
+	ef_nocsm                      = 0x4000,					
+	ef_max_bits                   = 15
+
+};
 
 struct animation_layer;
 
@@ -32,6 +53,21 @@ struct base_entity : public i_client_entity {
 
 	}
 
+	inline auto& get_effects( ) {
+
+		static auto offset = 0xF0;
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
+	}
+
+	inline auto& get_coordinated_frame( ) {
+
+		static auto offset = g_netvars.find_in_datamap( this->get_data_desc_map( ), g_hash.get( XOR( "m_rgflCoordinateFrame" ) ) );
+
+		return *reinterpret_cast< matrix_3x4* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
 	inline auto& get_origin( ) {
 
 		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_vecOrigin" ) ) ];
@@ -48,9 +84,17 @@ struct base_entity : public i_client_entity {
 
 	}
 
-	inline auto& get_simulation_time( ) {
+	inline auto& get_sim_time( ) {
 
 		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_flSimulationTime" ) ) ];
+
+		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto& get_old_sim_time( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseEntity->m_flSimulationTime" ) ) ] + 0x4;
 
 		return *reinterpret_cast< float* >( reinterpret_cast< size_t >( this ) + offset );
 

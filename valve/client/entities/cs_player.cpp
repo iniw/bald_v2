@@ -1,7 +1,7 @@
 #include "cs_player.h"
 
 #include <array>
-#include "../../cstrike/cstrike.h"
+#include "../../../cstrike/cstrike.h"
 
 void cs_player::post_think( ) {
 
@@ -62,30 +62,69 @@ bool cs_player::can_shoot( ) {
 
 vec_3 cs_player::get_hitbox_position( int hitbox ) {
 
-	std::array< matrix_3x4, MAXSTUDIOBONES > out_bones;
-
-	auto model = get_model( );
-
+	const auto model = get_model( );
 	if ( !model )
 		return vec_3( );
 
-	auto studio_model = g_interfaces.m_model_info->get_studio_model( model );
-
+	const auto studio_model = g_interfaces.m_model_info->get_studio_model( model );
 	if ( !studio_model )
 		return vec_3( );
 
-	auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
-
+	const auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
 	if ( !studio_hitbox )
 		return vec_3( );
 
-	if ( !setup_bones( out_bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
+	std::array< matrix_3x4, MAXSTUDIOBONES > bones;
+	if ( !setup_bones( bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
 		return vec_3( );
 
-	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, out_bones[ studio_hitbox->m_bone ] );
-	vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, out_bones[ studio_hitbox->m_bone ] );
+	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, bones[ studio_hitbox->m_bone ] );
+	vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, bones[ studio_hitbox->m_bone ] );
 
 	return ( min + max ) * 0.5f;
+
+}
+
+vec_3 cs_player::get_hitbox_position( int hitbox, std::array< matrix_3x4, MAXSTUDIOBONES > matrix ) {
+
+	const auto player_model = get_model( );
+	if ( !player_model )
+		return vec_3( );
+
+	const auto studio_model = g_interfaces.m_model_info->get_studio_model( player_model );
+	if ( !studio_model )
+		return vec_3( );
+
+	const auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
+	if ( !studio_hitbox )
+		return vec_3( );
+
+	const vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, matrix[ studio_hitbox->m_bone ] );
+	const vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, matrix[ studio_hitbox->m_bone ] );
+
+	return ( min + max ) * 0.5f;
+
+}
+
+bool cs_player::fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime ) {
+
+	const auto backup5 = get_abs_origin( );
+
+	invalidate_bone_cache( );
+
+	set_abs_origin( get_origin( ) );
+
+	get_effects( ) |= ef_nointerp;
+	
+	last_bone_setup_frame( ) = 0;
+
+	const auto result = setup_bones( matrix, MAXSTUDIOBONES, bone_mask, curtime );
+
+	set_abs_origin( backup5 );
+
+	get_effects( ) &= ~ef_nointerp;
+
+	return result;
 
 }
 
@@ -98,7 +137,7 @@ float cs_player::dist_to_ray( const vec_3& start, const vec_3& end ) {
 	const vec_3 center = ( collideable->obb_mins( ) + collideable->obb_maxs( ) ) * 0.5f;
 	const vec_3 pos = center + get_origin( );	
 
-	vec_3 to = pos - start;
+	const vec_3 to = pos - start;
 	vec_3 direction = end - start;
 	float length = direction.normalize( );
 

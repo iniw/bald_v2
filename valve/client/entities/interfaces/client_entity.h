@@ -1,12 +1,12 @@
 #pragma once
 
+#include "../../../signatures.h"
+#include "../../../data_map.h"
+#include "../../../../other/utils/utils.h"
 #include "client_unknown.h"
 #include "client_renderable.h"
 #include "client_networkable.h"
 #include "client_thinkable.h"
-#include "../../signatures.h"
-#include "../../../other/utils/utils.h"
-#include "../../data_map.h"
 
 struct i_client_entity : public i_client_unknown, public i_client_renderable, public i_client_networkable, public i_client_thinkable {
 

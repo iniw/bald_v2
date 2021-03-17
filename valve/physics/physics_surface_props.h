@@ -64,8 +64,8 @@ struct surface_game_props {
 	float    m_penetration_modifier;
 	float    m_damage_modifier;
 	uint16_t m_material;
-	byte     m_climbable;
-	byte     pad0[ 0x4 ];
+	char     m_climbable;
+	char     pad0[ 0x4 ];
 
 };
 

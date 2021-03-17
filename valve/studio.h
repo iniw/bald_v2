@@ -72,6 +72,7 @@ enum hitgroup {
 	hitgroup_rightarm,
 	hitgroup_leftleg,
 	hitgroup_rightleg,
+	hitgroup_neck,
 	hitgroup_gear = 10
 	
 };
@@ -275,13 +276,13 @@ struct studio_bone {
 	int			m_bone_controller[ 6 ];
 
 	vec_3		m_position;
-	byte		pad0[ 0x1C ];
+	char		pad0[ 0x1C ];
 
 	vec_3		m_position_scale;
 	vec_3		m_euler_scale;
 
 	matrix_3x4  m_pose_to_bone;
-	byte		pad1[ 0x10 ];
+	char		pad1[ 0x10 ];
 	int			m_flags;
 	int			m_procedure_type;
 	int			m_procedure_index;
@@ -289,7 +290,7 @@ struct studio_bone {
 	int			m_surface_prop_index;
 	int			m_contents;
 	int			m_surface_prop;
-	byte		pad2[ 0x1C ];
+	char		pad2[ 0x1C ];
 
 	inline const char* get_name( ) {
 
