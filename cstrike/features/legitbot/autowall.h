@@ -25,11 +25,9 @@ struct autowall {
 
 	float get_damage( const vec_3& point,lag_record* record = nullptr, cs_player* player = nullptr );
 
-	awall_data* get_data( const vec_3& point );
-
 private:
 
-	bool simulate_fire_bullet( weapon_cs_base* weapon, awall_data& data );
+	bool simulate_shot( weapon_cs_base* weapon, awall_data& data );
 
 	void clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, trace_filter* filter, trace* ray_trace );
 

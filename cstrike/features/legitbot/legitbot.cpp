@@ -6,6 +6,13 @@ void legitbot::run( user_cmd* cmd ) {
 
 	m_ative = false;
 
+	if ( !( cmd->m_buttons & in_attack ) ) {
+
+		m_data = nullptr;
+		return;
+
+	}
+
 	m_data = get_data( cmd );
 	if ( !m_data )
 		return;
@@ -18,7 +25,7 @@ void legitbot::run( user_cmd* cmd ) {
 
 		cmd->m_view_angles = m_data->m_ang;
 
-		if ( m_data->m_record.m_sim_time )
+		if ( m_data->m_record )
 			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent );
 
 		//g_interfaces.m_engine->set_view_angles( m_data->m_ang );

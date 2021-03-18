@@ -7,9 +7,9 @@ struct hash {
 
 	size_t get( std::string_view string );
 
-	constexpr size_t const_hash( const char* string, const size_t uValue = 0x8ADF9ED5 ) noexcept {
+	constexpr size_t const_hash( const char* string, const size_t value = 0x8ADF9ED5 ) noexcept {
 
-		return ( string[ 0 ] == '\0' ) ? uValue : const_hash( &string[ 1 ], ( uValue ^ size_t( string[ 0 ] ) ) * m_prime );
+		return ( string[ 0 ] == '\0' ) ? value : const_hash( &string[ 1 ], ( value ^ size_t( string[ 0 ] ) ) * m_prime );
 
 	}
 

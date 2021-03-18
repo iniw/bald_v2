@@ -4,18 +4,20 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 
 	static auto o_create_move = g_detour.get< decltype( &create_move ) >( XOR( "C_CSPlayer::CreateMove" ) );
 
-	if ( cmd->m_command_number == 0 )
+	if ( !cmd->m_command_number )
 		return o_create_move( ecx, edx, input_sample_time, cmd );
 
 	if ( o_create_move( ecx, edx, input_sample_time, cmd ) )
-		g_interfaces.m_prediction->set_local_view_angles( cmd->m_view_angles );
+		g_interfaces.m_engine->set_view_angles( cmd->m_view_angles );
 
 	q_ang old_view_angles = cmd->m_view_angles;
 
-	g_cstrike.m_cmd = cmd;
+	g_cstrike.m_local = ecx; g_cstrike.m_cmd = cmd;
 
 	g_movement.bhop( cmd );
-		
+	
+	g_engine_prediction.update( );
+
 	g_engine_prediction.start( cmd ); {
 
 		g_legitbot.run( cmd );
@@ -46,6 +48,6 @@ bool __cdecl hooks::glow_effect_spectators( base_player* this_player, base_playe
 
 	alpha = 0.4f;
 
-	return false;
+	return true;
 
 }

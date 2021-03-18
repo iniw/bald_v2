@@ -75,34 +75,40 @@ void backtracking::run( user_cmd* cmd ) {
 
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
-		apply_tick_count( cmd, best_record, m_player.ptr, true );
+		apply_tick_count( cmd, &best_record, m_player.ptr, true );
 
 	}
 
 }
 
-void backtracking::apply_tick_count( user_cmd* cmd, lag_record& record, cs_player* player, const bool should_draw_matrix ) {
+void backtracking::apply_tick_count( user_cmd* cmd, lag_record* record, cs_player* player, const bool should_draw_matrix ) {
+
+	if ( !record )
+		return;
 
 	apply( record, player );
 
-	cmd->m_tick_count = g_cstrike.time_to_ticks( record.m_sim_time + get_lerp( ) );
+	cmd->m_tick_count = g_cstrike.time_to_ticks( record->m_sim_time + get_lerp( ) );
 
-	restore( record, player );
+	restore( player );
 
 	if ( should_draw_matrix )
-		draw_matrix( record.m_matrix.data( ), player );
+		draw_matrix( record->m_matrix.data( ), player );
 
 }
 
-void backtracking::apply( lag_record& record, cs_player* player ) {
+void backtracking::apply( lag_record* record, cs_player* player ) {
+
+	if ( !record )
+		return;
 
 	m_backup.init( player );
 
-	record.apply( player );
+	record->apply( player );
 
 }
 
-void backtracking::restore( lag_record& record, cs_player* player ) {
+void backtracking::restore( cs_player* player ) {
 
 	m_backup.apply( player );
 

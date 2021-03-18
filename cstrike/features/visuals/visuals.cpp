@@ -39,7 +39,7 @@ void visuals::draw_watermark( ) {
 
 	const int fps = static_cast< int >( 1.f / g_interfaces.m_net_graph_panel->m_frame_rate );
 
-	g_render.draw_text( g_render.m_fonts.secondary,
+	g_render.draw_text( g_render.m_fonts.tertiary,
 		g_render.m_screen.w - 5, 5,
 		g_render.format_text( XOR( "bald_v2 | local: 0x%x | fps: %d" ), g_cstrike.m_local, fps ),
 		color( 255, 255, 255 ),

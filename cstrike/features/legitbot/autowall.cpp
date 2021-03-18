@@ -9,35 +9,18 @@ float autowall::get_damage( const vec_3& point, lag_record* record, cs_player* p
 		return -1.f;
 
 	if ( record && player )
-		g_backtracking.apply( *record, player );
+		g_backtracking.apply( record, player );
 
-	bool result = simulate_fire_bullet( weapon, data );
+	bool result = simulate_shot( weapon, data );
 
 	if ( record && player )
-		g_backtracking.restore( *record, player );
+		g_backtracking.restore( player );
 
 	return result ? data.m_dmg : -1.f;
 
 }
 
-awall_data* autowall::get_data( const vec_3& point ) {
-
-	vec_3 pos = g_cstrike.m_local->get_eye_position( );
-
-	static awall_data data( pos, point );
-
-	weapon_cs_base* weapon = g_interfaces.m_entity_list->get< weapon_cs_base* >( g_cstrike.m_local->get_active_weapon( ) );
-	if ( !weapon )
-		return nullptr;
-
-	if ( !simulate_fire_bullet( weapon, data ) )
-		return nullptr;
-
-	return &data;
-
-}
-
-bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, awall_data& data ) {
+bool autowall::simulate_shot( weapon_cs_base* weapon, awall_data& data ) {
 
 	cs_weapon_info* weapon_data = weapon->get_cs_wpn_data( );
 	if ( !weapon_data )
@@ -93,31 +76,48 @@ bool autowall::simulate_fire_bullet( weapon_cs_base* weapon, awall_data& data ) 
 
 void autowall::clip_trace_to_players( const vec_3& start, const vec_3& end, unsigned int mask, trace_filter* filter, trace* ray_trace ) {
 
-	trace trace;
-	float smallest_fraction = ray_trace->m_fraction;
+	if ( ray_trace->m_hit_entity ) {
 
-	const ray trace_ray( start, end );
+		const ray ray( start, end );
 
-	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
+		if ( filter && !filter->should_hit_entity( ray_trace->m_hit_entity, mask ) )
+			return;
 
-		cs_player* player = g_interfaces.m_entity_list->get< cs_player* >( i );
-		if ( !player || !player->is_alive( ) || player->is_dormant( ) )
-			continue;
+		const float range = ray_trace->m_hit_entity->dist_to_ray( start, end );
 
-		if ( filter && !filter->should_hit_entity( player, mask ) )
-			continue;
+		if ( range < 0.f || range > 60.f ) 
+			g_interfaces.m_trace->clip_ray_to_entity( ray, mask, ray_trace->m_hit_entity, ray_trace );
 
-		const float range = player->dist_to_ray( start, end );
 
-		if ( range < 0.f || range > 60.f )
-			continue;
+	} else {
 
-		g_interfaces.m_trace->clip_ray_to_entity( trace_ray, mask, player, &trace );
+		trace trace;
+		float smallest_fraction = ray_trace->m_fraction;
 
-		if ( trace.m_fraction < smallest_fraction ) {
+		const ray trace_ray( start, end );
 
-			*ray_trace = trace;
-			smallest_fraction = trace.m_fraction;
+		for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
+
+			cs_player* player = g_interfaces.m_entity_list->get< cs_player* >( i );
+			if ( !player || !player->is_alive( ) || player->is_dormant( ) )
+				continue;
+
+			if ( filter && !filter->should_hit_entity( player, mask ) )
+				continue;
+
+			const float range = player->dist_to_ray( start, end );
+
+			if ( range < 0.f || range > 60.f )
+				continue;
+
+			g_interfaces.m_trace->clip_ray_to_entity( trace_ray, mask, player, &trace );
+
+			if ( trace.m_fraction < smallest_fraction ) {
+
+				*ray_trace = trace;
+				smallest_fraction = trace.m_fraction;
+
+			}
 
 		}
 
@@ -376,11 +376,9 @@ bool autowall::is_breakable_entity( base_player* entity ) {
 
 	} else {
 
-		static const auto name_hash = g_hash.const_hash( XOR( "func_breakable_surf" ) );
-
 		size_t class_name = g_hash.get( entity->get_class_name( ) );
 
-		if ( class_name == name_hash ) {
+		if ( class_name == g_hash.const_hash( XOR( "func_breakable_surf" ) ) ) {
 
 			breakable_surface* surface = reinterpret_cast< breakable_surface* >( entity );
 

@@ -34,6 +34,7 @@
     <ClCompile Include="cstrike\features\legitbot\backtracking.cpp" />
     <ClCompile Include="cstrike\hooked\functions\players.cpp" />
     <ClCompile Include="other\memory\pe.cpp" />
+    <ClCompile Include="cstrike\hooked\functions\material_system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cstrike\cstrike.h" />
@@ -135,5 +136,6 @@
     <ClInclude Include="other\math\datatypes\vec_3.h" />
     <ClInclude Include="cstrike\features\legitbot\backtracking.h" />
     <ClInclude Include="other\memory\pe.h" />
+    <ClInclude Include="valve\studio_render\material_system_config.h" />
   </ItemGroup>
 </Project>

@@ -12,11 +12,8 @@ bool detour::setup( std::string_view name, void* function, void* custom_function
 	auto& info = m_detours[ g_hash.get( name.data( ) ) ];
 	info = { function, nullptr };
 
-	auto hook = g_signatures.m_hook.as< bool( __cdecl* )( void*, void*, void*, int ) >( );
-	
-	bool result = hook( info.m_function, custom_function, &info.m_original, 0 );
-
-	if ( !result )
+	const auto hook = g_signatures.m_hook.as< bool( __cdecl* )( void*, void*, void*, int ) >( );
+	if ( !hook( info.m_function, custom_function, &info.m_original, 0 ) )
 		return false;
 
 	g_console.log( XOR( "hooked %s -> 0x%x" ), name.data( ), function );

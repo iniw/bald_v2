@@ -2,14 +2,11 @@
 
 bool hooks::setup( ) {
 
-	g_console.log( XOR( "hooking functions..." ) );
-
-
 	g_detour.setup( XOR( "CHLClient::LevelInitPreEntity" ), g_utils.get_v_func( g_interfaces.m_client, 5 ), &level_init_pre_entity );
 
-	g_detour.setup( XOR( "CHLClient::FrameStageNotify" ), g_utils.get_v_func( g_interfaces.m_client, 37 ), &frame_stage_notify );
+	g_detour.setup( XOR( "CHLClient::LevelShutdown" ), g_utils.get_v_func( g_interfaces.m_client, 7 ), &level_shutdown );
 
-	g_detour.setup( XOR( "CHLClient::LevelShutdown" ), g_signatures.m_level_shutdown, &level_shutdown );
+	g_detour.setup( XOR( "CHLClient::FrameStageNotify" ), g_utils.get_v_func( g_interfaces.m_client, 37 ), &frame_stage_notify );
 
 	g_detour.setup( XOR( "C_CSPlayer::CreateMove" ), g_signatures.m_create_move, &create_move );
 
@@ -43,7 +40,7 @@ bool hooks::setup( ) {
 
 	g_detour.setup( XOR( "CEngineBSPTree::ListLeavesInBox" ), g_signatures.m_list_leaves_in_box, &list_leaves_in_box );
 
-	g_console.log( XOR( "hooked functions" ) );
+	g_detour.setup( XOR( "CMaterialSystem::OverrideConfig" ), g_utils.get_v_func( g_interfaces.m_material_system, 21 ), &override_config );
 
 	return true;
 

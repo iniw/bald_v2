@@ -24,13 +24,13 @@ struct model_info {
 		return g_utils.call_v_func< model* >( this, 1, modelindex );
 
 	}
-	inline auto  get_model_index( const char* name ) {
+	inline auto get_model_index( const char* name ) {
 
 		return g_utils.call_v_func< int >( this, 2, name );
 
 	}
 
-	inline auto  get_model_name( const model* model ) {
+	inline auto get_model_name( const model* model ) {
 
 		return g_utils.call_v_func< char* >( this, 3, model );
 

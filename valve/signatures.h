@@ -33,7 +33,6 @@ struct signatures {
 	// functions
 
 	address m_create_move;
-	address m_level_shutdown;
 	address m_get_view_model_fov;
 	address m_draw_crosshair;
 	address m_update;
@@ -68,8 +67,6 @@ struct signatures {
 	address m_physics_run_think;
 	address m_post_think_vphysics;
 	address m_simulate_player_simulated_entities;
-	address m_prediction_random_seed;
-	address m_prediction_entity;
 	address m_glow_effect_spectator;
 	address m_move_helper;
 	address m_insert_into_tree;
@@ -116,7 +113,6 @@ struct signatures {
 			m_abs_velocity = g_pattern.find( m_dlls.client, XOR( "F3 0F 10 A6 ? ? ? ? F3 0F 11 64 24 ?" ) );
 
 			m_create_move                        = g_pattern.find( m_dlls.client, XOR( "E8 ? ? ? ? FF 15 ? ? ? ? 84 C0 74 29" ) ).absolute( );
-			m_level_shutdown                     = g_pattern.find( m_dlls.client, XOR( "55 8B EC 83 E4 F8 83 EC 30 C6 05 ? ? ? ? ?" ) );
 			m_get_view_model_fov                 = g_pattern.find( m_dlls.client, XOR( "55 8B EC 8B 0D ? ? ? ? 83 EC 08 57" ) );
 			m_draw_crosshair                     = g_pattern.find( m_dlls.client, XOR( "55 8B EC 83 E4 F0 83 EC 78 56 8B F1 8B 0D ? ? ? ?" ) );
 			m_update                             = g_pattern.find( m_dlls.client, XOR( "E8 ? ? ? ? E9 ? ? ? ? 83 BE ? ? ? ? ?" ) ).absolute( );
@@ -151,8 +147,6 @@ struct signatures {
 			m_physics_run_think                  = g_pattern.find( m_dlls.client, XOR( "55 8B EC 83 EC 10 53 56 57 8B F9 8B 87" ) );
 			m_post_think_vphysics                = g_pattern.find( m_dlls.client, XOR( "55 8B EC 83 E4 F8 81 EC ? ? ? ? 53 8B D9 56 57 83 BB" ) );
 			m_simulate_player_simulated_entities = g_pattern.find( m_dlls.client, XOR( "56 8B F1 57 8B BE ? ? ? ? 83 EF 01 78 72" ) );
-			m_prediction_random_seed             = g_pattern.find( m_dlls.client, XOR( "8B 0D ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 83 C4 04" ) );
-			m_prediction_entity                  = g_pattern.find( m_dlls.client, XOR( "89 35 ? ? ? ? F3 0F 10 48 20" ) );
 			m_glow_effect_spectator              = g_pattern.find( m_dlls.client, XOR( "55 8B EC 83 EC 14 53 8B 5D 0C 56 57 85 DB 74" ) );
 			m_move_helper                        = g_pattern.find( m_dlls.client, XOR( "8B 0D ? ? ? ? 8B 46 08 68" ) );
 			m_insert_into_tree                   = g_pattern.find( m_dlls.client, XOR( "56 52 FF 50 18" ) );

@@ -6,8 +6,6 @@ void engine_prediction::start( user_cmd* cmd ) {
 	if ( !g_cstrike.m_local->is_alive( ) )
 		return;
 
-	update( );
-
 	*g_cstrike.m_local->get_current_command( ) = cmd;
 	g_cstrike.m_local->get_last_command( ) = *cmd;
 
@@ -94,6 +92,9 @@ void engine_prediction::end( user_cmd* cmd ) {
 
 void engine_prediction::update( ) {
 
+	if ( !g_cstrike.m_local->is_alive( ) )
+		return;
+
 	if ( g_interfaces.m_client_state->m_delta_tick > 0 ) {
 
 		g_interfaces.m_prediction->update( g_interfaces.m_client_state->m_delta_tick,
@@ -125,8 +126,8 @@ int engine_prediction::get_tickbase( user_cmd* cmd ) {
 
 bool engine_prediction::setup( ) {
 
-	m_prediction_entity = g_signatures.m_prediction_entity.add( 0x2 ).get< base_player* >( );
-	m_prediction_random_seed = g_signatures.m_prediction_random_seed.add( 0x2 ).get< int* >( );
+	m_prediction_random_seed = g_utils.get_v_func( g_interfaces.m_prediction, 19).add( 0x30 ).get< int* >( );
+	m_prediction_entity = g_utils.get_v_func( g_interfaces.m_prediction, 19 ).add( 0x54 ).get< base_player* >( );
 
 	return m_prediction_entity && m_prediction_random_seed;
 

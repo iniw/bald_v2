@@ -98,6 +98,12 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4056;4244;4307;4731;26812</DisableSpecificWarnings>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +125,9 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +173,7 @@
     <ClCompile Include="cstrike\features\legitbot\legitbot.cpp" />
     <ClCompile Include="cstrike\features\movement\movement.cpp" />
     <ClCompile Include="cstrike\features\visuals\visuals.cpp" />
+    <ClCompile Include="cstrike\hooked\functions\material_system.cpp" />
     <ClCompile Include="cstrike\hooked\functions\players.cpp" />
     <ClCompile Include="cstrike\hooked\functions\client.cpp" />
     <ClCompile Include="cstrike\hooked\functions\client_input.cpp" />
@@ -282,6 +292,7 @@
     <ClInclude Include="valve\shared\user_cmd.h" />
     <ClInclude Include="valve\signatures.h" />
     <ClInclude Include="valve\studio.h" />
+    <ClInclude Include="valve\studio_render\material_system_config.h" />
     <ClInclude Include="valve\studio_render\studio_render.h" />
     <ClInclude Include="valve\studio_render\studio_render_context.h" />
     <ClInclude Include="valve\tier1\interface.h" />

@@ -11,12 +11,12 @@ struct aimbot_data {
 
 		m_ent = player;
 
-		record ? m_record = *record : m_record = lag_record( );
+		m_record = record;
 
-		m_pos = m_ent->get_hitbox_position( hitbox_head, record );
+		m_pos = m_ent->get_hitbox_position( hitbox_head, m_record );
 		m_ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), m_pos ).sanitize( );
 		m_fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, m_ang );
-		m_dmg = g_autowall.get_damage( m_pos, record, m_ent );
+		m_dmg = g_autowall.get_damage( m_pos, m_record, m_ent );
 
 	}
 
@@ -25,7 +25,7 @@ struct aimbot_data {
 	q_ang m_ang;
 	float m_fov;
 	float m_dmg;
-	lag_record m_record;
+	lag_record* m_record;
 
 };
 

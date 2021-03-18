@@ -7,12 +7,9 @@
 
 bool netvars::setup( ) {
 
-	auto list = g_interfaces.m_client->get_all_classes( );
-
+	auto list = g_interfaces.m_client->get_all_classes( );	
 	if ( !list )
 		return false;
-
-	g_console.log( XOR( "dumping netvars..." ) );
 
 	m_file.open( XOR( "netvars.txt" ), std::ios::out | std::ios::trunc );
 
@@ -66,23 +63,16 @@ size_t netvars::find_in_datamap( data_map* map, const size_t hash ) {
 		for ( auto i = 0; i < map->data_fields; ++i ) {
 
 			const char* field_name = map->data_desc[ i ].field_name;
-
 			if ( !field_name )
 				continue;
 
 			if ( g_hash.get( field_name ) == hash )
 				return map->data_desc[ i ].field_offset[ TD_OFFSET_NORMAL ];
 
-			if ( map->data_desc[ i ].field_type == FIELD_EMBEDDED ) {
-
-				if ( map->data_desc[ i ].type_description != nullptr ) {
-
-					if ( const auto offset = find_in_datamap( map->data_desc[ i ].type_description, hash ); offset != 0U )
-
+			if ( map->data_desc[ i ].field_type == FIELD_EMBEDDED )
+				if ( map->data_desc[ i ].type_description != nullptr )
+					if ( const auto offset = find_in_datamap( map->data_desc[ i ].type_description, hash ); offset )
 						return offset;
-				}
-
-			}
 
 		}
 

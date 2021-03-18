@@ -123,6 +123,14 @@ struct cs_player : base_animating {
 
 	}
 
+	inline auto& is_using_new_anim_state( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_CSPlayer->m_flLastExoJumpTime" ) ) ] + 0x8;
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
 	inline auto physics_run_think( int method ) {
 
 		static auto function = g_signatures.m_physics_run_think.as< bool( __thiscall* )( void*, int ) >( );
@@ -138,6 +146,8 @@ struct cs_player : base_animating {
 		return function( this->get_collideable( ), mins, maxs );
 
 	}
+
+	vec_3 get_eye_position( );
 
 	void post_think( );
 

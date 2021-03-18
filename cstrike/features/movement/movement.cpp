@@ -62,7 +62,7 @@ void movement::correct( user_cmd* cmd, q_ang& old_view_angles ) {
 	const float max_side_speed = cl_sidespeed->get_float( );
 	const float max_up_speed = cl_upspeed->get_float( );
 
-	vec_3 forward = { }, right = { }, up = { };
+	vec_3 forward, right, up;
 	g_math.angle_vectors( old_view_angles, &forward, &right, &up );
 
 	forward.z = right.z = up.x = up.y = 0.f;
@@ -71,7 +71,7 @@ void movement::correct( user_cmd* cmd, q_ang& old_view_angles ) {
 	right.normalize( );
 	up.normalize( );
 
-	vec_3 old_forward = { }, old_right = { }, old_up = { };
+	vec_3 old_forward, old_right, old_up;
 	g_math.angle_vectors( cmd->m_view_angles, &old_forward, &old_right, &old_up );
 
 	old_forward.z = old_right.z = old_up.x = old_up.y = 0.f;

@@ -32,6 +32,7 @@ struct render {
 
 		h_font primary;
 		h_font secondary;
+		h_font tertiary;
 
 	} m_fonts;
 

@@ -29,10 +29,11 @@ struct lag_record {
 
 	inline void init( cs_player* player ) {
 
-		std::memcpy( m_matrix.data( ), player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
-
 		m_origin = player->get_origin( );
 		m_abs_origin = player->get_abs_origin( );
+			
+		std::memcpy( m_matrix.data( ), player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
+
 		m_mins = player->get_mins( );
 		m_maxs = player->get_maxs( );
 
@@ -68,11 +69,11 @@ struct backtracking {
 
 	void paint( );
 
-	void apply_tick_count( user_cmd* cmd, lag_record& record, cs_player* player, const bool should_draw_matrix = false );
+	void apply_tick_count( user_cmd* cmd, lag_record* record, cs_player* player, const bool should_draw_matrix = false );
 
-	inline void apply( lag_record& record, cs_player* player );
+	inline void apply( lag_record* record, cs_player* player );
 
-	inline void restore( lag_record& record, cs_player* player );
+	inline void restore( cs_player* player );
 
 	bool setup( );
 

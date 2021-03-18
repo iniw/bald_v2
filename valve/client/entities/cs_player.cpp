@@ -4,6 +4,28 @@
 #include "../../../cstrike/cstrike.h"
 #include "../../../cstrike/features/legitbot/backtracking.h"
 
+vec_3 cs_player::get_eye_position( ) {
+
+	vec_3 eye_pos;
+	g_utils.call_v_func< void, vec_3& >( this, 168, eye_pos );
+
+	if ( is_using_new_anim_state( ) && this == g_cstrike.m_local ) {
+
+		auto anim_state = get_anim_state( );
+
+		if ( anim_state ) {
+
+			// we have modify eye position hooked so we can just call it directly
+			g_signatures.m_modify_eye_position.as< void( __thiscall* )( csgo_player_anim_state*, const vec_3& ) >( )( anim_state, eye_pos );
+
+		}
+
+	}
+
+	return eye_pos;
+
+}
+
 void cs_player::post_think( ) {
 
 	static auto post_think_vphysics = g_signatures.m_post_think_vphysics.as< bool( __thiscall* )( base_entity* ) >( );

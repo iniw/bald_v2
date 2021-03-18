@@ -4,7 +4,9 @@ bool render::setup( ) {
 
 	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
 
-	create_font( m_fonts.secondary, XOR( "04b03" ), 8, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "Small Fonts" ), 8, 500, fontflag_outline );
+
+	create_font( m_fonts.tertiary, XOR( "Small Fonts" ), 12, 500, fontflag_outline );
 
 	g_interfaces.m_surface->get_screen_size( m_screen.w, m_screen.h );
 

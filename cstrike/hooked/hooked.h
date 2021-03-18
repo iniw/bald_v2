@@ -17,7 +17,7 @@ private:
 	static void __fastcall   level_shutdown( void* ecx, void* edx );
 	static void __fastcall   frame_stage_notify( void* ecx, void* edx, frame_stage stage );
 	static void __fastcall	 level_init_pre_entity( void* ecx, void* edx, char* map );
-	static void __fastcall   paint( void* ecx, void* edx, paint_mode mode );
+	static void __fastcall   paint( engine_vgui* ecx, void* edx, paint_mode mode );
 	static float __fastcall  get_view_model_fov( void* ecx, void* edx );
 	static void __fastcall   draw_crosshair( weapon_cs_base* ecx, void* edx );
 	static bool __fastcall	 is_hltv( void* ecx, void* edx );
@@ -32,6 +32,7 @@ private:
 	static void __fastcall   draw_model( studio_render_context* ecx, void* edx, void* results, const draw_model_info& info, void* bone_to_world, float* flex_weights, float* flex_delayed_rates, const vec_3& origin, int flags );
 	static int __fastcall	 list_leaves_in_box( void* ecx, void* edx, const vec_3& mins, const vec_3& maxs, unsigned short* list, int list_max );
 	static bool __cdecl      glow_effect_spectators( base_player* this_player, base_player* local_player, glow_styles& glow_style, vec_3& color, float& alpha_start, float& alpha, float& time_start, float& time_target, bool& animate );
+	static bool __fastcall   override_config( void* ecx, void* edx, material_system_config* cfg, bool update );
 
 };
 
