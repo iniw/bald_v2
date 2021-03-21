@@ -44,6 +44,8 @@ bool hooks::setup( ) {
 
 	g_detour.setup( XOR( "CMaterialSystem::OverrideConfig" ), g_utils.get_v_func( g_interfaces.m_material_system, 21 ), &override_config );
 
+	g_console.log( XOR( "finished hooking" ) );
+
 	return true;
 
 }

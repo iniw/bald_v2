@@ -58,19 +58,17 @@ address pe::export_fn( const address base, const size_t fn_hash, const bool in_m
 
 	};
 
-	const auto dos_headers = reinterpret_cast< PIMAGE_DOS_HEADER >( base.as< size_t >( ) );
+	const auto dos_headers = base.as< PIMAGE_DOS_HEADER >( );
 	if ( dos_headers->e_magic != IMAGE_DOS_SIGNATURE )
 		return address( );
 
-	const auto nt_headers = reinterpret_cast< PIMAGE_NT_HEADERS >( base.as< size_t >( ) + dos_headers->e_lfanew );
+	const auto nt_headers = base.add( dos_headers->e_lfanew ).as< PIMAGE_NT_HEADERS >( );
 	if ( nt_headers->Signature != IMAGE_NT_SIGNATURE )
 		return address( );
 
-	const auto exports = reinterpret_cast< IMAGE_EXPORT_DIRECTORY* >(
-		rva_2_offset( base.as< size_t >( ) + nt_headers->OptionalHeader.DataDirectory[ IMAGE_DIRECTORY_ENTRY_EXPORT ].VirtualAddress,
-		nt_headers, in_memory ) );
+	const auto exports = reinterpret_cast< IMAGE_EXPORT_DIRECTORY* >( rva_2_offset( base.add( nt_headers->OptionalHeader.DataDirectory[ IMAGE_DIRECTORY_ENTRY_EXPORT ].VirtualAddress ), nt_headers, in_memory ) );
 
-	const auto names = reinterpret_cast< uint32_t* >( base.as< size_t >( ) + rva_2_offset( exports->AddressOfNames, nt_headers, in_memory ) );
+	const auto names = base.add( rva_2_offset( exports->AddressOfNames, nt_headers, in_memory ) ).as< uint32_t* >( );
 	if ( !names )
 		return address( );
 
@@ -79,7 +77,7 @@ address pe::export_fn( const address base, const size_t fn_hash, const bool in_m
 	// go thru all exported functions until we find our export
 	for ( uint32_t i = 0; i < exports->NumberOfFunctions; i++ ) {
 
-		const auto function_name = reinterpret_cast< const char* >( base.as< size_t >( ) + rva_2_offset( names[ i ], nt_headers, in_memory ) );
+		auto function_name = base.add( rva_2_offset( names[ i ], nt_headers, in_memory ) ).as< const char* >( );
 
 		// it is what it is
 		if ( g_hash.get( function_name ) == fn_hash ) {
@@ -98,9 +96,9 @@ address pe::export_fn( const address base, const size_t fn_hash, const bool in_m
 
 	}
 
-	const auto ordinals = reinterpret_cast< uint16_t* >( base.as< uintptr_t >( ) + rva_2_offset( exports->AddressOfNameOrdinals, nt_headers, in_memory ) );
-	const auto addresses = reinterpret_cast< uint32_t* >( base.as< uintptr_t >( ) + rva_2_offset( exports->AddressOfFunctions, nt_headers, in_memory ) );
+	const auto ordinals = base.add( rva_2_offset( exports->AddressOfNameOrdinals, nt_headers, in_memory ) ).as< uint16_t* >( );
+	const auto addresses = base.add( rva_2_offset( exports->AddressOfFunctions, nt_headers, in_memory ) ).as< uint32_t* >( );
 
-	return address( base.as< uintptr_t >( ) + rva_2_offset( addresses[ ordinals[ ordinal_index ] ], nt_headers, in_memory ) );
+	return base.add( rva_2_offset( addresses[ ordinals[ ordinal_index ] ], nt_headers, in_memory ) );
 
 }

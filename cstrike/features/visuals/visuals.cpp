@@ -98,9 +98,7 @@ void visuals::draw_name( ) {
 	std::string name = info.m_name;
 
 	if ( !info.m_xuid_low )
-		name.append( XOR( " [BOT]" ) );
-
-	std::transform( name.begin( ), name.end( ), name.begin( ), std::tolower );
+		name.append( XOR( " - bot" ) );
 
 	g_render.draw_text( g_render.m_fonts.primary,
 		m_box.x + m_box.width / 2, m_box.y - 1, 
@@ -121,7 +119,7 @@ void visuals::draw_weapon( ) {
 		return;
 
 	std::wstring weapon_name = g_interfaces.m_localize->find( weapon_info->m_hud_name );
-	std::transform( weapon_name.begin( ), weapon_name.end( ), weapon_name.begin( ), std::toupper );
+	std::transform( weapon_name.begin( ), weapon_name.end( ), weapon_name.begin( ), ::toupper );
 
 	g_render.draw_text( g_render.m_fonts.secondary,
 		m_box.x + m_box.width / 2, m_box.y + m_box.height + 2,

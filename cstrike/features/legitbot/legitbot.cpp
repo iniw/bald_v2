@@ -176,6 +176,8 @@ bool legitbot::setup( ) {
 	if ( m_convars.weapon_recoil_scale = g_interfaces.m_convar->find_var( XOR( "weapon_recoil_scale" ) ); !m_convars.weapon_recoil_scale )
 		return false;
 
+	g_console.log( XOR( "setup legitbot convars" ) );
+
 	return true;
 
 }

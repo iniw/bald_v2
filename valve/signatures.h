@@ -174,6 +174,8 @@ struct signatures {
 			m_draw_server_hitboxes = g_pattern.find( m_dlls.server, XOR( "E8 ? ? ? ? F6 83 ? ? ? ? ? 0F 84 ? ? ? ? 33 FF" ) ).absolute( );
 			m_util_player_by_index = g_pattern.find( m_dlls.server, XOR( "85 C9 7E 2A A1 ? ? ? ?" ) );
 
+			g_console.log( XOR( "scanned all signatures" ) );
+
 			return true;
 
 		}

@@ -1,14 +1,21 @@
 #include "render.h"
 
+#include <filesystem>
+
 bool render::setup( ) {
+
+	if ( !download_font( XOR( "https://drive.google.com/uc?id=1I8iqKzSN2btsndIDICLM-ygbRplBbPjq&export=download" ), XOR( "04B03.ttf" ) ) )
+		return false;
 
 	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
 
-	create_font( m_fonts.secondary, XOR( "04b03" ), 8, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "04B03" ), 8, 500, fontflag_outline );
 
 	create_font( m_fonts.tertiary, XOR( "Small Fonts" ), 12, 500, fontflag_outline );
 
 	g_interfaces.m_surface->get_screen_size( m_screen.w, m_screen.h );
+
+	g_console.log( XOR( "setup the renderer" ) );
 
 	return true;
 
@@ -87,6 +94,29 @@ void render::create_font( h_font& font, std::string_view name, int tall, int wei
 	font = g_interfaces.m_surface->create_font( );
 		
 	g_interfaces.m_surface->set_font_glyph( font, name.data( ), tall, weight, 0, 0, flags );
+
+}
+
+bool render::download_font( std::string_view link, std::string_view name ) {
+
+	std::string font_path = g_file_system.m_fonts_path;
+	g_winapi.path_append( font_path.data( ), name.data( ) );
+
+	if ( !std::filesystem::exists( font_path ) ) {
+
+		if ( !SUCCEEDED( g_winapi.url_download_to_file( NULL, link.data( ), font_path.data( ), 0, NULL ) ) ) {
+
+			g_console.log( XOR( "failed to download font %s" ), name);
+
+			return false;
+
+		}
+
+	}
+
+	g_winapi.add_font_resource( font_path.data( ) );
+
+	return true;
 
 }
 

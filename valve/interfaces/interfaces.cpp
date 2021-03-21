@@ -2,10 +2,6 @@
 
 bool interfaces::setup( ) {
 
-	g_console.log( XOR( "grabbing interfaces..." ) );
-
-	//dump( );
-
 	m_client = get< base_client_dll* >( g_signatures.m_dlls.client, XOR( "VClient" ) );
 	if ( !m_client )
 		return false;

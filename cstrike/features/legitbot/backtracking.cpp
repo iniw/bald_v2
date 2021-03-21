@@ -198,6 +198,8 @@ bool backtracking::setup( ) {
 	if ( m_convars.sv_showlagcompensation_duration = g_interfaces.m_convar->find_var( XOR( "sv_showlagcompensation_duration" ) ); !m_convars.sv_showlagcompensation_duration )
 		return false;
 
+	g_console.log( XOR( "setup backtracking convars" ) );
+
 	return true;
 
 }

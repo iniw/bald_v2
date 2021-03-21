@@ -21,6 +21,8 @@
 
 #include "../../other/console/console.h"
 
+#include <fstream>
+
 struct interfaces {
 
 	bool setup( );
@@ -48,7 +50,7 @@ private:
 
 	template< class t > inline t get( address module_base, std::string_view interface_name ) {
 
-		static const auto fn_hash = g_hash.const_hash( XOR( "CreateInterface" ) );
+		static const auto fn_hash = g_hash.get( XOR( "CreateInterface" ) );
 
 		auto create_interface = g_pe.export_fn( module_base, fn_hash );
 		if ( !create_interface )
@@ -83,32 +85,6 @@ private:
 
 		return t( );
 
-	}
-
-	inline void dump( ) {
-
-		const auto fn_hash = g_hash.const_hash( XOR( "CreateInterface" ) );
-
-		for ( const auto& module : g_pe.m_loaded_modules )	{
-
-			auto create_interface = g_pe.export_fn( module.second, fn_hash );
-			if ( !create_interface )
-				continue;
-
-			auto create_interface_fn = create_interface.add( 0x4 ).absolute( );
-			if ( !create_interface_fn )
-				continue;
-
-			auto interface_node = create_interface_fn.add( 0x6 ).get< interface_reg* >( 2 );
-
-			while ( interface_node != nullptr ) {
-
-				g_console.log( "%s -> %s", module.first.data( ), interface_node->m_name );
-
-				interface_node = interface_node->m_next;
-			}
-
-		}
 	}
 
 };

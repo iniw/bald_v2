@@ -129,6 +129,8 @@ bool engine_prediction::setup( ) {
 	m_prediction_random_seed = g_utils.get_v_func( g_interfaces.m_prediction, 19).add( 0x30 ).get< int* >( );
 	m_prediction_entity = g_utils.get_v_func( g_interfaces.m_prediction, 19 ).add( 0x54 ).get< base_player* >( );
 
+	g_console.log( XOR( "setup engine prediction vars" ) );
+
 	return m_prediction_entity && m_prediction_random_seed;
 
 }

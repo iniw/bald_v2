@@ -83,7 +83,7 @@ struct base_player : base_combat_character {
 
 	inline auto get_buttons( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_nButtons" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_nButtons" ) ) );
 
 		return reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
@@ -91,7 +91,7 @@ struct base_player : base_combat_character {
 
 	inline auto& get_button_last( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_afButtonLast" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_afButtonLast" ) ) );
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
@@ -99,7 +99,7 @@ struct base_player : base_combat_character {
 
 	inline auto& get_button_pressed( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_afButtonPressed" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_afButtonPressed" ) ) );
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
@@ -107,7 +107,7 @@ struct base_player : base_combat_character {
 
 	inline auto& get_button_released( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_afButtonReleased" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_afButtonReleased" ) ) );
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
@@ -115,7 +115,7 @@ struct base_player : base_combat_character {
 
 	inline auto get_impulse( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_nImpulse" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_nImpulse" ) ) );
 
 		return reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 
@@ -123,7 +123,7 @@ struct base_player : base_combat_character {
 
 	inline auto& get_move_type( ) {
 
-		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_MoveType" ) ) );
+		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.get( XOR( "m_MoveType" ) ) );
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
 

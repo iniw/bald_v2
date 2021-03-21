@@ -20,7 +20,10 @@ struct pe {
 
 	address get( const std::string& name ) {
 
-		return m_loaded_modules[ name ];
+		if ( m_loaded_modules.count( name ) )
+			return m_loaded_modules[ name ];
+		else 
+			return address( );
 
 	}
 
