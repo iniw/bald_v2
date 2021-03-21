@@ -76,7 +76,7 @@ void visuals::draw_health( ) {
 		color( 255 - scaler, scaler, 0, m_alpha[ m_player.idx ] ),
 		x_right );
 
-	if ( m_player.ptr->is_max_health( ) )
+	if ( health == 100 )
 		return;
 
 	g_render.draw_text( g_render.m_fonts.secondary, 
