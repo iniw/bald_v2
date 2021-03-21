@@ -19,7 +19,7 @@ enum frame_stage {
 
 };
 
-using player_info = struct {
+struct player_info {
 
 	char pad0[ 0x8 ];
 	int  m_xuid_low;

@@ -21,13 +21,13 @@ struct math {
 
 	void angle_vectors( const q_ang& angle, vec_3* foward, vec_3* right = nullptr, vec_3* up = nullptr );
 
-	__forceinline float rad_to_deg( const float rad ) const {
+	inline float rad_to_deg( const float rad ) const {
 
 		return rad * ( 180.f / PI );
 
 	}
 
-	__forceinline float deg_to_rad( const float deg ) const {
+	inline float deg_to_rad( const float deg ) const {
 
 		return deg * ( PI / 180.f );
 

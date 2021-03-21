@@ -80,7 +80,7 @@ bool interfaces::setup( ) {
 	if ( !m_net_graph_panel )
 		return false;
 
-	g_console.log( "m_net_graph_panel -> 0x%x", m_net_graph_panel );
+	g_console.log( XOR( "m_net_graph_panel -> 0x%x" ), m_net_graph_panel );
 
 	g_console.log( XOR( "grabbed interfaces" ) );
 

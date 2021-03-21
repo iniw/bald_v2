@@ -42,8 +42,7 @@ void console::log( std::string_view format, ... ) {
 	SetConsoleTextAttribute( m_handle, 7 );
 
 	// pretty ugly !
-	std::printf( m_buffer );
-	std::printf( XOR( "\n" ) );
+	std::printf( XOR( "%s \n" ), m_buffer );
 
 	va_end( arguments );
 

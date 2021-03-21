@@ -18,12 +18,9 @@ struct pe {
 	// get export address
 	address export_fn( const address base, const size_t fn_hash, const bool in_memory = false );
 
-	address get( const std::string& name ) {
+	inline address get( const std::string& name ) {
 
-		if ( m_loaded_modules.count( name ) )
-			return m_loaded_modules[ name ];
-		else 
-			return address( );
+		return m_loaded_modules[ name ];
 
 	}
 

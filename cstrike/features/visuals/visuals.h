@@ -24,6 +24,8 @@ private:
 
 	bool calculate_box( );
 
+	const char8_t* get_weapon_icon( int idx );
+
 	struct {
 
 		int x, y, width, height;

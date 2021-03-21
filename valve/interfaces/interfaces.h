@@ -73,7 +73,7 @@ private:
 				if ( !interface_address )
 					return t( );
 
-				g_console.log( "%s -> 0x%x", interface_node->m_name, interface_address );
+				g_console.log( XOR( "%s -> 0x%x" ), interface_node->m_name, interface_address );
 
 				return ( t )interface_address;
 

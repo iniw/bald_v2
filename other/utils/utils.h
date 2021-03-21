@@ -11,39 +11,9 @@ struct utils {
 
 	bool create_thread( DWORD WINAPI function( void* ), void* parameter );
 
-	inline std::string wide_to_multi_byte( const std::wstring_view str ) {
+	std::string wide_to_multi_byte( const std::wstring_view str );
 
-		if ( str.empty( ) )
-			return { };
-
-		std::string result;
-		int lenght;
-
-		lenght = g_winapi.wide_char_to_multi_byte( CP_UTF8, 0, str.data( ), ( int )str.size( ), 0, 0, 0, 0 );
-
-		result = std::string( lenght, 0 );
-
-		g_winapi.wide_char_to_multi_byte( CP_UTF8, 0, str.data( ), ( int )str.size( ), &result[ 0 ], lenght, 0, 0 );
-
-		return result;
-
-	}
-
-	inline std::wstring multi_byte_to_wide( const std::string_view str ) {
-
-		if ( str.empty( ) )
-			return { };
-
-		std::wstring result;
-		int lenght;
-		lenght = g_winapi.multi_byte_to_wide_char( CP_UTF8, 0, str.data( ), ( int )str.size( ), nullptr, 0 );
-
-		result = std::wstring( lenght, 0 );
-
-		g_winapi.multi_byte_to_wide_char( CP_UTF8, 0, str.data( ), ( int )str.size( ), &result[ 0 ], lenght );
-
-		return result;
-	}
+	std::wstring multi_byte_to_wide( const std::string_view str );
 
 	inline void sleep( size_t milliseconds ) {
 

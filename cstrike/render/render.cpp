@@ -4,14 +4,17 @@
 
 bool render::setup( ) {
 
-	if ( !download_font( XOR( "https://drive.google.com/uc?id=1I8iqKzSN2btsndIDICLM-ygbRplBbPjq&export=download" ), XOR( "04B03.ttf" ) ) )
+	if ( !download_font( XOR( "https://drive.google.com/uc?export=download&id=1Z-Ft-FYkOP4Q93dujBhr7V8rIJ_Fwzbw" ), XOR( "04b03.ttf" ) ) )
 		return false;
 
-	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
+	if ( !download_font( XOR( "https://drive.google.com/uc?export=download&id=147HCXZljiUg2vRa7jza9kNGx31KTY6Ww" ), XOR( "04b25.ttf" ) ) )
+		return false;
 
-	create_font( m_fonts.secondary, XOR( "04B03" ), 8, 500, fontflag_outline );
+	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500,  fontflag_dropshadow );
 
-	create_font( m_fonts.tertiary, XOR( "Small Fonts" ), 12, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "04b03" ), 8, 500, fontflag_outline );
+
+	create_font( m_fonts.tertiary, XOR( "04b25" ), 12, 500, fontflag_outline );	
 
 	g_interfaces.m_surface->get_screen_size( m_screen.w, m_screen.h );
 
@@ -81,11 +84,9 @@ std::string_view render::format_text( std::string_view format, ... ) {
 	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
 	vsprintf_s( m_buffer, format.data( ), arguments );
 
-	std::string_view text = m_buffer;
-
 	va_end( arguments );
 
-	return text;
+	return m_buffer;
 
 }
 

@@ -37,11 +37,9 @@ void visuals::paint( ) {
 
 void visuals::draw_watermark( ) {
 
-	const int fps = static_cast< int >( 1.f / g_interfaces.m_net_graph_panel->m_frame_rate );
-
-	g_render.draw_text( g_render.m_fonts.tertiary,
+	g_render.draw_text( g_render.m_fonts.secondary,
 		g_render.m_screen.w - 5, 5,
-		g_render.format_text( XOR( "bald_v2 | local: 0x%x | fps: %d" ), g_cstrike.m_local, fps ),
+		XOR( "BALD_V2" ),
 		color( 255, 255, 255 ),
 		x_right );
 
@@ -78,11 +76,11 @@ void visuals::draw_health( ) {
 		color( 255 - scaler, scaler, 0, m_alpha[ m_player.idx ] ),
 		x_right );
 
-	if ( health == 100 )
+	if ( m_player.ptr->is_max_health( ) )
 		return;
 
 	g_render.draw_text( g_render.m_fonts.secondary, 
-		m_box.x - 5, m_box.y + health * m_box.height / 100, 
+		m_box.x - 4, m_box.y + health * m_box.height / 100, 
 		g_render.format_text( XOR( "%d" ), health ),
 		color( 255, 255, 255, m_alpha[ m_player.idx ] ), 
 		x_centre | y_centre );
@@ -99,6 +97,8 @@ void visuals::draw_name( ) {
 
 	if ( !info.m_xuid_low )
 		name.append( XOR( " - bot" ) );
+
+	//std::transform( name.begin( ), name.end( ), name.begin( ), ::toupper );
 
 	g_render.draw_text( g_render.m_fonts.primary,
 		m_box.x + m_box.width / 2, m_box.y - 1, 
@@ -119,6 +119,7 @@ void visuals::draw_weapon( ) {
 		return;
 
 	std::wstring weapon_name = g_interfaces.m_localize->find( weapon_info->m_hud_name );
+
 	std::transform( weapon_name.begin( ), weapon_name.end( ), weapon_name.begin( ), ::toupper );
 
 	g_render.draw_text( g_render.m_fonts.secondary,

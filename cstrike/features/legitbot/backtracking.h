@@ -18,7 +18,7 @@ struct lag_record {
 			m_studio_model = g_interfaces.m_model_info->get_studio_model( model );
 
 		m_sim_time   = player->get_sim_time( );
-		m_eye_pos    = player->get_eye_position( );
+		m_head_pos	 = player->get_hitbox_position( hitbox_head, this );
 		m_origin     = player->get_origin( );
 		m_abs_origin = player->get_abs_origin( );
 		m_mins		 = player->get_mins( );
@@ -51,7 +51,7 @@ struct lag_record {
 	}
 
 	float m_sim_time;
-	vec_3 m_eye_pos;
+	vec_3 m_head_pos;
 	vec_3 m_origin;
 	vec_3 m_abs_origin;
 	vec_3 m_mins;

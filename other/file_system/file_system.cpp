@@ -3,15 +3,18 @@
 #include <Shlobj.h>
 #include "../winapi/winapi.h"
 
-
 bool file_system::setup( ) {
 
 	m_main_path.resize( MAX_PATH + 1 );
 	m_fonts_path.resize( MAX_PATH + 1 );
 	m_configs_path.resize( MAX_PATH + 1 );
 
-	if ( !SUCCEEDED( g_winapi.sh_get_folder_path( 0, CSIDL_MYDOCUMENTS, 0, SHGFP_TYPE_CURRENT, m_main_path.data( ) ) ) )
+	if ( !SUCCEEDED( g_winapi.sh_get_folder_path( 0, CSIDL_MYDOCUMENTS, 0, SHGFP_TYPE_CURRENT, m_main_path.data( ) ) ) ) {
+
+		g_console.log( XOR( "failed to find documents path" ) );
 		return false;
+
+	}
 
 	g_winapi.path_append( m_main_path.data( ), XOR( "bald_v2" ) );
 

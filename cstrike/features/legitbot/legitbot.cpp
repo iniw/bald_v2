@@ -35,7 +35,7 @@ void aimbot_data::setup_record( ) {
 
 	for ( auto& record : records ) {
 
-		const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, record.m_eye_pos );
+		const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, record.m_head_pos );
 
 		if ( fov < best_fov ) {
 

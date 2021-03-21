@@ -36,6 +36,8 @@
     <ClCompile Include="other\memory\pe.cpp" />
     <ClCompile Include="cstrike\hooked\functions\material_system.cpp" />
     <ClCompile Include="other\file_system\file_system.cpp" />
+    <ClCompile Include="other\winapi\winapi.cpp" />
+    <ClCompile Include="valve\signatures\signatures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cstrike\cstrike.h" />
@@ -79,7 +81,6 @@
     <ClInclude Include="valve\client\animation_layer.h" />
     <ClInclude Include="valve\data_cache\mdl_cache.h" />
     <ClInclude Include="valve\data_cache\data_cache.h" />
-    <ClInclude Include="valve\signatures.h" />
     <ClInclude Include="valve\studio.h" />
     <ClInclude Include="cstrike\input\input.h" />
     <ClInclude Include="valve\client\client_input.h" />
@@ -140,5 +141,6 @@
     <ClInclude Include="valve\studio_render\material_system_config.h" />
     <ClInclude Include="other\winapi\winapi.h" />
     <ClInclude Include="other\file_system\file_system.h" />
+    <ClInclude Include="valve\signatures\signatures.h" />
   </ItemGroup>
 </Project>

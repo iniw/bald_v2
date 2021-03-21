@@ -25,7 +25,7 @@ struct matrix_3x4 {
 	}
 
 	// create matrix where the X axis = forward, the Y axis = left, the Z axis = up
-	void init( const vec_3& x, const vec_3& y, const vec_3& z, const vec_3& origin ) {
+	inline void init( const vec_3& x, const vec_3& y, const vec_3& z, const vec_3& origin ) {
 
 		this->at( 0 ) = x;
 		this->at( 1 ) = y;
@@ -34,13 +34,13 @@ struct matrix_3x4 {
 
 	}
 
-	void set_origin( const vec_3& origin ) {
+	inline void set_origin( const vec_3& origin ) {
 
 		this->at( 3 ) = origin;
 
 	}
 
-	constexpr void invalidate( ) {
+	inline constexpr void invalidate( ) {
 
 		for ( int i = 0; i < 3; i++ ) {
 			for ( int k = 0; k < 4; k++ )
@@ -49,31 +49,31 @@ struct matrix_3x4 {
 
 	}
 
-	float* operator[]( int i ) {
+	inline float* operator[]( int i ) {
 
 		return data[ i ];
 
 	}
 
-	const float* operator[]( int i ) const {
+	inline const float* operator[]( int i ) const {
 
 		return data[ i ];
 
 	}
 
-	vec_3 at( int i ) const {
+	inline vec_3 at( int i ) const {
 
 		return vec_3( data[ 0 ][ i ], data[ 1 ][ i ], data[ 2 ][ i ] );
 
 	}
 
-	float* base( ) {
+	inline float* base( ) {
 
 		return &data[ 0 ][ 0 ];
 
 	}
 
-	const float* base( ) const {
+	inline const float* base( ) const {
 
 		return &data[ 0 ][ 0 ];
 

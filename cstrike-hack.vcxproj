@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4056;4244;4307;4731;26812</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <DebugInformationFormat>None</DebugInformationFormat>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -196,10 +196,12 @@
     <ClCompile Include="other\memory\pe.cpp" />
     <ClCompile Include="other\pattern\pattern.cpp" />
     <ClCompile Include="other\utils\utils.cpp" />
+    <ClCompile Include="other\winapi\winapi.cpp" />
     <ClCompile Include="valve\client\entities\cs_player.cpp" />
     <ClCompile Include="valve\detour\detour.cpp" />
     <ClCompile Include="valve\interfaces\interfaces.cpp" />
     <ClCompile Include="valve\netvars\netvars.cpp" />
+    <ClCompile Include="valve\signatures\signatures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cstrike\features\features.h" />
@@ -293,7 +295,7 @@
     <ClInclude Include="valve\shared\in_buttons.h" />
     <ClInclude Include="valve\shared\shared.h" />
     <ClInclude Include="valve\shared\user_cmd.h" />
-    <ClInclude Include="valve\signatures.h" />
+    <ClInclude Include="valve\signatures\signatures.h" />
     <ClInclude Include="valve\studio.h" />
     <ClInclude Include="valve\studio_render\material_system_config.h" />
     <ClInclude Include="valve\studio_render\studio_render.h" />

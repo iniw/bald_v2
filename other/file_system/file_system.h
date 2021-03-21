@@ -5,11 +5,11 @@
 
 struct file_system {
 
-	bool setup( );
-
 	std::string m_main_path;
 	std::string m_fonts_path;
 	std::string m_configs_path;
+
+	bool setup( );
 
 };
 

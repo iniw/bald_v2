@@ -27,8 +27,6 @@ bool pe::setup( ) {
 
 		m_loaded_modules.insert_or_assign( name, address( ldr_entry->DllBase ) );
 
-		//g_console.log( "found module %s -> 0x%x" , name.data( ) , m_loaded_modules[ g_hash.get( name ) ] );
-
 	}
 
 	g_console.log( XOR( "found %d modules" ), m_loaded_modules.size( ) );
