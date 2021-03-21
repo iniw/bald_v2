@@ -2,7 +2,7 @@
 
 bool input::setup( ) {
 
-	m_original_wnd_proc = reinterpret_cast< WNDPROC >( SetWindowLongPtr( g_cstrike.m_window, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( wnd_proc ) ) );
+	m_original_wnd_proc = reinterpret_cast< WNDPROC >( g_winapi.set_window_long_w( g_cstrike.m_window, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( wnd_proc ) ) );
 	if ( !m_original_wnd_proc )
 		return false;
 
@@ -15,7 +15,7 @@ void input::unload( ) {
 	if ( !m_original_wnd_proc )
 		return;
 
-	SetWindowLongPtr( g_cstrike.m_window, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( m_original_wnd_proc ) );
+	g_winapi.set_window_long_w( g_cstrike.m_window, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( m_original_wnd_proc ) );
 
 }
 
@@ -66,6 +66,6 @@ long __stdcall input::wnd_proc( HWND window, UINT message, WPARAM w_param, LPARA
 
 	g_input.think( message, w_param, l_param );
 
-	return CallWindowProcW( g_input.m_original_wnd_proc, window, message, w_param, l_param );
+	return g_winapi.call_window_proc_w( g_input.m_original_wnd_proc, window, message, w_param, l_param );
 
 }

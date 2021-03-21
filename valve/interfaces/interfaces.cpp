@@ -88,8 +88,6 @@ bool interfaces::setup( ) {
 
 	g_console.log( XOR( "grabbed interfaces" ) );
 
-	g_pe.m_loaded_modules.clear( ); // OUT OF MY MEMORY !!
-
 	return true;
 
 }

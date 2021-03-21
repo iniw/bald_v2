@@ -4,7 +4,7 @@ bool render::setup( ) {
 
 	create_font( m_fonts.primary, XOR( "Verdana" ), 12, 500, fontflag_dropshadow | fontflag_antialias );
 
-	create_font( m_fonts.secondary, XOR( "Small Fonts" ), 8, 500, fontflag_outline );
+	create_font( m_fonts.secondary, XOR( "04b03" ), 8, 500, fontflag_outline );
 
 	create_font( m_fonts.tertiary, XOR( "Small Fonts" ), 12, 500, fontflag_outline );
 
@@ -58,7 +58,7 @@ void render::draw_text( h_font& font, int x, int y, std::wstring_view text, cons
 
 void render::draw_text( h_font& font, int x, int y, std::string_view text, const color& color, int flags ) {
 
-	draw_text( font, x, y, std::wstring( text.begin( ), text.end( ) ), color, flags );
+	draw_text( font, x, y, g_utils.multi_byte_to_wide( text ), color, flags );
 
 }
 

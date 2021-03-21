@@ -12,7 +12,7 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 
 	q_ang old_view_angles = cmd->m_view_angles;
 
-	g_cstrike.m_local = ecx; g_cstrike.m_cmd = cmd;
+	g_cstrike.m_local = ecx; g_cstrike.m_cmd = cmd; g_cstrike.m_eye_pos = g_cstrike.m_local->get_eye_position( );
 
 	g_movement.bhop( cmd );
 	
@@ -20,7 +20,7 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 
 	g_engine_prediction.start( cmd ); {
 
-		g_legitbot.run( cmd );
+		//g_legitbot.run( cmd );
 
 		g_backtracking.run( cmd );
 
@@ -30,6 +30,12 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 	g_movement.correct( cmd, old_view_angles );
 
 	cmd->m_view_angles.sanitize( );
+
+	return false;
+
+}
+
+bool __fastcall hooks::should_skip_animation_frame( void* ecx, void* edx ) {
 
 	return false;
 

@@ -73,39 +73,11 @@ struct base_player : base_combat_character {
 
 	}
 
-	inline auto get_take_damage( ) {
+	inline auto util_player_by_index( int entindex ) {
 
-		static auto offset = 0x280;
+		auto function = g_signatures.m_util_player_by_index.as< base_player* ( __thiscall* )( int ) >( );
 
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto get_current_command( ) {
-
-		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_hConstraintEntity" ) ) ];
-
-		return reinterpret_cast< user_cmd** >( reinterpret_cast< size_t >( this ) + offset - 0xC );
-	}
-
-	inline auto& get_last_command( ) {
-
-		return *reinterpret_cast< user_cmd* >( reinterpret_cast< size_t >( this ) + 0x3288 );
-
-	}
-
-	inline auto& get_tickbase( ) {
-
-		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_nTickBase" ) ) ];
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-
-	}
-
-	inline auto& get_punch( ) {
-
-		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_aimPunchAngle" ) ) ];
-
-		return *reinterpret_cast< q_ang* >( reinterpret_cast< size_t >( this ) + offset );
+		return function( entindex );
 
 	}
 
@@ -114,18 +86,6 @@ struct base_player : base_combat_character {
 		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_nButtons" ) ) );
 
 		return reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-
-	}
-
-	inline auto& get_button_disabled( ) {
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x3330 );
-
-	}
-
-	inline auto& get_button_forced( ) {
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x3334 );
 
 	}
 
@@ -153,26 +113,6 @@ struct base_player : base_combat_character {
 
 	}
 
-
-	inline auto update_buttons( user_cmd* cmd ) {
-
-		cmd->m_buttons |= get_button_forced( );
-		cmd->m_buttons &= ~( get_button_disabled( ) );
-
-		const int buttons = cmd->m_buttons;
-		int* player_buttons = get_buttons( );
-		const int buttons_changed = buttons ^ *player_buttons;
-
-		get_button_last( ) = *player_buttons;
-
-		*get_buttons( ) = buttons;
-
-		get_button_pressed( ) = buttons & buttons_changed;
-
-		get_button_released( ) = buttons_changed & ~buttons;
-
-	}
-
 	inline auto get_impulse( ) {
 
 		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_nImpulse" ) ) );
@@ -186,6 +126,29 @@ struct base_player : base_combat_character {
 		static auto offset = g_netvars.find_in_datamap( get_prediction_desc_map( ), g_hash.const_hash( XOR( "m_MoveType" ) ) );
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto get_current_command( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_hConstraintEntity" ) ) ] - 0xC;
+
+		return reinterpret_cast< user_cmd** >( reinterpret_cast< size_t >( this ) + offset );
+	}
+
+	inline auto& get_tickbase( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_nTickBase" ) ) ];
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto& get_punch( ) {
+
+		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BasePlayer->m_aimPunchAngle" ) ) ];
+
+		return *reinterpret_cast< q_ang* >( reinterpret_cast< size_t >( this ) + offset );
 
 	}
 
@@ -229,11 +192,45 @@ struct base_player : base_combat_character {
 
 	}
 
-	inline auto util_player_by_index( int entindex ) {
+	inline auto& get_button_disabled( ) {
 
-		auto function = g_signatures.m_util_player_by_index.as< base_player* ( __thiscall* )( int ) >( );
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x3330 );
 
-		return function( entindex );
+	}
+
+	inline auto& get_button_forced( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x3334 );
+
+	}
+
+	inline auto get_take_damage( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x280 );
+	}
+
+	inline auto& get_last_command( ) {
+
+		return *reinterpret_cast< user_cmd* >( reinterpret_cast< size_t >( this ) + 0x3288 );
+
+	}
+
+	inline auto update_buttons( user_cmd* cmd ) {
+
+		cmd->m_buttons |= get_button_forced( );
+		cmd->m_buttons &= ~( get_button_disabled( ) );
+
+		const int buttons = cmd->m_buttons;
+		int* player_buttons = get_buttons( );
+		const int buttons_changed = buttons ^ *player_buttons;
+
+		get_button_last( ) = *player_buttons;
+
+		*get_buttons( ) = buttons;
+
+		get_button_pressed( ) = buttons & buttons_changed;
+
+		get_button_released( ) = buttons_changed & ~buttons;
 
 	}
 

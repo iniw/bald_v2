@@ -7,24 +7,31 @@ struct aimbot_data {
 
 	aimbot_data( ) : m_ent( nullptr ), m_fov ( 0.f ), m_dmg( -1.f ) { }
 
-	inline void init( cs_player* player, lag_record* record = nullptr ) {
+	aimbot_data init( cs_player* player );
 
-		m_ent = player;
+private:
 
-		m_record = record;
+	// closest record to the crosshair
+	void setup_record( );
 
-		m_pos = m_ent->get_hitbox_position( hitbox_head, m_record );
-		m_ang = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), m_pos ).sanitize( );
-		m_fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, m_ang );
-		m_dmg = g_autowall.get_damage( m_pos, m_record, m_ent );
+	// closest hitbox to the crosshair
+	void setup_hitbox( );
 
-	}
+public:
 
+	// the entity
 	cs_player* m_ent;
+	// bone matrix
+	matrix_3x4 m_matrix[ MAXSTUDIOBONES ];
+	// position we are going to shoot
 	vec_3 m_pos;
+	// angle of the position and our eye position
 	q_ang m_ang;
+	// fov of that angle
 	float m_fov;
+	// damage we will deal
 	float m_dmg;
+	// closest record for that player
 	lag_record* m_record;
 
 };
@@ -33,23 +40,32 @@ struct legitbot {
 
 	void run( user_cmd* cmd );
 
-	std::unique_ptr< aimbot_data > get_data( user_cmd* cmd );
-
-	void finalize( );
-
 	void paint( );
 
 	bool setup( );
 
-	bool m_ative;
-
 	std::unique_ptr< aimbot_data > m_data;
+
+
+private:
+
+	void init( );
+
+	vec_3 get_best_hitbox( cs_player* player, lag_record* record = nullptr );
+
+	void finalize( );
+
+	// list of our possible targets
+	std::vector< aimbot_data > m_possible_targets;
+
+	vec_3 m_eye_pos;
 
 	struct {
 
 		convar* weapon_recoil_scale;
 
 	} m_convars;
+
 
 };
 

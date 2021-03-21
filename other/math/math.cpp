@@ -22,14 +22,14 @@ q_ang math::calc_angle( const vec_3& m_start, const vec_3& end ) {
 	return view_point;
 }
 
-float math::calc_fov( const q_ang& view_point, const q_ang& goal_angle ) {
+float math::calc_fov( const q_ang& view_angles, const vec_3& start, const vec_3& end ) {
 
-	vec_3 m_start, end;
+	vec_3 dir, fw;
+	dir = ( end - start ).normalized( );
 
-	angle_vectors( view_point, &end );
-	angle_vectors( goal_angle, &m_start );
+	angle_vectors( view_angles, &fw );
 
-	return rad_to_deg( acos( end.dot( m_start ) / end.length_sqr( ) ) );
+	return ( std::max )( rad_to_deg( std::acos( fw.dot( dir ) ) ), 0.f );
 
 }
 

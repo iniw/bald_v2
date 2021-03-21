@@ -5,38 +5,33 @@
 
 DWORD WINAPI cstrike::setup( void* parameter ) {
 
-	HMODULE handle = static_cast< HMODULE >( parameter );
+	g_cstrike.m_handle = static_cast< HMODULE >( parameter );
+	
+	g_console.setup( ); g_pe.setup( ); g_winapi.setup( );
 
-	g_console.setup( XOR( "cstrike-hack" ) );
-
-	while ( !( g_cstrike.m_window = FindWindowA( XOR( "Valve001" ), nullptr ) ) )
+	while ( !( g_cstrike.m_window = g_winapi.find_window_a( XOR( "Valve001" ), nullptr ) ) )
 		g_utils.sleep( 100 );
 
-	if ( !g_pe.setup( ) || !g_signatures.setup( ) || !g_interfaces.setup( )  ||
+	if ( !g_signatures.setup( ) || !g_interfaces.setup( )  ||
 		!g_backtracking.setup( ) || !g_engine_prediction.setup( ) || !g_legitbot.setup( ) ||
 		!g_netvars.setup( ) || !g_input.setup( ) || !g_render.setup( ) || !g_hooks.setup( ) ) {
 
-		FreeLibraryAndExitThread( handle, EXIT_FAILURE );
+		FreeLibraryAndExitThread( g_cstrike.m_handle, EXIT_FAILURE );
 
 		return EXIT_FAILURE;
 
 	}
-
 
 	while ( !g_input.is_key_down( VK_DELETE  ) )
 		g_utils.sleep( 100 );
 
 	g_console.log( XOR( "unloading" ) );
 
-	unload( );
-
-	FreeLibraryAndExitThread( handle, EXIT_SUCCESS );
-
-	return EXIT_SUCCESS;
+	return unload( EXIT_SUCCESS );
 
 }
 
-void cstrike::unload( ) {
+int cstrike::unload( int exit ) {
 
 	g_input.unload( );
 
@@ -44,7 +39,10 @@ void cstrike::unload( ) {
 
 	g_console.unload( );
 
-	Beep( 400, 400 );
+	FreeLibraryAndExitThread( g_cstrike.m_handle, exit );
+
+	return exit;
+
 
 }
 
@@ -80,10 +78,8 @@ cs_player* cstrike::get_nearest_player( search_type type, int flags ) {
 
 		if ( !validate_player( player, flags ) )
 			continue;
-			
-		const q_ang angle = g_math.calc_angle( m_local->get_eye_position( ), player->get_eye_position( ) ).sanitize( );
 
-		const float fov = g_math.calc_fov( m_cmd->m_view_angles, angle );
+		const float fov = g_math.calc_fov( m_cmd->m_view_angles, m_eye_pos, player->get_eye_position( ) );
 
 		if ( fov < best_distance ) {
 

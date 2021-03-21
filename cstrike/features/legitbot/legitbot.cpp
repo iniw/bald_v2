@@ -2,31 +2,113 @@
 
 #include "../../render/render.h"
 
+aimbot_data aimbot_data::init( cs_player* player ) {
+
+	m_ent = player;
+
+	m_ent->fixed_setup_bones( m_matrix, BONE_USED_BY_HITBOX, g_interfaces.m_globals->m_curtime );
+	
+	setup_record( );
+
+	setup_hitbox( );
+	/*
+	const vec_3 eye_pos = g_cstrike.m_local->get_eye_position( );
+
+	m_ang = g_math.calc_angle( eye_pos, m_pos ).sanitize( );
+
+	m_fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, eye_pos, m_pos );
+
+	m_dmg = g_autowall.get_damage( m_pos, m_record, m_ent );
+	*/
+
+	return *this;
+
+}
+
+void aimbot_data::setup_record( ) {
+
+	auto& records = g_backtracking.m_records[ m_ent->get_index( ) - 1 ];
+	if ( records.empty( ) )
+		return;
+
+	float best_fov = FLT_MAX;
+
+	for ( auto& record : records ) {
+
+		const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, record.m_eye_pos );
+
+		if ( fov < best_fov ) {
+
+			m_record = &record;
+			best_fov = fov;
+
+		}
+
+	}
+
+}
+
+void aimbot_data::setup_hitbox( ) {
+
+	static constexpr std::array< int, 5 > hitboxes = { hitbox_head, hitbox_upper_chest, hitbox_chest, hitbox_stomach, hitbox_thorax };
+
+	float best_fov = FLT_MAX;
+
+	for ( int i = 0; i < hitboxes.size( ); i++ ) {
+
+		vec_3 pos = m_ent->get_hitbox_position( hitboxes[ i ], m_matrix );
+
+		float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, pos );
+
+		float dmg = g_autowall.get_damage( pos );
+
+		if ( fov < best_fov && dmg > 0.f ) {
+
+			m_pos = pos;
+			best_fov = fov;
+
+		}
+		
+		pos = m_ent->get_hitbox_position( hitboxes[ i ], m_record );
+
+		fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, pos );
+
+		dmg = g_autowall.get_damage( pos );
+
+		if ( fov < best_fov && dmg > 0.f ) {
+
+			m_pos = pos;
+			best_fov = fov;
+
+		}
+
+
+	}
+
+}
+
 void legitbot::run( user_cmd* cmd ) {
 
-	m_ative = false;
+	m_eye_pos = g_cstrike.m_local->get_eye_position( );
 
 	if ( !( cmd->m_buttons & in_attack ) ) {
 
-		m_data = nullptr;
+		m_data.reset( );
 		return;
 
 	}
 
-	m_data = get_data( cmd );
-	if ( !m_data )
-		return;
+	// setup all of our possible targets
+	init( );
 
 	finalize( );
 
 	if ( cmd->m_buttons & in_attack && g_cstrike.m_local->can_shoot( ) ) {
 
-		m_ative = true;
-
 		cmd->m_view_angles = m_data->m_ang;
 
 		if ( m_data->m_record )
-			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent );
+			g_backtracking.apply_tick_count( cmd, m_data->m_record, m_data->m_ent, true );
 
 		//g_interfaces.m_engine->set_view_angles( m_data->m_ang );
 
@@ -34,12 +116,9 @@ void legitbot::run( user_cmd* cmd ) {
 
 }
 
-std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
+void legitbot::init( ) {
 
-	aimbot_data best_data;
-	best_data.m_fov = FLT_MAX;
-
-	aimbot_data* temp_data = new aimbot_data; // no allocation on the stack around here.
+	aimbot_data temp;
 
 	for ( int i = 1; i <= g_interfaces.m_globals->m_max_clients; i++ ) {
 
@@ -47,39 +126,16 @@ std::unique_ptr< aimbot_data > legitbot::get_data( user_cmd* cmd ) {
 
 		if ( !g_cstrike.validate_player( player ) )
 			continue;
-
-		temp_data->init( player );
-
-		if ( temp_data->m_fov < best_data.m_fov && temp_data->m_dmg > 0.f ) {
-
-			best_data = *temp_data;
-
-		}
-
-		auto& player_records = g_backtracking.m_records[ player->get_index( ) - 1 ];
-		if ( player_records.empty( ) )
-			continue;
-
-		for ( auto& record : player_records ) {
-
-			if ( !g_backtracking.validate_sim_time( record.m_sim_time ) )
-				continue;
-
-			temp_data->init( player, &record );
-
-			if ( temp_data->m_fov < best_data.m_fov && temp_data->m_dmg > 0.f ) {
-
-				best_data = *temp_data;
-
-			}
-
-		}
+		
+		m_possible_targets.emplace_back( temp.init( player ) );
 
 	}
 
-	delete temp_data;
+}
 
-	return best_data.m_ent ? std::make_unique< aimbot_data >( best_data ) : nullptr;
+vec_3 legitbot::get_best_hitbox( cs_player* player, lag_record* record ) {
+
+	return vec_3( );
 
 }
 

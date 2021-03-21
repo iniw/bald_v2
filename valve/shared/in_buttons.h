@@ -1,6 +1,6 @@
 #pragma once
 
-enum buttons {
+enum in_buttons {
 
 	in_attack     = ( 1 << 0 ),
 	in_jump       = ( 1 << 1 ),

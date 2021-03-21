@@ -137,5 +137,6 @@
     <ClInclude Include="cstrike\features\legitbot\backtracking.h" />
     <ClInclude Include="other\memory\pe.h" />
     <ClInclude Include="valve\studio_render\material_system_config.h" />
+    <ClInclude Include="other\winapi\winapi.h" />
   </ItemGroup>
 </Project>

@@ -220,7 +220,7 @@ struct studio_seq_desc {
 	int	m_anim_tags;
 
 	int	m_root_driver_index;
-	byte pad[ 0x8 ];
+	char pad0[ 0x8 ];
 };
 
 struct studio_bbox {

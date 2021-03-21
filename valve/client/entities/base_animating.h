@@ -57,92 +57,64 @@ struct base_animating : base_player {
 
 	}
 
-	inline auto& occlusion_framecount( ) {
-
-		static auto offset = 0xA30;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& occlusion_flags( ) {
-
-		static auto offset = 0xA68;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& readable_bones( ) {
-
-		static auto offset = 0x26B0;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& writeable_bones( ) {
-
-		static auto offset = 0x26AC;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& last_bone_setup_time( ) {
-
-		static auto offset = 0x2924;
-
-		return *reinterpret_cast< size_t* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& last_bone_setup_frame( ) {
-
-		static auto offset = 0xA68;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline auto& most_recent_model_bone_counter( ) {
-
-		static auto offset = 0x2690;
-
-		return *reinterpret_cast< size_t* >( reinterpret_cast< size_t >( this ) + offset );
-	}
-
-	inline void invalidate_bone_cache( ) {
-
-		most_recent_model_bone_counter( ) = g_signatures.m_invalidate_bone_cache.add( 0xA ).get< unsigned long >( 2 ) - 1;
-
-		last_bone_setup_time( ) = -FLT_MAX;
-
-	}
-
-	inline auto& get_anim_state( ) {
-
-		static auto offset = 0x3914;
-
-		return *reinterpret_cast< csgo_player_anim_state** >( reinterpret_cast< size_t >( this ) + offset );
-
-	}
-
-	inline auto& get_bone_count( ) {
-
-		static auto offset = 0x291C;
-
-		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
-
-	}
-
-	inline auto& get_bone_cache( ) {
-
-		static auto offset = 0x2910;
-
-		return *reinterpret_cast< utl_vector< matrix_3x4 >* >( reinterpret_cast< size_t >( this ) + offset );
-
-	}
-
 	inline auto& get_sequence( ) {
 
 		static auto offset = g_netvars.m_offsets[ g_hash.get( XOR( "DT_BaseAnimating->m_nSequence" ) ) ];
 
 		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + offset );
+
+	}
+
+	inline auto& occlusion_framecount( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0xA30 );
+	}
+
+	inline auto& occlusion_flags( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0xA68 );
+	}
+
+	inline auto& readable_bones( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x26B0 );
+	}
+
+	inline auto& writeable_bones( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x26AC );
+	}
+
+	inline auto& last_bone_setup_time( ) {
+
+		return *reinterpret_cast< size_t* >( reinterpret_cast< size_t >( this ) + 0x2924 );
+	}
+
+	inline auto& last_bone_setup_frame( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0xA68 );
+	}
+
+	inline auto& most_recent_model_bone_counter( ) {
+
+		return *reinterpret_cast< size_t* >( reinterpret_cast< size_t >( this ) + 0x2690 );
+	}
+
+	inline auto& get_anim_state( ) {
+
+		return *reinterpret_cast< csgo_player_anim_state** >( reinterpret_cast< size_t >( this ) + 0x3914 );
+
+	}
+
+	inline auto& get_bone_count( ) {
+
+		return *reinterpret_cast< int* >( reinterpret_cast< size_t >( this ) + 0x291C );
+
+	}
+
+	inline auto& get_bone_cache( ) {
+
+		return *reinterpret_cast< utl_vector< matrix_3x4 >* >( reinterpret_cast< size_t >( this ) + 0x2910 );
 
 	}
 
@@ -197,6 +169,14 @@ struct base_animating : base_player {
 
 			popad
 		}
+
+	}
+
+	inline void invalidate_bone_cache( ) {
+
+		most_recent_model_bone_counter( ) = g_signatures.m_invalidate_bone_cache.add( 0xA ).get< unsigned long >( 2 ) - 1;
+
+		last_bone_setup_time( ) = -FLT_MAX;
 
 	}
 

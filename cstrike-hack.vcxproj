@@ -223,6 +223,7 @@
     <ClInclude Include="other\hash\hash.h" />
     <ClInclude Include="other\memory\stack.h" />
     <ClInclude Include="other\memory\pe.h" />
+    <ClInclude Include="other\winapi\winapi.h" />
     <ClInclude Include="other\xor\xor.h" />
     <ClInclude Include="valve\app_system.h" />
     <ClInclude Include="valve\bitbuf.h" />

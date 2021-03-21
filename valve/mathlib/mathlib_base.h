@@ -16,15 +16,7 @@ struct mathlib_base {
 
 	inline float angle_normalize( float angle ) {
 
-		angle = std::fmodf( angle, 360.f );
-
-		if ( angle > 180.f )
-			angle -= 360.f;
-
-		if ( angle < -180.f )
-			angle += 360.f;
-
-		return angle;
+		return std::remainderf( angle, 360.f );
 
 	}
 
@@ -33,15 +25,10 @@ struct mathlib_base {
 		target = anglemod( target );
 		value = anglemod( value );
 
-		float m_delta = target - value;
+		float m_delta = angle_normalize( target - value );
 
 		if ( speed < 0 )
 			speed = -speed;
-
-		if ( m_delta < -180 )
-			m_delta += 360;
-		else if ( m_delta > 180 )
-			m_delta -= 360;
 
 		if ( m_delta > speed )
 			value += speed;
@@ -75,13 +62,7 @@ struct mathlib_base {
 
 	inline float bias( float x, float bias_amt ) {
 
-		static float last_amt = -1;
-		static float last_exponent = 0;
-
-		if ( last_amt != bias_amt ) 
-			last_exponent = std::log( bias_amt ) * -1.4427f;
-
-		return std::pow( x, last_exponent );
+		return std::pow( x, std::log( bias_amt ) * -1.4427 );
 
 	}
 

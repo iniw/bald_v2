@@ -110,6 +110,33 @@ vec_3 cs_player::get_hitbox_position( int hitbox, lag_record* record ) {
 
 }
 
+vec_3 cs_player::get_hitbox_position( int hitbox, matrix_3x4* matrix ) {
+
+	const auto model = get_model( );
+	if ( !model )
+		return vec_3( );
+
+	const auto studio_model = g_interfaces.m_model_info->get_studio_model( model );
+	if ( !studio_model )
+		return vec_3( );
+
+	const auto studio_hitbox = studio_model->get_hitbox( hitbox, 0 );
+	if ( !studio_hitbox )
+		return vec_3( );
+
+	std::array< matrix_3x4, MAXSTUDIOBONES > bones;
+
+	if ( !matrix )
+		if ( !setup_bones( bones.data( ), MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f ) )
+			return vec_3( );
+
+	vec_3 min = g_math.vector_transform( studio_hitbox->m_bb_min, matrix ? matrix[ studio_hitbox->m_bone ] : bones[ studio_hitbox->m_bone ] );
+	vec_3 max = g_math.vector_transform( studio_hitbox->m_bb_max, matrix ? matrix[ studio_hitbox->m_bone ] : bones[ studio_hitbox->m_bone ] );
+
+	return ( min + max ) * 0.5f;
+
+}
+
 bool cs_player::fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime ) {
 
 	const auto backup_abs_origin = get_abs_origin( );

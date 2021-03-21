@@ -30,6 +30,8 @@ bool hooks::setup( ) {
 
 	g_detour.setup( XOR( "CCSGOPlayerAnimState::SetUpMovement" ), g_signatures.m_setup_movement, &set_up_movement );
 
+	g_detour.setup( XOR( "C_BaseAnimating::ShouldSkipAnimationFrame" ), g_signatures.m_should_skip_animation_frame, &should_skip_animation_frame );
+
 	g_detour.setup( XOR( "CInput::CAM_Think" ), g_signatures.m_cam_think, &cam_think );
 
 	g_detour.setup( XOR( "CInput::CAM_ToThirdPerson" ), g_signatures.m_cam_to_third_person, &cam_to_third_person );

@@ -143,15 +143,16 @@ struct vec_3 {
 
 	}
 
-	inline float length( ) const {
-
-		return std::sqrtf( length_sqr( ) );
-
-	}
 
 	inline float length_sqr( ) const {
 
 		return dot( *this );
+
+	}
+
+	inline float length( ) const {
+
+		return std::sqrtf( length_sqr( ) );
 
 	}
 
@@ -170,22 +171,9 @@ struct vec_3 {
 	inline float normalize( ) {
 
 		const float length = this->length( );
-		const float radius = 1.f / ( length + std::numeric_limits<float>::epsilon( ) );
+		const float radius = 1.f / ( length + std::numeric_limits< float >::epsilon( ) );
 
-		x *= radius;
-		y *= radius;
-		z *= radius;
-
-		return length;
-
-	}
-
-	inline float vector_normalize( vec_3& v )  const {
-
-		float length = v.length( );
-		float radius = 1.f / ( length + FLT_EPSILON );
-
-		v *= radius;
+		*this *= radius;
 
 		return length;
 
@@ -194,7 +182,7 @@ struct vec_3 {
 	inline vec_3 normalized( ) const {
 
 		vec_3 v = *this;
-		vector_normalize( v );
+		v.normalize( );
 		return v;
 
 	}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_entity.h"
-#include "../../valve/physics/multiplayer_physics.h"
+#include "../../../valve/physics/multiplayer_physics.h"
 
 struct breakable_surface : public base_entity, public breakable_with_prop_data {
 

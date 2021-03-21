@@ -9,6 +9,18 @@ struct q_ang {
 
 	q_ang( const float* arr ) : pitch( arr[ 0 ] ), yaw( arr[ 1 ] ), roll( arr[ 2 ] ) { }
 
+	inline void init( float pitch = 0.f, float yaw = 0.f, float roll = 0.f ) {
+
+		this->pitch = pitch; this->yaw = yaw; this->roll = roll;
+
+	}
+
+	inline void init( const q_ang& a ) {
+
+		this->pitch = a.pitch; this->yaw = a.yaw; this->roll = a.roll;
+
+	}
+
 	inline q_ang operator+=( const q_ang& a ) {
 
 		pitch += a.pitch; yaw += a.yaw; roll += a.roll;
@@ -121,30 +133,6 @@ struct q_ang {
 
 	}
 
-	inline void init( float pitch = 0.f, float yaw = 0.f, float roll = 0.f ) {
-
-		this->pitch = pitch; this->yaw = yaw; this->roll = roll;
-
-	}
-
-	inline float length( ) const {
-
-		return std::sqrtf( std::powf( pitch, 2 ) + std::powf( yaw, 2 ) + std::powf( roll, 2 ) );
-
-	}
-
-	inline float length_sqr( ) const {
-
-		return std::powf( pitch, 2 ) + std::powf( yaw, 2 ) + std::powf( roll, 2 );
-
-	}
-
-	inline float dot( const q_ang& dot ) const {
-
-		return pitch * dot.pitch + yaw * dot.yaw + roll * dot.roll;
-
-	}
-
 	inline q_ang normalize( ) {
 
 		pitch = std::isfinite( pitch ) ? std::remainderf( pitch, 360.f ) : 0.f;
@@ -155,11 +143,13 @@ struct q_ang {
 
 	}
 
-	inline void clamp( ) {
+	inline q_ang clamp( ) {
 
 		pitch = std::clamp( pitch, -89.f, 89.f );
 		yaw   = std::clamp( yaw, -180.f, 180.f );
 		roll  = std::clamp( roll, -50.f, 50.f );
+
+		return *this;
 
 	}
 

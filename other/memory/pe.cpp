@@ -1,5 +1,7 @@
 #include "pe.h"
 
+#include <algorithm>
+
 bool pe::setup( ) {
 
 	const auto peb = reinterpret_cast< _PEB* >( __readfsdword( 0x30 ) );
@@ -19,7 +21,9 @@ bool pe::setup( ) {
 		// not a good way to do this, causes a warning as well
 		// but winapi is forcing my hand
 		const auto wide_name = std::wstring( base_dll_name->Buffer, base_dll_name->Length >> 1 );
-		const auto name = std::string( wide_name.begin( ), wide_name.end( ) );
+		auto name = std::string( wide_name.begin( ), wide_name.end( ) );
+
+		std::transform( name.begin( ), name.end( ), name.begin( ), ::tolower );
 
 		m_loaded_modules.insert_or_assign( name, address( ldr_entry->DllBase ) );
 
@@ -27,7 +31,7 @@ bool pe::setup( ) {
 
 	}
 
-	g_console.log( "found %d modules", m_loaded_modules.size( ) );
+	g_console.log( XOR( "found %d modules" ), m_loaded_modules.size( ) );
 
 	return true;
 
@@ -87,8 +91,12 @@ address pe::export_fn( const address base, const size_t fn_hash, const bool in_m
 
 	}
 
-	if ( ordinal_index > exports->NumberOfFunctions )
+	if ( ordinal_index > exports->NumberOfFunctions ) {
+
+		g_console.log( XOR( "failed to export function!" ) );
 		return address( );
+
+	}
 
 	const auto ordinals = reinterpret_cast< uint16_t* >( base.as< uintptr_t >( ) + rva_2_offset( exports->AddressOfNameOrdinals, nt_headers, in_memory ) );
 	const auto addresses = reinterpret_cast< uint32_t* >( base.as< uintptr_t >( ) + rva_2_offset( exports->AddressOfFunctions, nt_headers, in_memory ) );

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-bool console::setup( std::string_view name ) {
+bool console::setup( ) {
 
 	if ( !AllocConsole( ) )
 		return false;
@@ -13,7 +13,7 @@ bool console::setup( std::string_view name ) {
 
 	m_handle = GetStdHandle( STD_OUTPUT_HANDLE );
 
-	return SetConsoleTitleA( name.data( ) );
+	return SetConsoleTitleA( XOR( "bald_v2" ) );
 
 }
 

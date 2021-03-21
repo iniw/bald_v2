@@ -7,7 +7,7 @@
 
 struct console {
 
-	bool setup( std::string_view name );
+	bool setup( );
 
 	void unload( );
 

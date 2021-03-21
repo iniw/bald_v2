@@ -11,14 +11,14 @@ struct lag_record {
 
 	lag_record( cs_player* player ) { 
 
-		player->fixed_setup_bones( m_matrix.data( ), BONE_USED_BY_HITBOX, g_interfaces.m_globals->m_curtime );
+		player->fixed_setup_bones( m_matrix, BONE_USED_BY_HITBOX, g_interfaces.m_globals->m_curtime );
 
 		const auto model = player->get_model( );
 		if ( model )
 			m_studio_model = g_interfaces.m_model_info->get_studio_model( model );
 
 		m_sim_time   = player->get_sim_time( );
-		m_head_pos   = player->get_hitbox_position( hitbox_head, this );
+		m_eye_pos    = player->get_eye_position( );
 		m_origin     = player->get_origin( );
 		m_abs_origin = player->get_abs_origin( );
 		m_mins		 = player->get_mins( );
@@ -32,7 +32,7 @@ struct lag_record {
 		m_origin = player->get_origin( );
 		m_abs_origin = player->get_abs_origin( );
 			
-		std::memcpy( m_matrix.data( ), player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
+		std::memcpy( m_matrix, player->get_bone_cache( ).base( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
 
 		m_mins = player->get_mins( );
 		m_maxs = player->get_maxs( );
@@ -44,20 +44,20 @@ struct lag_record {
 		player->get_origin( ) = m_origin;
 		player->set_abs_origin( m_abs_origin );
 
-		std::memcpy( player->get_bone_cache( ).base( ), m_matrix.data( ), player->get_bone_count( ) * sizeof( matrix_3x4 ) );
+		std::memcpy( player->get_bone_cache( ).base( ), m_matrix, player->get_bone_count( ) * sizeof( matrix_3x4 ) );
 
 		player->set_collision_bounds( m_mins, m_maxs );
 
 	}
 
 	float m_sim_time;
-	vec_3 m_head_pos;
+	vec_3 m_eye_pos;
 	vec_3 m_origin;
 	vec_3 m_abs_origin;
 	vec_3 m_mins;
 	vec_3 m_maxs;
 	studio_hdr* m_studio_model;
-	std::array< matrix_3x4, MAXSTUDIOBONES > m_matrix;
+	matrix_3x4 m_matrix[ MAXSTUDIOBONES ];
 
 };
 

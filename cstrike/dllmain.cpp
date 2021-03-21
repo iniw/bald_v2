@@ -10,7 +10,7 @@ BOOL APIENTRY DllMain( HMODULE module_handle, DWORD call_reason, LPVOID reserved
 
 	} else if ( call_reason == DLL_PROCESS_DETACH ) {
 
-		g_cstrike.unload( );
+		g_cstrike.unload( EXIT_SUCCESS );
 
 		return TRUE;
 

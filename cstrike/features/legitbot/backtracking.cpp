@@ -35,7 +35,7 @@ void backtracking::update( ) {
 
 void backtracking::run( user_cmd* cmd ) {
 
-	if ( g_legitbot.m_ative )
+	if ( g_legitbot.m_data )
 		return;
 
 	lag_record best_record;
@@ -57,8 +57,7 @@ void backtracking::run( user_cmd* cmd ) {
 			if ( !g_backtracking.validate_sim_time( record.m_sim_time ) )
 				continue;
 
-			const q_ang angle = g_math.calc_angle( g_cstrike.m_local->get_eye_position( ), record.m_head_pos ).sanitize( );
-			const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, angle );
+			const float fov = g_math.calc_fov( g_cstrike.m_cmd->m_view_angles, g_cstrike.m_eye_pos, record.m_eye_pos );
 
 			if ( fov < best_fov ) {
 
@@ -93,7 +92,7 @@ void backtracking::apply_tick_count( user_cmd* cmd, lag_record* record, cs_playe
 	restore( player );
 
 	if ( should_draw_matrix )
-		draw_matrix( record->m_matrix.data( ), player );
+		draw_matrix( record->m_matrix, player );
 
 }
 
@@ -125,7 +124,7 @@ void backtracking::paint( ) {
 
 		for ( const auto& record : player_records ) {
 
-			if ( g_interfaces.m_debug_overlay->screen_position( record.m_head_pos, screen_pos ) == -1 )
+			if ( g_interfaces.m_debug_overlay->screen_position( record.m_eye_pos, screen_pos ) == -1 )
 				continue;
 
 			g_render.draw_filled_rect( screen_pos.x, screen_pos.y,

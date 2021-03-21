@@ -27,7 +27,7 @@ struct cstrike {
 
 	static DWORD WINAPI setup( void* parameter );
 
-	static void unload( );
+	static int unload( int exit );
 
 	void iterate_players( std::function< void( cs_player* ) > function, int flags = { } );
 
@@ -77,10 +77,13 @@ struct cstrike {
 	}
 
 	HWND m_window;
+	HMODULE m_handle;
 
 	cs_player* m_local;
 
 	user_cmd*  m_cmd;
+
+	vec_3 m_eye_pos;
 
 };
 

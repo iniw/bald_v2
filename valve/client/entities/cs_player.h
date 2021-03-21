@@ -153,7 +153,9 @@ struct cs_player : base_animating {
 
 	bool can_shoot( );
 
-	vec_3 get_hitbox_position( int hitbox, lag_record* record = nullptr);
+	vec_3 get_hitbox_position( int hitbox, lag_record* record = nullptr );
+
+	vec_3 get_hitbox_position( int hitbox, matrix_3x4* matrix = nullptr );
 
 	bool fixed_setup_bones( matrix_3x4* matrix, const int bone_mask, const float curtime );
 
