@@ -53,13 +53,20 @@ private:
 		static const auto fn_hash = g_hash.get( XOR( "CreateInterface" ) );
 
 		auto create_interface = g_pe.export_fn( module_base, fn_hash );
-		if ( !create_interface )
+		if ( !create_interface ) {
+
+			g_console.log( log_error, XOR( "failed to import create_interface from the module" ) );
 			return t( );
+
+		}
 
 		auto create_interface_fn = create_interface.add( 0x4 ).absolute( );
-		if ( !create_interface_fn )
+		if ( !create_interface_fn ) {
+
+			g_console.log( log_error, XOR( "failed to find create_interface_fn" ) );
 			return t( );
 
+		}
 		auto interface_node = create_interface_fn.add( 0x6 ).get< interface_reg* >( 2 );
 
 		while ( interface_node != nullptr ) {
@@ -73,8 +80,6 @@ private:
 				if ( !interface_address )
 					return t( );
 
-				g_console.log( XOR( "%s -> 0x%x" ), interface_node->m_name, interface_address );
-
 				return ( t )interface_address;
 
 			}
@@ -82,6 +87,8 @@ private:
 			interface_node = interface_node->m_next;
 
 		}
+
+		g_console.log( log_error, XOR( "failed to find %s interface" ), interface_name );
 
 		return t( );
 

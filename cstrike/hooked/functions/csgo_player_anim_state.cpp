@@ -57,15 +57,15 @@ void __vectorcall hooks::update( csgo_player_anim_state* ecx, void* unk0, float 
 
 	g_interfaces.m_mdl_cache->end_lock( );
 
-	ecx->set_up_velocity( );
-	ecx->set_up_aim_matrix( );
-	ecx->set_up_weapon_action( );
-	ecx->set_up_movement( );
-	ecx->set_up_alive_loop( );
-	ecx->set_up_whole_body_action( );
-	ecx->set_up_flashed_reaction( );
-	ecx->set_up_flinch( );
-	ecx->set_up_lean( );
+	ecx->setup_velocity( );
+	ecx->setup_aim_matrix( );
+	ecx->setup_weapon_action( );
+	ecx->setup_movement( );
+	ecx->setup_alive_loop( );
+	ecx->setup_whole_body_action( );
+	ecx->setup_flashed_reaction( );
+	ecx->setup_flinch( );
+	ecx->setup_lean( );
 
 	player->set_abs_angles( { 0.f, ecx->m_foot_yaw, 0.f } );
 
@@ -113,7 +113,7 @@ void __fastcall hooks::do_procedural_foot_plant( csgo_player_anim_state* ecx, vo
 
 }
 
-void __fastcall hooks::set_up_velocity( csgo_player_anim_state* ecx, void* edx ) {
+void __fastcall hooks::setup_velocity( csgo_player_anim_state* ecx, void* edx ) {
 
 	g_interfaces.m_mdl_cache->begin_lock( );
 
@@ -307,11 +307,11 @@ void __fastcall hooks::set_up_velocity( csgo_player_anim_state* ecx, void* edx )
 
 }
 
-void __fastcall hooks::set_up_movement( csgo_player_anim_state* ecx, void* edx ) {
+void __fastcall hooks::setup_movement( csgo_player_anim_state* ecx, void* edx ) {
 
-	static auto o_set_up_movement = g_detour.get< decltype( &set_up_movement ) >( XOR( "CCSGOPlayerAnimState::SetUpMovement" ) );
+	static auto o_setup_movement = g_detour.get< decltype( &setup_movement ) >( XOR( "CCSGOPlayerAnimState::SetUpMovement" ) );
 
 	// to do
 
-	return o_set_up_movement( ecx, edx );
+	return o_setup_movement( ecx, edx );
 }

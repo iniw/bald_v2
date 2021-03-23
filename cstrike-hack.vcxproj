@@ -229,7 +229,6 @@
     <ClInclude Include="other\memory\pe.h" />
     <ClInclude Include="other\winapi\winapi.h" />
     <ClInclude Include="other\xor\xor.h" />
-    <ClInclude Include="valve\app_system.h" />
     <ClInclude Include="valve\bitbuf.h" />
     <ClInclude Include="valve\cdll_int.h" />
     <ClInclude Include="valve\client\animation_layer.h" />

@@ -6,7 +6,7 @@ bool input::setup( ) {
 	if ( !m_original_wnd_proc )
 		return false;
 
-	g_console.log( XOR( "hooked wndproc" ) );
+	g_console.log( log_completion, XOR( "setup wndproc" ) );
 
 	return true;
 

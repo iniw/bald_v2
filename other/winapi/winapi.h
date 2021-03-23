@@ -2,6 +2,12 @@
 
 #include "../memory/pe.h"
 
+#define IMPORT( var, name, dll ) \
+		if ( var = g_pe.export_fn( dll, g_hash.get( XOR( #name ) ) ).as< name##_fn >( ); !var ) { \
+			g_console.log( log_error, XOR( "failed to import %s" ), XOR( #name ) ); \
+		return false; \
+		}
+
 using FindWindowA_fn = HWND( __stdcall* )( LPCSTR, LPCSTR );
 using SetWindowLongW_fn = LONG( __stdcall* )( HWND, int, LONG );
 using CallWindowProcW_fn = LONG( __stdcall* )( WNDPROC, HWND, UINT, WPARAM, LPARAM );
@@ -15,19 +21,6 @@ using CreateDirectoryA_fn = BOOL( __stdcall* )( LPCSTR, LPSECURITY_ATTRIBUTES );
 using PathAppendA_fn = BOOL( __stdcall* )( LPSTR, LPCSTR );
 
 struct winapi {
-
-	// modules 
-
-	struct {
-
-		address user32;
-		address kernel32;
-		address gdi32;
-		address urlmon;
-		address shell32;
-		address shlwapi;
-
-	} m_dlls;
 
 	// functions 
 

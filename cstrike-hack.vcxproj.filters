@@ -105,7 +105,6 @@
     <ClInclude Include="valve\engine\event_info.h" />
     <ClInclude Include="valve\client\client_state.h" />
     <ClInclude Include="cstrike\features\movement\movement.h" />
-    <ClInclude Include="valve\app_system.h" />
     <ClInclude Include="cstrike\features\legitbot\legitbot.h" />
     <ClInclude Include="cstrike\features\legitbot\autowall.h" />
     <ClInclude Include="valve\physics\physics.h" />

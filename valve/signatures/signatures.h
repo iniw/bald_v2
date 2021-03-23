@@ -1,27 +1,21 @@
 #pragma once
 
 #include "../../other/pattern/pattern.h"
+#include "../../other/utils/utils.h"
+
+#define FIND( var, dll, pattern ) \
+	if ( var = g_pattern.find( dll, pattern ); !var ) { \
+		g_console.log( log_error, XOR( "failed to scan pattern for %s" ), XOR( #var ) ); \
+		return false; \
+	}
+
+#define FIND_ABS( var, dll, pattern ) \
+	if ( var = g_pattern.find( dll, XOR( pattern ) ).absolute( ); !var ) { \
+		g_console.log( log_error, XOR( "failed to scan pattern for %s" ), XOR( #var ) ); \
+		return false; \
+	}
 
 struct signatures {
-
-	// modules
-	
-	struct {
-
-		address client;
-		address engine;
-		address server;
-		address gameoverlayrenderer;
-		address vgui2;
-		address vguimatsurface;
-		address studiorender;
-		address localize;
-		address datacache;
-		address materialsystem;
-		address vstdlib;
-		address vphysics;
-
-	} m_dlls;
 
 	// offsets
 
@@ -39,12 +33,11 @@ struct signatures {
 	address m_setup_velocity;
 	address m_setup_movement;
 	address m_setup_aim_matrix;
-	address m_set_up_weapon_action;
-	address m_set_up_movement;
-	address m_set_up_alive_loop;
-	address m_set_up_whole_body_action;
-	address m_set_up_flinch;
-	address m_set_up_lean;
+	address m_setup_weapon_action;
+	address m_setup_alive_loop;
+	address m_setup_whole_body_action;
+	address m_setup_flinch;
+	address m_setup_lean;
 	address m_cache_sequences;
 	address m_get_ground_entity;
 	address m_invalidate_physics_recursive;

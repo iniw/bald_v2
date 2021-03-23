@@ -81,7 +81,7 @@ void visuals::draw_health( ) {
 
 	g_render.draw_text( g_render.m_fonts.secondary, 
 		m_box.x - 4, m_box.y + health * m_box.height / 100, 
-		g_render.format_text( XOR( "%d" ), health ),
+		g_utils.format_text( XOR( "%d" ), health ),
 		color( 255, 255, 255, m_alpha[ m_player.idx ] ), 
 		x_centre | y_centre );
 

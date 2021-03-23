@@ -29,7 +29,28 @@ bool pe::setup( ) {
 
 	}
 
-	g_console.log( XOR( "found %d modules" ), m_loaded_modules.size( ) );
+	g_console.log( log_normal, XOR( "found %d modules" ), m_loaded_modules.size( ) );
+
+	// really ugly but oh well
+
+	g_pe.m_dlls.client = m_loaded_modules[ XOR( "client.dll" ) ];
+	g_pe.m_dlls.engine = m_loaded_modules[ XOR( "engine.dll" ) ];
+	g_pe.m_dlls.server = m_loaded_modules[ XOR( "server.dll" ) ];
+	g_pe.m_dlls.gameoverlayrenderer = m_loaded_modules[ XOR( "gameoverlayrenderer.dll" ) ];
+	g_pe.m_dlls.vgui2 = m_loaded_modules[ XOR( "vgui2.dll" ) ];
+	g_pe.m_dlls.vguimatsurface = m_loaded_modules[ XOR( "vguimatsurface.dll" ) ];
+	g_pe.m_dlls.studiorender = m_loaded_modules[ XOR( "studiorender.dll" ) ];
+	g_pe.m_dlls.localize = m_loaded_modules[ XOR( "localize.dll" ) ];
+	g_pe.m_dlls.datacache = m_loaded_modules[ XOR( "datacache.dll" ) ];
+	g_pe.m_dlls.materialsystem = m_loaded_modules[ XOR( "materialsystem.dll" ) ];
+	g_pe.m_dlls.vstdlib = m_loaded_modules[ XOR( "vstdlib.dll" ) ];
+	g_pe.m_dlls.vphysics = m_loaded_modules[ XOR( "vphysics.dll" ) ];
+	g_pe.m_dlls.user32 = m_loaded_modules[ XOR( "user32.dll" ) ];
+	g_pe.m_dlls.kernel32 = m_loaded_modules[ XOR( "kernel32.dll" ) ];
+	g_pe.m_dlls.gdi32 = m_loaded_modules[ XOR( "gdi32.dll" ) ];
+	g_pe.m_dlls.urlmon = m_loaded_modules[ XOR( "urlmon.dll" ) ];
+	g_pe.m_dlls.shell32 = m_loaded_modules[ XOR( "shell32.dll" ) ];
+	g_pe.m_dlls.shlwapi = m_loaded_modules[ XOR( "shlwapi.dll" ) ];
 
 	return true;
 
@@ -89,7 +110,7 @@ address pe::export_fn( const address base, const size_t fn_hash, const bool in_m
 
 	if ( ordinal_index > exports->NumberOfFunctions ) {
 
-		g_console.log( XOR( "failed to export function!" ) );
+		g_console.log( log_error, XOR( "failed to export function!" ) );
 		return address( );
 
 	}

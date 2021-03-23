@@ -165,7 +165,7 @@ void legitbot::paint( ) {
 
 	g_render.draw_text( g_render.m_fonts.primary, 
 		w / 2, h / 2 - 5, 
-		g_render.format_text( XOR( "dmg = %.2f" ), m_data->m_dmg ), 
+		g_utils.format_text( XOR( "dmg = %.2f" ), m_data->m_dmg ), 
 		color( 255, 255, 255 ), 
 		x_centre | y_centre );
 
@@ -176,7 +176,7 @@ bool legitbot::setup( ) {
 	if ( m_convars.weapon_recoil_scale = g_interfaces.m_convar->find_var( XOR( "weapon_recoil_scale" ) ); !m_convars.weapon_recoil_scale )
 		return false;
 
-	g_console.log( XOR( "setup legitbot convars" ) );
+	g_console.log( log_completion, XOR( "setup legitbot convars" ) );
 
 	return true;
 

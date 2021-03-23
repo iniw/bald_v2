@@ -5,9 +5,10 @@
 
 struct file_system {
 
-	std::string m_main_path;
-	std::string m_fonts_path;
-	std::string m_configs_path;
+	char m_main_path[ MAX_PATH + 1 ];
+	char m_fonts_path[ MAX_PATH + 1 ];
+	char m_configs_path[ MAX_PATH + 1 ];
+	char m_logs_path[ MAX_PATH + 1 ];
 
 	bool setup( );
 

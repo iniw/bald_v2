@@ -44,7 +44,7 @@ struct animstate_pose_param_cache {
 
 struct csgo_player_anim_state {
 
-	inline auto set_up_velocity( ) {
+	inline auto setup_velocity( ) {
 
 		auto function = g_signatures.m_setup_velocity.as< void( __thiscall* )( void* ) >( );
 
@@ -52,7 +52,7 @@ struct csgo_player_anim_state {
 
 	}
 
-	inline auto set_up_aim_matrix( ) {
+	inline auto setup_aim_matrix( ) {
 
 		auto function = g_signatures.m_setup_aim_matrix.as< void( __thiscall* )( void* ) >( );
 
@@ -60,55 +60,55 @@ struct csgo_player_anim_state {
 
 	}
 
-	inline auto set_up_weapon_action( ) {
+	inline auto setup_weapon_action( ) {
 
-		auto function = g_signatures.m_set_up_weapon_action.as< void( __thiscall* )( void* ) >( );
-
-		return function( this );
-
-	}
-
-	inline auto set_up_movement( ) {
-
-		auto function = g_signatures.m_set_up_movement.as< void( __thiscall* )( void* ) >( );
+		auto function = g_signatures.m_setup_weapon_action.as< void( __thiscall* )( void* ) >( );
 
 		return function( this );
 
 	}
 
-	inline auto set_up_alive_loop( ) {
+	inline auto setup_movement( ) {
 
-		auto function = g_signatures.m_set_up_alive_loop.as< void( __thiscall* )( void* ) >( );
-
-		return function( this );
-
-	}
-
-	inline auto set_up_whole_body_action( ) {
-
-		auto function = g_signatures.m_set_up_whole_body_action.as< void( __thiscall* )( void* ) >( );
+		auto function = g_signatures.m_setup_movement.as< void( __thiscall* )( void* ) >( );
 
 		return function( this );
 
 	}
 
-	inline auto set_up_flashed_reaction( ) {
+	inline auto setup_alive_loop( ) {
+
+		auto function = g_signatures.m_setup_alive_loop.as< void( __thiscall* )( void* ) >( );
+
+		return function( this );
+
+	}
+
+	inline auto setup_whole_body_action( ) {
+
+		auto function = g_signatures.m_setup_whole_body_action.as< void( __thiscall* )( void* ) >( );
+
+		return function( this );
+
+	}
+
+	inline auto setup_flashed_reaction( ) {
 
 		// to do
 
 	}
 
-	inline auto set_up_flinch( ) {
+	inline auto setup_flinch( ) {
 
-		auto function = g_signatures.m_set_up_flinch.as< void( __thiscall* )( void* ) >( );
+		auto function = g_signatures.m_setup_flinch.as< void( __thiscall* )( void* ) >( );
 
 		return function( this );
 
 	}
 
-	inline auto set_up_lean( ) {
+	inline auto setup_lean( ) {
 
-		auto function = g_signatures.m_set_up_lean.as< void( __thiscall* )( void* ) >( );
+		auto function = g_signatures.m_setup_lean.as< void( __thiscall* )( void* ) >( );
 
 		return function( this );
 

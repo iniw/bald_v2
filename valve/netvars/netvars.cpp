@@ -4,14 +4,19 @@
 
 #include "../../other/console/console.h"
 #include "../../other/hash/hash.h"
+#include "../../other/file_system/file_system.h"
 
 bool netvars::setup( ) {
 
 	auto list = g_interfaces.m_client->get_all_classes( );	
 	if ( !list )
 		return false;
+	/*
+	char path[ MAX_PATH + 1 ]; strcpy_s( path, g_file_system.m_logs_path );
+	g_winapi.path_append( path, XOR( "netvars.txt" ) );
 
-	m_file.open( XOR( "netvars.txt" ), std::ios::out | std::ios::trunc );
+	m_file.open( path, std::ios::out | std::ios::trunc );
+	*/
 
 	while ( list != nullptr ) {
 
@@ -21,9 +26,9 @@ bool netvars::setup( ) {
 
 	}
 
-	m_file.close( );
+	//m_file.close( );
 
-	g_console.log( XOR( "dumped netvars" ) );
+	g_console.log( log_completion, XOR( "setup netvars" ) );
 
 	return true;
 
@@ -52,7 +57,7 @@ void netvars::store( std::string_view name, recv_table* table, size_t offset ) {
 
 			m_offsets[ hash ] = prop->m_offset + offset;
 
-			m_file << netvar << XOR( " = 0x" ) << std::hex << m_offsets[ hash ] << std::endl;
+			//m_file << netvar << XOR( " = 0x" ) << std::hex << m_offsets[ hash ] << std::endl;
 
 		}
 

@@ -232,7 +232,7 @@ struct studio_bbox {
 	int			m_hitbox_name_index;
 	q_ang		m_offset_orientation;
 	float		m_radius;
-	byte		pad0[ 0x10 ];
+	char		pad0[ 0x10 ];
 
 	inline const char* get_hitbox_name( ) const {
 
@@ -626,7 +626,7 @@ struct studio_hdr {
 	uint8_t m_root_lod;
 	uint8_t m_allowed_root_lo_ds;
 
-	byte pad0[ 0x5 ];
+	char pad0[ 0x5 ];
 
 	int	m_flex_controller_ui;
 	int	m_flexcontroller_ui_index;
@@ -635,5 +635,5 @@ struct studio_hdr {
 	mutable int m_surface_prop_lookup;
 	int	m_studio_hdr2_index;
 
-	byte pad1[ 0x4 ];
+	char pad1[ 0x4 ];
 };

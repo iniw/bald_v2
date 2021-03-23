@@ -4,7 +4,7 @@ void __fastcall hooks::level_init_pre_entity( void* ecx, void* edx, char* map ) 
 
 	static auto o_level_init_pre_entity = g_detour.get< decltype( &level_init_pre_entity ) >( XOR( "CHLClient::LevelInitPreEntity" ) );
 
-	o_level_init_pre_entity( ecx, edx, map );
+	return o_level_init_pre_entity( ecx, edx, map );
 
 }
 

@@ -27,7 +27,7 @@ struct net_channel {
 	int	 m_choked_packets;
 	char pad2[ 0x414 ];
 
-	inline int	send_datagram( bf_write* datagram ) {
+	inline int send_datagram( bf_write* datagram ) {
 
 		return g_utils.call_v_func<int>( this, 46, datagram );
 

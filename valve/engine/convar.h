@@ -1,7 +1,6 @@
 #pragma once
 
 #include "utl_mem/utl_mem.h"
-#include "../app_system.h"
 
 using fn_change_callback = void( __cdecl* )( void*, const char*, float );
 
@@ -79,27 +78,12 @@ struct convar {
 
 };
 
-struct con_var : public app_system {
+struct con_var {
 
-	virtual int	            allocate_dll_identifier( ) = 0;
-	virtual void			register_con_command( convar* command_base ) = 0;
-	virtual void			unregister_con_command( convar* command_base ) = 0;
-	virtual void			unregister_con_commands( int id ) = 0;
-	virtual const char*     get_command_line_value( const char* variable_name ) = 0;
-	virtual void*           find_command_base( const char* name ) = 0;
-	virtual const void*     find_command_base( const char* name ) const = 0;
-	virtual convar*         find_var( const char* variable_name ) = 0;
-	virtual const convar*   find_var( const char* variable_name ) const = 0;
-	virtual void*           find_command( const char* name ) = 0;
-	virtual const void*     find_command( const char* name ) const = 0;
-	virtual void			install_global_change_callback( fn_change_callback callback ) = 0;
-	virtual void			remove_global_change_callback( fn_change_callback callback ) = 0;
-	virtual void			call_global_change_callbacks( convar* var, const char* old_string, float old_value ) = 0;
-	virtual void			install_console_display_func( void* display_func ) = 0;
-	virtual void			remove_console_display_func( void* display_func ) = 0;
-	virtual void			console_color_printf( const color& color, const char* format, ... ) const = 0;
-	virtual void			console_printf( const char* format, ... ) const = 0;
-	virtual void			console_d_printf( const char* format, ... ) const = 0;
-	virtual void			revert_f_lagged_con_vars( int flag ) = 0;
+	inline auto find_var( std::string_view name ) {
+
+		return g_utils.call_v_func< convar* >( this, 16, name.data( ) );
+
+	}	
 
 };

@@ -13,8 +13,13 @@ bool console::setup( ) {
 
 	m_handle = GetStdHandle( STD_OUTPUT_HANDLE );
 
-	return SetConsoleTitleA( XOR( "bald_v2" ) );
+	bool result = SetConsoleTitleA( XOR( "bald_v2" ) );
 
+	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
+
+	m_file.open( XOR( "bald_logs.txt" ), std::ios::out | std::ios::trunc );
+
+	return result;
 }
 
 void console::unload( ) {
@@ -25,24 +30,33 @@ void console::unload( ) {
 
 	FreeConsole( );
 
+	m_file.close( );
+
 }
 
-void console::log( std::string_view format, ... ) {
+void console::log( int type, std::string_view format, ... ) {
 
 	if ( std::strlen( format.data( ) ) >= sizeof( m_buffer ) )
+		return;
+
+	if ( type < log_normal || type > log_max - 1 )
 		return;
 
 	va_list arguments;
 
 	va_start( arguments, format );
 
-	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
 	vsprintf_s( m_buffer, format.data( ), arguments );
 
-	SetConsoleTextAttribute( m_handle, 7 );
+	SetConsoleTextAttribute( m_handle, m_type_lookup[ type ] );
 
-	// pretty ugly !
+	if ( type == log_warning || type == log_error ) 
+		m_file << m_buffer << std::endl;
+
 	std::printf( XOR( "%s \n" ), m_buffer );
+
+	// clear the buffer for the next call
+	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
 
 	va_end( arguments );
 

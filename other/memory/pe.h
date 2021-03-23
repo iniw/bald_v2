@@ -24,6 +24,33 @@ struct pe {
 
 	}
 
+	// general pourpose modules used by the entire cheat
+
+	struct {
+
+		address client;
+		address engine;
+		address server;
+		address gameoverlayrenderer;
+		address vgui2;
+		address vguimatsurface;
+		address studiorender;
+		address localize;
+		address datacache;
+		address materialsystem;
+		address vstdlib;
+		address vphysics;
+		address user32;
+		address kernel32;
+		address gdi32;
+		address urlmon;
+		address shell32;
+		address shlwapi;
+
+	} m_dlls;
+
+private:
+
 	std::unordered_map< std::string, address > m_loaded_modules;
 
 };

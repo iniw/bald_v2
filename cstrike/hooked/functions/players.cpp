@@ -7,8 +7,12 @@ bool __fastcall hooks::create_move( cs_player* ecx, void* edx, float input_sampl
 	if ( !cmd->m_command_number )
 		return o_create_move( ecx, edx, input_sample_time, cmd );
 
-	if ( o_create_move( ecx, edx, input_sample_time, cmd ) )
+	if ( o_create_move( ecx, edx, input_sample_time, cmd ) ) {
+
+		g_interfaces.m_prediction->set_local_view_angles( cmd->m_view_angles );
 		g_interfaces.m_engine->set_view_angles( cmd->m_view_angles );
+
+	}
 
 	q_ang old_view_angles = cmd->m_view_angles;
 

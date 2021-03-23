@@ -24,8 +24,8 @@ private:
 	static void __vectorcall update( csgo_player_anim_state* ecx, void* unk0, float z, float y, float x, void* unk1 );
 	static void __fastcall   modify_eye_position( csgo_player_anim_state* ecx, void* edx, vec_3& input_eye_pos );
 	static void __fastcall   do_procedural_foot_plant( csgo_player_anim_state* ecx, void* edx, void* bone_to_world, void* left_foot_chain, void* right_foot_chain, void* pos );
-	static void __fastcall   set_up_movement( csgo_player_anim_state* ecx, void* edx );
-	static void __fastcall   set_up_velocity( csgo_player_anim_state* ecx, void* edx );
+	static void __fastcall   setup_movement( csgo_player_anim_state* ecx, void* edx );
+	static void __fastcall   setup_velocity( csgo_player_anim_state* ecx, void* edx );
 	static bool __fastcall   should_skip_animation_frame( void* ecx, void* edx );
 	static void __fastcall   cam_think( client_input* ecx, void* edx );
 	static void __fastcall   cam_to_third_person( client_input* ecx, void* edx );

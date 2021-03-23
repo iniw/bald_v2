@@ -18,7 +18,7 @@ bool render::setup( ) {
 
 	g_interfaces.m_surface->get_screen_size( m_screen.w, m_screen.h );
 
-	g_console.log( XOR( "setup the renderer" ) );
+	g_console.log( log_completion, XOR( "setup renderer" ) );
 
 	return true;
 
@@ -72,24 +72,6 @@ void render::draw_text( h_font& font, int x, int y, std::string_view text, const
 
 }
 
-std::string_view render::format_text( std::string_view format, ... ) {
-
-	if ( std::strlen( format.data( ) ) >= sizeof( m_buffer ) )
-		return std::string_view( );
-
-	va_list arguments;
-
-	va_start( arguments, format );
-
-	std::memset( m_buffer, '\0', sizeof( m_buffer ) );
-	vsprintf_s( m_buffer, format.data( ), arguments );
-
-	va_end( arguments );
-
-	return m_buffer;
-
-}
-
 void render::create_font( h_font& font, std::string_view name, int tall, int weight, int flags ) {
 
 	font = g_interfaces.m_surface->create_font( );
@@ -107,7 +89,7 @@ bool render::download_font( std::string_view link, std::string_view name ) {
 
 		if ( !SUCCEEDED( g_winapi.url_download_to_file( NULL, link.data( ), font_path.data( ), 0, NULL ) ) ) {
 
-			g_console.log( XOR( "failed to download font %s" ), name);
+			g_console.log( log_error, XOR( "failed to download font %s" ), name);
 
 			return false;
 

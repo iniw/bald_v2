@@ -10,13 +10,13 @@ struct address {
 
 	address( void* address ) : m_address( reinterpret_cast< size_t >( address ) ) { }
 
-	inline operator size_t( ) {
+	inline operator size_t( ) const {
 
 		return m_address;
 
 	}
 
-	inline operator void* ( ) {
+	inline operator void* ( ) const {
 
 		return reinterpret_cast< void* >( m_address );
 
@@ -89,7 +89,7 @@ struct address {
 
 	}
 
-	template< typename t = address > inline t absolute( size_t offset = 0x1 ) {
+	template< typename t = address > inline t absolute( size_t offset = 0x1 ) const {
 
 		if ( !m_address )
 			return t( );

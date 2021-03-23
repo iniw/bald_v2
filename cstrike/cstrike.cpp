@@ -7,27 +7,23 @@ DWORD WINAPI cstrike::setup( void* parameter ) {
 
 	g_cstrike.m_handle = static_cast< HMODULE >( parameter );
 	
-	g_console.setup( ); g_pe.setup( ); g_winapi.setup( );
+    g_console.setup( ); g_pe.setup( ); g_winapi.setup( ); g_file_system.setup( );
 
 	while ( !( g_cstrike.m_window = g_winapi.find_window( XOR( "Valve001" ), nullptr ) ) )
 		g_utils.sleep( 100 );
 
-	if ( !g_signatures.setup( ) || !g_interfaces.setup( ) || !g_file_system.setup( ) ||
+	if ( !g_signatures.setup( ) || !g_interfaces.setup( ) ||
 		!g_backtracking.setup( ) || !g_engine_prediction.setup( ) || !g_legitbot.setup( ) ||
 		!g_netvars.setup( ) || !g_input.setup( ) || !g_render.setup( ) || !g_hooks.setup( ) ) {
 
 		g_utils.sleep( 1000 );
 
-		FreeLibraryAndExitThread( g_cstrike.m_handle, EXIT_FAILURE );
-
-		return EXIT_FAILURE;
+		return unload( EXIT_FAILURE );
 
 	}
 
 	while ( !g_input.is_key_down( VK_DELETE  ) )
 		g_utils.sleep( 100 );
-
-	g_console.log( XOR( "unloading" ) );
 
 	return unload( EXIT_SUCCESS );
 

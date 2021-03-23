@@ -7,6 +7,23 @@
 #include "../memory/address.h"
 #include "../winapi/winapi.h"
 
+struct section_info {
+
+	section_info( ) : size( 0 ) { }
+
+	section_info( size_t start, size_t size ) : start( start ), size( size ) { }
+
+	inline operator bool( ) {
+
+		return start && size;
+
+	}
+
+	address start;
+	size_t size;
+
+};
+
 struct utils {
 
 	bool create_thread( DWORD WINAPI function( void* ), void* parameter );
@@ -14,6 +31,10 @@ struct utils {
 	std::string wide_to_multi_byte( const std::wstring_view str );
 
 	std::wstring multi_byte_to_wide( const std::string_view str );
+
+	std::string_view format_text( std::string_view format, ... );
+
+	address get_v_table( address module_base, std::string_view name );
 
 	inline void sleep( size_t milliseconds ) {
 
@@ -39,6 +60,16 @@ struct utils {
 		return pointer.to< fn* >( )[ idx ]( pointer, args_list... );
 
 	}
+
+private:
+
+	inline std::string bytes_to_pattern( byte* bytes, size_t size = 4 );
+
+	inline std::vector< address > get_xrefs( address module_base, section_info info );
+
+	inline section_info get_section_info( address module_base, std::string_view section_name );
+
+	char m_buffer[ 256 ];
 
 };
 
