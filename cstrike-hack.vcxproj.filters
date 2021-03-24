@@ -141,5 +141,25 @@
     <ClInclude Include="other\winapi\winapi.h" />
     <ClInclude Include="other\file_system\file_system.h" />
     <ClInclude Include="valve\signatures\signatures.h" />
+    <ClInclude Include="other\polyhook\include\polyhook2\ADisassembler.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\CapstoneDisassembler.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Enums.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\ErrorLog.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\EventDispatcher.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\IHook.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Instruction.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\MemAccessor.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\MemProtector.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Misc.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\PageAllocator.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\UID.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\ZydisDisassembler.hpp" />
+    <ClInclude Include="other\polyhook\include\capstone\platform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="other\polyhook\lib\debug\capstone.lib" />
+    <Library Include="other\polyhook\lib\debug\PolyHook_2.lib" />
+    <Library Include="other\polyhook\lib\release\capstone.lib" />
+    <Library Include="other\polyhook\lib\release\PolyHook_2.lib" />
   </ItemGroup>
 </Project>

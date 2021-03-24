@@ -1,31 +1,25 @@
 #include "detour.h"
 
-#include "../signatures/signatures.h"
 #include "../../other/console/console.h"
-#include "../../other/pattern/pattern.h"
 
 bool detour::setup( std::string_view name, void* function, void* custom_function ) {
 
 	if ( !function || !custom_function ) {
 
-		g_console.log( log_error, XOR( "nullptr passed to hook %s" ), name.data( ) );
+		g_console.log( log_error, XOR( "nullptrs passed to %s" ), name );
 		return false;
 
 	}
 
-	auto& info = m_detours[ g_hash.get( name.data( ) ) ];
-	info = { function, nullptr };
+	const size_t hash = g_hash.get( name );
 
-	const auto hook = g_signatures.m_hook.as< bool( __cdecl* )( void*, void*, void*, int ) >( );
+	m_detours[ hash ] = detour_hook( function, custom_function );
 
-	if ( !hook( info.m_function, custom_function, &info.m_original, 0 ) ) {
+	bool result = m_detours[ hash ].init( );
+	if ( !result )
+		g_console.log( log_error, XOR( "failed to hook %s" ), name );
 
-		g_console.log( log_error, XOR( "failed to hook %s" ), name.data( ) );
-		return false;
-
-	}
-
-	return true;
+	return result;
 
 }
 
@@ -35,9 +29,7 @@ void detour::unload( ) {
 	if ( m_detours.empty( ) )
 		return;
 
-	const auto restore = g_signatures.m_restore.as< void( __cdecl* )( void*, bool ) >( );
-
-	for ( auto& detour : m_detours )
-		restore( detour.second.m_function, false );
+	// this calls the deconstructor of detour_hook 
+	m_detours.clear( );
 
 }
