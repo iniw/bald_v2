@@ -9,9 +9,9 @@
 // this should be an inherinted class from x86Detour but Fvck It
 struct detour_hook {
 
-	detour_hook( ) : m_target( 0 ), m_tramp( 0 ), m_org( 0 ), m_hooked( false ), m_dis( nullptr ), m_detour( nullptr ) { }
+	detour_hook( ) : m_target( 0 ), m_tramp( 0 ), m_org( 0 ), m_dis( nullptr ), m_detour( nullptr ) { }
 
-	detour_hook( void* target, void* tramp ) : m_target( ( uint64_t )target ), m_tramp( ( uint64_t )tramp ), m_org( 0 ), m_hooked( false ), m_dis( nullptr ), m_detour( nullptr ) { }
+	detour_hook( void* target, void* tramp ) : m_target( ( uint64_t )target ), m_tramp( ( uint64_t )tramp ), m_org( 0 ), m_dis( nullptr ), m_detour( nullptr ) { }
 
 	~detour_hook( ) {
 
@@ -27,9 +27,7 @@ struct detour_hook {
 		m_dis = new PLH::CapstoneDisassembler( PLH::Mode::x86 );
 		m_detour = new PLH::x86Detour( m_target, m_tramp, &m_org, *m_dis );
 
-		m_hooked = m_detour->hook( );
-
-		return m_hooked;
+		return m_detour->hook( );
 
 	}
 
@@ -39,8 +37,6 @@ struct detour_hook {
 
 	PLH::CapstoneDisassembler* m_dis;
 	PLH::x86Detour* m_detour;
-
-	bool m_hooked;
 
 };
 
