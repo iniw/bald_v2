@@ -71,9 +71,9 @@ struct backtracking {
 
 	void apply_tick_count( user_cmd* cmd, lag_record* record, cs_player* player, const bool should_draw_matrix = false );
 
-	inline void apply( lag_record* record, cs_player* player );
+	void apply( lag_record* record, cs_player* player );
 
-	inline void restore( cs_player* player );
+	void restore( cs_player* player );
 
 	bool setup( );
 
