@@ -85,11 +85,7 @@ void backtracking::apply_tick_count( user_cmd* cmd, lag_record* record, cs_playe
 	if ( !record )
 		return;
 
-	apply( record, player );
-
 	cmd->m_tick_count = g_cstrike.time_to_ticks( record->m_sim_time + get_lerp( ) );
-
-	restore( player );
 
 	if ( should_draw_matrix )
 		draw_matrix( record->m_matrix, player );
