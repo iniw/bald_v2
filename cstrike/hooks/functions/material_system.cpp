@@ -1,4 +1,4 @@
-#include "../hooked.h"
+#include "../hooks.h"
 
 bool __fastcall hooks::override_config( void* ecx, void* edx, material_system_config* cfg, bool update ) {
 

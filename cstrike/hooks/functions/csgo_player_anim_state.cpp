@@ -1,4 +1,4 @@
-#include "../hooked.h"
+#include "../hooks.h"
 
 void __vectorcall hooks::update( csgo_player_anim_state* ecx, void* unk0, float z, float y, float x, void* unk1 ) {
 
@@ -6,7 +6,7 @@ void __vectorcall hooks::update( csgo_player_anim_state* ecx, void* unk0, float 
 	if ( !player || ( !player->is_alive( ) && !player->is_player_ghost( ) ) || !ecx->cache_sequences( ) )
 		return;
 
-	x = g_mathlib_base.angle_normalize( x + player->get_third_person_recoil( ) );
+	x = g_mathlib_base.angle_normalize( x + player->get_third_person_recoil( ) );	
 
 	if ( ecx->m_last_update_time == g_interfaces.m_globals->m_curtime || ecx->m_last_update_frame == g_interfaces.m_globals->m_framecount )
 		return;

@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>PolyHook_2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PolyHook_2.lib;capstone.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +140,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>PolyHook_2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PolyHook_2.lib;capstone.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -180,19 +180,19 @@
     <ClCompile Include="cstrike\features\legitbot\legitbot.cpp" />
     <ClCompile Include="cstrike\features\movement\movement.cpp" />
     <ClCompile Include="cstrike\features\visuals\visuals.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\material_system.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\players.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\client.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\client_input.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\client_mode_shared.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\csgo_player_anim_state.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\engine.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\engine_bsp_tree.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\engine_v_gui.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\scheme_manager.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\studio_render.cpp" />
-    <ClCompile Include="cstrike\hooked\functions\weapon_cs_base.cpp" />
-    <ClCompile Include="cstrike\hooked\hooked.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\material_system.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\players.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\client.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\client_input.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\client_mode_shared.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\csgo_player_anim_state.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\engine.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\engine_bsp_tree.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\engine_v_gui.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\scheme_manager.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\studio_render.cpp" />
+    <ClCompile Include="cstrike\hooks\functions\weapon_cs_base.cpp" />
+    <ClCompile Include="cstrike\hooks\hooks.cpp" />
     <ClCompile Include="cstrike\input\input.cpp" />
     <ClCompile Include="cstrike\render\render.cpp" />
     <ClCompile Include="other\console\console.cpp" />
@@ -205,7 +205,7 @@
     <ClCompile Include="other\utils\utils.cpp" />
     <ClCompile Include="other\winapi\winapi.cpp" />
     <ClCompile Include="valve\client\entities\cs_player.cpp" />
-    <ClCompile Include="valve\detour\detour.cpp" />
+    <ClCompile Include="other\detour\detour.cpp" />
     <ClCompile Include="valve\interfaces\interfaces.cpp" />
     <ClCompile Include="valve\netvars\netvars.cpp" />
     <ClCompile Include="valve\signatures\signatures.cpp" />
@@ -234,9 +234,25 @@
     <ClInclude Include="other\hash\hash.h" />
     <ClInclude Include="other\memory\stack.h" />
     <ClInclude Include="other\memory\pe.h" />
+    <ClInclude Include="other\polyhook\include\capstone\arm.h" />
+    <ClInclude Include="other\polyhook\include\capstone\arm64.h" />
+    <ClInclude Include="other\polyhook\include\capstone\capstone.h" />
+    <ClInclude Include="other\polyhook\include\capstone\evm.h" />
+    <ClInclude Include="other\polyhook\include\capstone\m680x.h" />
+    <ClInclude Include="other\polyhook\include\capstone\m68k.h" />
+    <ClInclude Include="other\polyhook\include\capstone\mips.h" />
     <ClInclude Include="other\polyhook\include\capstone\platform.h" />
+    <ClInclude Include="other\polyhook\include\capstone\ppc.h" />
+    <ClInclude Include="other\polyhook\include\capstone\sparc.h" />
+    <ClInclude Include="other\polyhook\include\capstone\systemz.h" />
+    <ClInclude Include="other\polyhook\include\capstone\tms320c64x.h" />
+    <ClInclude Include="other\polyhook\include\capstone\x86.h" />
+    <ClInclude Include="other\polyhook\include\capstone\xcore.h" />
     <ClInclude Include="other\polyhook\include\polyhook2\ADisassembler.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\CapstoneDisassembler.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Detour\ADetour.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Detour\x64Detour.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\Detour\x86Detour.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\Enums.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\ErrorLog.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\EventDispatcher.hpp" />
@@ -246,8 +262,9 @@
     <ClInclude Include="other\polyhook\include\polyhook2\MemProtector.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\Misc.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\PageAllocator.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\StackCanary.hpp" />
+    <ClInclude Include="other\polyhook\include\polyhook2\TestEffectTracker.hpp" />
     <ClInclude Include="other\polyhook\include\polyhook2\UID.hpp" />
-    <ClInclude Include="other\polyhook\include\polyhook2\ZydisDisassembler.hpp" />
     <ClInclude Include="other\winapi\winapi.h" />
     <ClInclude Include="other\xor\xor.h" />
     <ClInclude Include="valve\bitbuf.h" />
@@ -272,7 +289,7 @@
     <ClInclude Include="valve\client\client.h" />
     <ClInclude Include="valve\client\entities\cs_player.h" />
     <ClInclude Include="cstrike\cstrike.h" />
-    <ClInclude Include="cstrike\hooked\hooked.h" />
+    <ClInclude Include="cstrike\hooks\hooks.h" />
     <ClInclude Include="other\console\console.h" />
     <ClInclude Include="other\memory\address.h" />
     <ClInclude Include="other\other.h" />
@@ -284,7 +301,7 @@
     <ClInclude Include="valve\data_map.h" />
     <ClInclude Include="valve\data_cache\data_cache.h" />
     <ClInclude Include="valve\data_cache\mdl_cache.h" />
-    <ClInclude Include="valve\detour\detour.h" />
+    <ClInclude Include="other\detour\detour.h" />
     <ClInclude Include="valve\dt_common.h" />
     <ClInclude Include="valve\dt_recv.h" />
     <ClInclude Include="valve\engine\bsp_flags.h" />
@@ -328,10 +345,18 @@
     <ClInclude Include="valve\vgui\vgui.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="other\polyhook\lib\debug\capstone.lib" />
-    <Library Include="other\polyhook\lib\debug\PolyHook_2.lib" />
-    <Library Include="other\polyhook\lib\release\capstone.lib" />
-    <Library Include="other\polyhook\lib\release\PolyHook_2.lib" />
+    <Library Include="other\polyhook\lib\debug\capstone.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="other\polyhook\lib\debug\PolyHook_2.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="other\polyhook\lib\release\capstone.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="other\polyhook\lib\release\PolyHook_2.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

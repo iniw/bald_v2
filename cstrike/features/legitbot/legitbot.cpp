@@ -54,7 +54,7 @@ void aimbot_data::setup_hitbox( ) {
 
 	float best_fov = FLT_MAX;
 
-	for ( int i = 0; i < hitboxes.size( ); i++ ) {
+	for ( uint32_t i = 0; i < hitboxes.size( ); i++ ) {
 
 		vec_3 pos = m_ent->get_hitbox_position( hitboxes[ i ], m_matrix );
 

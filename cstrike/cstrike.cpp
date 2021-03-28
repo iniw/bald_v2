@@ -1,9 +1,11 @@
 #include "cstrike.h"
 
-#include "hooked/hooked.h"
+#include "hooks/hooks.h"
 #include "render/render.h"
 
 DWORD WINAPI cstrike::setup( void* parameter ) {
+
+	auto time = std::chrono::high_resolution_clock::now( );
 
 	g_cstrike.m_handle = static_cast< HMODULE >( parameter );
 	
@@ -22,7 +24,13 @@ DWORD WINAPI cstrike::setup( void* parameter ) {
 
 	}
 
-	while ( !g_input.is_key_down( VK_DELETE  ) )
+	auto now = std::chrono::high_resolution_clock::now( );
+
+	auto time_past = std::chrono::duration_cast< std::chrono::milliseconds >( now - time ).count( );
+
+	g_console.log( log_normal, XOR( "injecting took: %fms " ), time_past / 1000.f );
+
+	while ( !g_input.is_key_down( VK_DELETE ) )
 		g_utils.sleep( 100 );
 
 	return unload( EXIT_SUCCESS );

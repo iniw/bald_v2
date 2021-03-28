@@ -12,3 +12,4 @@
 #include "memory/pe.h"
 #include "winapi/winapi.h"
 #include "file_system/file_system.h"
+#include "detour/detour.h"

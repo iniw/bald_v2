@@ -1,4 +1,4 @@
-#include "../hooked.h"
+#include "../hooks.h"
 
 void __fastcall hooks::draw_model( studio_render_context* ecx, void* edx, void* results, const draw_model_info& info, void* bone_to_world, float* flex_weights, float* flex_delayed_rates, const vec_3& origin, int flags ) {
 

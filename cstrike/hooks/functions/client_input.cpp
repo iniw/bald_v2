@@ -1,4 +1,4 @@
-#include "../hooked.h"
+#include "../hooks.h"
 
 void __fastcall hooks::cam_think( client_input* ecx, void* edx ) {
 

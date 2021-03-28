@@ -15,21 +15,19 @@ bool detour::setup( std::string_view name, void* function, void* custom_function
 
 	m_detours[ hash ] = detour_hook( function, custom_function );
 
-	bool result = m_detours[ hash ].init( );
-	if ( !result )
-		g_console.log( log_error, XOR( "failed to hook %s" ), name );
+	if ( !m_detours[ hash ].init( ) ) {
 
-	return result;
+		g_console.log( log_error, XOR( "failed to hook %s" ), name );
+		return false;
+
+	}
+
+	return true;
 
 }
 
 void detour::unload( ) {
 
-	// this may be called before we ever hook something 
-	if ( m_detours.empty( ) )
-		return;
-
-	// this calls the deconstructor of detour_hook 
 	m_detours.clear( );
 
 }

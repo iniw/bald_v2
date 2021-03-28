@@ -139,8 +139,6 @@ inline std::vector< address > utils::get_xrefs( address module_base, section_inf
 	std::vector< address > xrefs;
 
 	const std::string ida_pattern = bytes_to_pattern( reinterpret_cast< byte* >( &module_base ) );
-	
-	g_console.log( log_normal, ida_pattern );
 
 	const size_t end = info.start.add( info.size );
 

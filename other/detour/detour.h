@@ -15,7 +15,7 @@ struct detour_hook {
 
 	~detour_hook( ) {
 
-		// goodbye my children :sob: sob:
+		// goodbye my children :sob: :sob:
 
 		delete m_dis;
 		delete m_detour;
